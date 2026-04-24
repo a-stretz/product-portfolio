@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>BMCD Bracket Pool Analyzer — Case Study</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<template id="__bundler_thumbnail" data-bg-color="#f7f3ea">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#f7f3ea"/>
+    <g transform="translate(120,120)">
+      <text x="0" y="0" font-family="JetBrains Mono, monospace" font-size="28" letter-spacing="6" fill="#0c7a5b">CASE STUDY · 05</text>
+      <text x="0" y="180" font-family="Georgia, serif" font-size="140" fill="#15120d">Probability</text>
+      <text x="0" y="320" font-family="Georgia, serif" font-size="140" font-style="italic" fill="#0c7a5b">Engine.</text>
+      <rect x="0" y="400" width="960" height="2" fill="#15120d"/>
+      <g transform="translate(0,470)" font-family="Inter, sans-serif" font-size="30" fill="#2b3038">
+        <text y="0">Exhaustive enumeration over a dependency DAG.</text>
+        <text y="50">Exact answers at the margins of elimination.</text>
+      </g>
+    </g>
+  </svg>
+</template>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css?v=2"/>
+<style>
+/* Long-form case study — Case 05 · Emerald */
+:root {
+  --primary: var(--emerald);
+  --primary-2: var(--emerald-2);
+  --primary-wash: var(--emerald-wash);
+}
+body.cs { background: var(--paper); color: var(--ink); }
+.lf-shell { max-width: 1180px; margin: 0 auto; padding: 0 60px; }
+@media (max-width: 900px){ .lf-shell { padding: 0 28px; } }
+
+/* Top bar */
+.lf-topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 22px 0 18px; border-bottom: 0.5pt solid var(--rule);
+  font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.lf-topbar a { color: var(--ink-3); text-decoration: none; border-bottom: 0.5pt solid transparent; transition: color .15s; }
+.lf-topbar a:hover { color: var(--primary-2); border-bottom-color: var(--primary-2); }
+.lf-topbar .home { display: inline-flex; align-items: center; gap: 8px; }
+.lf-topbar .home::before { content: ''; width: 14px; height: 1.2pt; background: var(--primary-2); display: inline-block; }
+.lf-topbar .right { display: flex; gap: 26px; }
+
+/* Hero */
+.lf-hero {
+  display: grid; grid-template-columns: minmax(0,1.05fr) minmax(0,0.55fr);
+  gap: 64px; padding: 80px 0 56px; border-bottom: 1pt solid var(--ink);
+}
+@media (max-width: 960px){ .lf-hero { grid-template-columns: 1fr; gap: 32px; padding: 48px 0 36px; } }
+.lf-hero .kicker {
+  font-family: var(--font-mono); font-size: 9pt; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--primary-2); margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.lf-hero .kicker::before { content: ''; width: 20px; height: 1.5pt; background: var(--primary-2); display: inline-block; }
+.lf-hero h1 { font-family: var(--font-serif); font-size: 64pt; line-height: 0.96; letter-spacing: -0.03em; font-weight: 400; margin: 0 0 18px; }
+.lf-hero h1 em { font-style: italic; color: var(--primary-2); font-weight: 400; }
+.lf-hero .tagline { font-family: var(--font-serif); font-size: 17pt; font-style: italic; color: var(--ink-2); line-height: 1.32; max-width: 700px; margin: 0 0 28px; }
+.lf-hero .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.lf-hero .tags span {
+  font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.14em;
+  text-transform: uppercase; padding: 5px 10px; border: 0.5pt solid var(--ink-4); color: var(--ink-2);
+}
+.lf-hero .tags span.accent { border-color: var(--primary-2); color: var(--primary-2); background: var(--primary-wash); }
+.lf-hero aside {
+  font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink-3);
+  border-top: 1pt solid var(--ink); padding-top: 18px; align-self: end;
+}
+.lf-hero aside dl { margin: 0; display: grid; grid-template-columns: 1fr 2fr; gap: 10px 16px; }
+.lf-hero aside dt { color: var(--ink-4); font-weight: 600; }
+.lf-hero aside dd { margin: 0; color: var(--ink); font-weight: 500; letter-spacing: 0.08em; }
+
+/* Overview */
+.lf-overview {
+  padding: 56px 0 48px; border-bottom: 0.5pt solid var(--rule);
+  display: grid; grid-template-columns: 0.38fr 1fr; gap: 56px;
+}
+@media (max-width: 900px){ .lf-overview { grid-template-columns: 1fr; gap: 14px; padding: 36px 0 32px; } }
+.lf-overview .side {
+  font-family: var(--font-mono); font-size: 8.5pt; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--primary-2); font-weight: 600; padding-top: 4px;
+}
+.lf-overview p { font-family: var(--font-serif); font-size: 14pt; line-height: 1.45; color: var(--ink); margin: 0 0 14px; max-width: 700px; }
+.lf-overview p:last-child { margin-bottom: 0; }
+.lf-overview strong { color: var(--primary); font-weight: 600; }
+
+/* Sections */
+.lf-section { padding: 56px 0 40px; border-bottom: 0.5pt solid var(--rule); }
+.lf-section.last { border-bottom: none; }
+.lf-section > .head { display: grid; grid-template-columns: 140px 1fr; gap: 28px; margin-bottom: 28px; align-items: baseline; }
+@media (max-width: 900px){ .lf-section > .head { grid-template-columns: 1fr; gap: 6px; } }
+.lf-section > .head .n { font-family: var(--font-mono); font-size: 8.5pt; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-3); }
+.lf-section > .head .n .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--primary); margin-right: 10px; vertical-align: 2px; }
+.lf-section > .head h2 { font-family: var(--font-serif); font-size: 32pt; line-height: 1.03; letter-spacing: -0.02em; font-weight: 400; margin: 0; max-width: 820px; }
+.lf-section > .head h2 em { font-style: italic; color: var(--primary-2); font-weight: 400; }
+
+/* Body */
+.lf-body { max-width: 820px; margin-left: 168px; font-family: var(--font-serif); font-size: 11.5pt; line-height: 1.58; color: var(--ink-2); }
+@media (max-width: 900px){ .lf-body { margin-left: 0; } }
+.lf-body p { margin: 0 0 14px; }
+.lf-body p:last-child { margin-bottom: 0; }
+.lf-body strong { color: var(--ink); font-weight: 600; }
+
+/* Callout */
+.callout {
+  margin: 20px 0;
+  padding: 22px 26px;
+  border-left: 2pt solid var(--primary);
+  background: var(--primary-wash);
+  font-family: var(--font-serif);
+  font-size: 12pt;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.callout .c-label {
+  font-family: var(--font-mono); font-size: 7.5pt; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--primary); font-weight: 600;
+  margin-bottom: 10px;
+}
+.callout strong { color: var(--primary); font-weight: 600; }
+
+/* Approach grid — 7 engineering layers */
+.app-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  border-top: 1pt solid var(--ink); border-left: 0.5pt solid var(--rule);
+}
+@media (max-width: 900px){ .app-grid { grid-template-columns: 1fr; } }
+.app {
+  padding: 28px 30px 32px;
+  border-right: 0.5pt solid var(--rule); border-bottom: 0.5pt solid var(--rule);
+  min-width: 0;
+}
+.app .app-num {
+  font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--primary-2); font-weight: 600;
+  margin-bottom: 8px; display: flex; align-items: center; gap: 10px;
+}
+.app .app-num .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); display: inline-block; }
+.app h4 {
+  font-family: var(--font-serif); font-size: 15pt; font-weight: 500;
+  line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 12px; color: var(--ink);
+}
+.app p { font-family: var(--font-sans); font-size: 9.5pt; line-height: 1.5; color: var(--ink-2); margin: 0 0 10px; }
+.app p:last-child { margin-bottom: 0; }
+.app code {
+  font-family: var(--font-mono); font-size: 8.5pt;
+  background: var(--primary-wash); color: var(--primary);
+  padding: 1px 5px; border-radius: 2px;
+}
+.app .metric {
+  margin-top: 12px; padding: 10px 14px;
+  background: var(--primary-wash); border-left: 1.5pt solid var(--primary);
+  font-family: var(--font-sans); font-size: 9pt; line-height: 1.48; color: var(--ink);
+}
+.app .metric .lbl {
+  font-family: var(--font-mono); font-size: 7pt; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--primary); font-weight: 600;
+  display: block; margin-bottom: 4px;
+}
+
+/* Decisions */
+.dec-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+  border-top: 1pt solid var(--ink); border-left: 0.5pt solid var(--rule);
+}
+@media (max-width: 1000px){ .dec-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px){ .dec-grid { grid-template-columns: 1fr; } }
+.dec {
+  padding: 22px 24px 26px;
+  border-right: 0.5pt solid var(--rule); border-bottom: 0.5pt solid var(--rule);
+  min-width: 0;
+}
+.dec .n { font-family: var(--font-mono); font-size: 7.5pt; letter-spacing: 0.2em; color: var(--primary-2); font-weight: 600; margin-bottom: 6px; }
+.dec h4 { font-family: var(--font-serif); font-size: 14pt; font-weight: 500; line-height: 1.15; margin: 0 0 8px; color: var(--ink); }
+.dec p { font-family: var(--font-sans); font-size: 9.5pt; line-height: 1.5; color: var(--ink-2); margin: 0; }
+
+/* Version timeline */
+.vrs {
+  margin: 10px 0 0;
+  border-top: 1pt solid var(--ink);
+}
+.vrs .v {
+  display: grid;
+  grid-template-columns: 90px 200px 1fr;
+  gap: 32px;
+  padding: 22px 0;
+  border-bottom: 0.5pt solid var(--rule);
+  align-items: baseline;
+}
+@media (max-width: 780px){ .vrs .v { grid-template-columns: 1fr; gap: 6px; padding: 18px 0; } }
+.vrs .v .tag {
+  font-family: var(--font-mono); font-size: 10pt; letter-spacing: 0.14em;
+  color: var(--primary-2); font-weight: 700;
+}
+.vrs .v .title {
+  font-family: var(--font-serif); font-size: 14pt; font-weight: 500;
+  color: var(--ink); letter-spacing: -0.005em; line-height: 1.2;
+}
+.vrs .v .desc { font-family: var(--font-sans); font-size: 10pt; line-height: 1.55; color: var(--ink-2); }
+.vrs .v .desc strong { color: var(--ink); font-weight: 600; }
+
+/* Skills grid */
+.sk-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 0;
+  border-top: 1pt solid var(--ink); border-left: 0.5pt solid var(--rule);
+}
+@media (max-width: 700px){ .sk-grid { grid-template-columns: 1fr; } }
+.sk {
+  padding: 22px 26px 24px;
+  border-right: 0.5pt solid var(--rule); border-bottom: 0.5pt solid var(--rule);
+  min-width: 0;
+}
+.sk h4 { font-family: var(--font-serif); font-size: 13pt; font-weight: 500; margin: 0 0 8px; color: var(--ink); }
+.sk .lbl { font-family: var(--font-mono); font-size: 7pt; letter-spacing: 0.18em; text-transform: uppercase; color: var(--primary-2); font-weight: 600; margin-bottom: 4px; }
+.sk p { font-family: var(--font-sans); font-size: 9.5pt; line-height: 1.5; color: var(--ink-2); margin: 0; }
+
+/* Pull quote */
+.pull {
+  margin: 32px 0; padding: 40px 0;
+  border-top: 1pt solid var(--ink); border-bottom: 1pt solid var(--ink);
+  font-family: var(--font-serif); font-size: 22pt; line-height: 1.22;
+  font-style: italic; color: var(--ink); letter-spacing: -0.015em; text-wrap: balance;
+}
+.pull::before {
+  content: '❝'; display: block; font-family: var(--font-serif);
+  font-size: 32pt; line-height: 1; color: var(--primary-2); margin-bottom: 10px;
+}
+
+/* Visual artifact (iframe) */
+.artifact {
+  margin: 36px 0 8px;
+  border-top: 1pt solid var(--ink);
+  padding-top: 20px;
+}
+.artifact .ah {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 16px;
+  font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.artifact .ah .title {
+  color: var(--primary-2); font-weight: 600;
+}
+.artifact .ah .meta { color: var(--ink-4); }
+.artifact .ah a {
+  color: var(--ink-2); text-decoration: none;
+  border: 0.5pt solid var(--ink-4); padding: 6px 10px;
+}
+.artifact .ah a:hover { border-color: var(--primary-2); color: var(--primary-2); }
+.artifact .frame {
+  border: 1pt solid var(--ink);
+  background: #0d1117;
+  height: 640px;
+  overflow: hidden;
+  position: relative;
+}
+.artifact .frame iframe {
+  width: 100%; height: 100%; border: 0; display: block;
+}
+.artifact .caption {
+  margin-top: 12px;
+  font-family: var(--font-serif); font-size: 10pt; font-style: italic;
+  color: var(--ink-3); max-width: 820px;
+}
+.artifact .caption strong { color: var(--ink-2); font-weight: 500; font-style: normal; font-family: var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; font-size: 8pt; }
+
+/* Final summary */
+.lf-final { padding: 72px 0 48px; border-top: 1pt solid var(--ink); margin-top: 48px; }
+.lf-final .kicker {
+  font-family: var(--font-mono); font-size: 9pt; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--primary-2); margin-bottom: 18px;
+}
+.lf-final h3 {
+  font-family: var(--font-serif); font-size: 36pt; line-height: 1.05;
+  letter-spacing: -0.02em; font-weight: 400; margin: 0 0 22px; max-width: 920px;
+}
+.lf-final h3 em { font-style: italic; color: var(--primary-2); }
+.lf-final p { font-family: var(--font-serif); font-size: 14pt; line-height: 1.48; color: var(--ink-2); margin: 0 0 16px; max-width: 820px; }
+.lf-final p strong { color: var(--ink); font-weight: 600; }
+
+/* Footer */
+.lf-footer {
+  padding: 48px 0 64px; border-top: 0.5pt solid var(--rule);
+  display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: end;
+}
+@media (max-width: 900px){ .lf-footer { grid-template-columns: 1fr; gap: 20px; } }
+.lf-footer .sign { font-family: var(--font-serif); font-size: 13pt; color: var(--ink-2); font-style: italic; }
+.lf-footer .sign strong { color: var(--ink); font-weight: 500; font-style: normal; }
+.lf-footer .back {
+  font-family: var(--font-mono); font-size: 9pt; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--primary-2); text-decoration: none;
+  border: 1pt solid var(--primary-2); padding: 12px 18px;
+  display: inline-block; transition: all .15s; background: var(--paper);
+}
+.lf-footer .back:hover { background: var(--primary-2); color: var(--paper); }
+
+/* print fixups */
+@page { size: letter portrait; margin: 0.55in 0.5in; }
+@media print {
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  html, body { background: var(--paper) !important; }
+  body.cs { background: var(--paper) !important; }
+  .lf-topbar, .lf-footer .back { display: none !important; }
+  .lf-shell { padding: 0; max-width: none; margin: 0; }
+  .lf-hero { padding: 0 0 28px; break-inside: avoid; }
+  .lf-hero h1 { font-size: 42pt; }
+  .lf-hero .tagline { font-size: 14pt; }
+  .lf-overview { padding: 28px 0 24px; break-inside: avoid; }
+  .lf-overview p { font-size: 12pt; }
+  .lf-section { padding: 28px 0 22px; break-inside: auto; }
+  .lf-section > .head { break-after: avoid; margin-bottom: 18px; }
+  .lf-section > .head h2 { font-size: 22pt; }
+  .lf-body { font-size: 10.5pt; line-height: 1.5; margin-left: 0 !important; max-width: none !important; }
+  .app-grid, .dec-grid, .sk-grid { break-inside: auto; }
+  .app, .dec, .sk, .vrs .v, .callout, .pull, .lf-final { break-inside: avoid; }
+  .artifact { break-inside: avoid; break-before: page; }
+  .artifact .frame { height: 520px; }
+  .pull { font-size: 16pt; padding: 24px 0; margin: 20px 0; break-inside: avoid; }
+  .lf-final { padding: 40px 0 24px; margin-top: 28px; break-inside: avoid; }
+  .lf-final h3 { font-size: 24pt; }
+  .lf-final p { font-size: 12pt; }
+  .lf-footer { padding: 24px 0 0; break-inside: avoid; }
+  h1, h2, h3, h4, h5 { break-after: avoid; }
+  p { orphans: 3; widows: 3; }
+}
+</style>
+</head>
+<body class="cs">
+
+<div class="lf-shell">
+
+  <!-- TOP BAR -->
+  <nav class="lf-topbar">
+    <a href="Case Studies.html" class="home">Austin Stretz · Selected Work</a>
+    <div class="right">
+      <span>Case Study · 05</span>
+      <a href="#artifact">Jump to artifact</a>
+      <a href="#final">Jump to summary</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="lf-hero">
+    <div>
+      <div class="kicker">Case Study 05 · BMCD Bracket Pool Analyzer</div>
+      <h1>Exact probability at the <em>margins of elimination</em>.</h1>
+      <p class="tagline">A real-time probability engine for a 21-person NCAA Tournament bracket pool — exhaustive scenario enumeration over a dependency DAG, delivered as a single-file app during an active tournament.</p>
+      <div class="tags">
+        <span class="accent">Probability Engine</span>
+        <span>Combinatorics</span>
+        <span>Constraint Propagation</span>
+        <span>SVG Data Viz</span>
+        <span>Single-File Architecture</span>
+        <span>Solo Delivery</span>
+      </div>
+    </div>
+    <aside>
+      <dl>
+        <dt>Role</dt><dd>Product design &amp; engineering</dd>
+        <dt>Context</dt><dd>2026 NCAA Tournament</dd>
+        <dt>Participants</dt><dd>21-person pool</dd>
+        <dt>Versions</dt><dd>v1 &ndash; v5, live across rounds</dd>
+        <dt>Runtime</dt><dd>&lt; 200 ms, fully client-side</dd>
+      </dl>
+    </aside>
+  </header>
+
+  <!-- OVERVIEW -->
+  <section class="lf-overview">
+    <div class="side">Overview</div>
+    <div>
+      <p>A 21-person NCAA Tournament bracket pool hosted on CBS Sports, running through the 2026 March Madness tournament. Bracket data lived entirely inside CBS Sports' web platform &mdash; <strong>no API, no CSV export, no structured data access</strong>. Individual bracket PDFs were the only extractable format, each containing a visual bracket tree with color-coded correct and incorrect picks overlaid on top of predicted picks.</p>
+      <p>The pool used a non-standard scoring model (round-weighted base points plus winning seed as a bonus), so no off-the-shelf bracket analytics tool could score it correctly. The tool needed to work during an active tournament with games happening that night &mdash; the initial build had to go from zero to functional in a single working session, and the architecture had to support rapid state updates across multiple rounds.</p>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>01 · Problem</div>
+      <h2>"Can I still win?" — <em>a surprisingly deep question</em>.</h2>
+    </div>
+    <div class="lf-body">
+      <p>Bracket pools generate a question every participant asks but almost nobody can actually answer. The real version of that question has surprising depth: not just who's ahead in points, but which future game outcomes help which participants, which combinations of outcomes eliminate someone mathematically, how much a dead champion pick compresses someone's ceiling, and which participants are alive at 3% versus truly at zero.</p>
+
+      <div class="callout">
+        <div class="c-label">Combinatorial space</div>
+        For a 21-person pool with 11 remaining games at the Sweet 16 stage, there are <strong>2,048 valid tournament paths</strong>. No one in the pool could do this math, and no consumer bracket tool on the market answers it &mdash; ESPN, CBS, Yahoo, and others show current standings but don't model forward probability.
+      </div>
+
+      <p>The secondary problem was data extraction. CBS Sports provides bracket data as visual PDFs with overlaid annotations, not structured data. Building any analytical tool required first solving the parsing problem &mdash; extracting 21 participants' picks across 63 games each from semi-structured visual documents, including edge cases like participants who picked teams that were eliminated before their predicted game even occurred.</p>
+    </div>
+  </section>
+
+  <!-- APPROACH / 7 LAYERS -->
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>02 · Approach</div>
+      <h2>Seven engineered layers on top of a parsed dataset.</h2>
+    </div>
+
+    <div class="app-grid">
+
+      <div class="app">
+        <div class="app-num"><span class="dot"></span>Layer 01 · Data Extraction</div>
+        <h4>Parsing CBS Sports PDFs into structured picks</h4>
+        <p>Bracket PDFs were uploaded and parsed using visual inspection of the CBS Sports format. Each contained two layers of information: the participant's predicted winner (positioned on the bracket line) and the actual result (overlaid in green for correct, red with strikethrough for incorrect).</p>
+        <p>These had to be decoded into structured pick objects mapping each participant's predicted winner for every round &mdash; including edge cases like participants who picked teams eliminated before their predicted game occurred, resulting in null picks for downstream slots.</p>
+        <div class="metric">
+          <span class="lbl">Volume</span>
+          21 participants × 63 games = <strong>1,323 pick data points</strong>, manually cross-validated.
+        </div>
+      </div>
+
+      <div class="app">
+        <div class="app-num"><span class="dot"></span>Layer 02 · Scoring Engine</div>
+        <h4>Custom pool rules as a <code>scoreGain()</code> function</h4>
+        <p>The pool's scoring model: base points by round (1 / 2 / 4 / 8 / 16 / 32) plus the winning team's seed number as a bonus on every correct pick. A 9-seed winning in the Elite Eight earns 17 points (8 base + 9 seed).</p>
+        <p>This creates asymmetric value &mdash; upset picks carry disproportionate reward, a deliberate design choice in the pool's scoring that the probability engine needed to respect throughout.</p>
+      </div>
+
+      <div class="app">
+        <div class="app-num"><span class="dot"></span>Layer 03 · Probability Engine</div>
+        <h4>Exhaustive enumeration, not Monte Carlo</h4>
+        <p>The architecture decision that defines this project. Rather than sampling random tournament outcomes, the engine enumerates every valid combination of remaining game results. At the Sweet 16 with 11 remaining games, this is 2,048 scenarios.</p>
+        <p>Each scenario is assigned a probability computed as the product of per-game win probabilities. Direct matchups use betting-line-derived probabilities; conditional matchups use a head-to-head rating model calibrated from betting markets.</p>
+        <div class="metric">
+          <span class="lbl">Why exhaustive</span>
+          Monte Carlo at 100K iterations can report 0% for someone with 0.02% true probability. Exhaustive enumeration gives exact answers &mdash; the difference between <strong>"eliminated" and "extremely unlikely"</strong>.
+        </div>
+      </div>
+
+      <div class="app">
+        <div class="app-num"><span class="dot"></span>Layer 04 · Conditional Resolution</div>
+        <h4>Constraint propagation over a tournament DAG</h4>
+        <p>A dependency cascade handles the fact that later-round matchups depend on earlier-round outcomes. When a user locks in a Sweet 16 result, <code>deriveConditional()</code> propagates that outcome forward &mdash; invalidating downstream picks that become impossible and unlocking new matchups whose participants are now determined.</p>
+        <p>Essentially a constraint propagation engine running on a directed acyclic graph of tournament dependencies.</p>
+      </div>
+
+      <div class="app">
+        <div class="app-num"><span class="dot"></span>Layer 05 · Rank Computation</div>
+        <h4>Exact finish distributions, not point projections</h4>
+        <p>For each of the 2,048 scenarios, all 21 participants are scored, sorted by total points with tiebreaker logic (predetermined tiebreaker number from CBS), and assigned ranks.</p>
+        <p>Win probability is the sum of scenario probabilities where a participant finishes 1st. Top-2 and top-3 probabilities sum across scenarios where they finish ≤ 2nd or ≤ 3rd respectively. This produces exact pool finish distributions, not approximations.</p>
+      </div>
+
+      <div class="app">
+        <div class="app-num"><span class="dot"></span>Layer 06 · Interactive Bracket UI</div>
+        <h4>Athletic-style visualization with live recompute</h4>
+        <p>Absolutely-positioned game cards on a fixed canvas, connected by L-shaped SVG connector lines. Each connector segment is color-coded by the leading team at that bracket position, with opacity scaled by win probability and percentage labels floating above the output line segment.</p>
+        <p>Game cards are clickable &mdash; locking a result triggers conditional resolution → scenario enumeration → probability recalc → SVG re-render → standings re-sort, all in a single synchronous pass.</p>
+      </div>
+
+      <div class="app" style="grid-column: span 2;">
+        <div class="app-num"><span class="dot"></span>Layer 07 · Modal Analysis</div>
+        <h4>Participant-level "what needs to happen for me to win"</h4>
+        <p>Clicking any participant's name opens a detailed breakdown: win / top-2 / top-3 probabilities, their most probable winning path (the highest-probability scenario where they finish 1st) with per-game results and checkmarks where their picks align, the runner-up and margin in that scenario, and a <em>required outcomes</em> panel showing which game results appear in ≥ 62% of their winning scenarios &mdash; surfacing the critical dependencies for their path to victory.</p>
+        <p><strong>This is the core product insight:</strong> raw standings and win percentages tell you <em>what</em> the situation is, but not <em>why</em> or <em>what needs to happen</em>. The modal bridges that gap — showing a specific participant that Iowa State must win tonight, Arizona must beat Purdue Saturday, and Iowa State must then beat Arizona in the Final Four. That's the conversation bracket pool participants actually want to have.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PULL QUOTE -->
+  <div class="pull">
+    Exactness matters at the margins. Monte Carlo sampling, even at 100K iterations, can report 0% for a participant who actually has a 0.02% chance. The difference between "eliminated" and "extremely unlikely" is the difference between "you can stop watching" and "you need a miracle but it exists."
+  </div>
+
+  <!-- KEY DECISIONS -->
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>03 · Key Decisions</div>
+      <h2>Architecture choices optimized for <em>iteration speed</em> and analytical rigor.</h2>
+    </div>
+
+    <div class="dec-grid">
+      <div class="dec">
+        <div class="n">Decision 01</div>
+        <h4>Single-File Architecture</h4>
+        <p>The entire application — data, logic, UI, and styles — ships as one HTML file. No server, no build step, no dependencies beyond Google Fonts. Drag to Netlify Drop, share the URL in 30 seconds.</p>
+      </div>
+      <div class="dec">
+        <div class="n">Decision 02</div>
+        <h4>Exhaustive Over Monte Carlo</h4>
+        <p>At small scenario counts (≤ ~10K), exhaustive enumeration produces better answers with less code. Monte Carlo is only justified when the scenario space is too large to enumerate &mdash; which it isn't until early rounds.</p>
+      </div>
+      <div class="dec">
+        <div class="n">Decision 03</div>
+        <h4>Pre-Locked Completed Games</h4>
+        <p>Completed results are hardcoded into outcome state. This avoids retroactive scoring complexity and keeps the enumeration space small. The tradeoff: manual version updates. The benefit: the engine enumerates only over remaining uncertainty.</p>
+      </div>
+      <div class="dec">
+        <div class="n">Decision 04</div>
+        <h4>Rating-Based Conditional Odds</h4>
+        <p>For matchups where participants aren't yet known, win probability uses a relative-strength rating model rather than fixed odds. Conditional probabilities automatically adjust when earlier games lock &mdash; no separate odds table per matchup permutation.</p>
+      </div>
+      <div class="dec">
+        <div class="n">Decision 05</div>
+        <h4>Best-Case Modal Per Participant</h4>
+        <p>Raw standings tell you <em>what</em>; the modal tells you <em>what needs to happen</em>. Showing a specific participant's required outcome set is the conversation bracket pool participants actually want to have.</p>
+      </div>
+      <div class="dec">
+        <div class="n">Decision 06</div>
+        <h4>Alert Banner for Pool Dynamics</h4>
+        <p>When the Final Four was set and neither UConn nor Illinois had any champion pickers, the tool surfaced it as a top-level alert. This "so what" interpretation layered on top of raw data is where analytics tools differentiate.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISUAL ARTIFACT -->
+  <section class="lf-section" id="artifact">
+    <div class="head">
+      <div class="n"><span class="dot"></span>04 · Artifact</div>
+      <h2>Final Four build — the live tool at <em>v5</em>.</h2>
+    </div>
+    <div class="lf-body" style="max-width: none; margin-left: 168px;">
+      <p>Embedded below is the live v5 build used after the Elite Eight was complete. It reflects all Sweet 16 and Elite Eight results locked, with the scenario space reduced from 2,048 to the 8 remaining paths to a champion. The Athletic-style bracket, probability-weighted connector lines, and the structural alert about uncaptured champion-bonus points are all visible in their deployed state.</p>
+
+      <div class="artifact">
+        <div class="ah">
+          <div class="title">◆ &nbsp; v5 · Final Four Update</div>
+          <div class="meta">Client-side · Single HTML file · &lt; 200 ms</div>
+          <a href="assets/Final Four Update.html" target="_blank" rel="noopener">Open fullscreen ↗</a>
+        </div>
+        <div class="frame">
+          <iframe src="assets/Final Four Update.html" title="BMCD Bracket Pool Analyzer — v5 Final Four Update" loading="lazy"></iframe>
+        </div>
+        <p class="caption"><strong>Figure 01</strong> &nbsp;&nbsp;Interactive bracket canvas with probability-weighted SVG connectors, per-participant win / top-2 / top-3 distributions, and the champion-bonus alert. Click through to the full-screen view for scroll and interactive standings.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VERSION TIMELINE -->
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>05 · Versions</div>
+      <h2>Five builds across an active tournament.</h2>
+    </div>
+    <div class="lf-body" style="max-width: none; margin-left: 168px;">
+      <div class="vrs">
+        <div class="v">
+          <div class="tag">v1</div>
+          <div class="title">Standings &amp; picks</div>
+          <div class="desc">Initial standings table with tonight's games, participant picks, and champion status tracking. Built from raw CBS Sports data extraction of 21 bracket PDFs.</div>
+        </div>
+        <div class="v">
+          <div class="tag">v2</div>
+          <div class="title">Interactive bracket</div>
+          <div class="desc">Full bracket column layout with conditional game rendering, <strong>Monte Carlo</strong> pool win percentages, and interactive game locking.</div>
+        </div>
+        <div class="v">
+          <div class="tag">v3</div>
+          <div class="title">Architecture pivot</div>
+          <div class="desc">Pivot from Monte Carlo to <strong>exhaustive enumeration</strong>. Added ELIM detection (mathematical elimination vs. low probability), top-2 / top-3 probability columns, and the click-to-explore best-case scenario modal.</div>
+        </div>
+        <div class="v">
+          <div class="tag">v4</div>
+          <div class="title">Athletic-style UI</div>
+          <div class="desc">Complete UI rebuild inspired by The Athletic's bracket visualization. SVG connector lines with team-color coding, probability labels on connectors, absolute-positioned game cards on a fixed canvas.</div>
+        </div>
+        <div class="v">
+          <div class="tag">v5</div>
+          <div class="title">Final Four update</div>
+          <div class="desc">Updated through the Final Four with all Sweet 16 and Elite Eight results locked. Added contextual alert for the UConn / Illinois dynamic. Reduced scenario space from 2,048 to 8 remaining paths.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS DEMONSTRATED -->
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>06 · Skills Demonstrated</div>
+      <h2>What the build exercises.</h2>
+    </div>
+
+    <div class="sk-grid">
+      <div class="sk">
+        <div class="lbl">Capability 01</div>
+        <h4>Probability &amp; combinatorics</h4>
+        <p>Exhaustive scenario enumeration with weighted probability trees. Product-of-conditionals probability across a dependency DAG. Head-to-head rating model for conditional matchup resolution. Exact rank distribution computation across all valid tournament paths.</p>
+      </div>
+      <div class="sk">
+        <div class="lbl">Capability 02</div>
+        <h4>Data extraction &amp; structuring</h4>
+        <p>Parsing semi-structured visual bracket PDFs into normalized data objects. Handling annotation layers (correct / incorrect overlays), edge cases (null picks from pre-eliminated teams), and manual cross-validation of 1,323 individual pick data points.</p>
+      </div>
+      <div class="sk">
+        <div class="lbl">Capability 03</div>
+        <h4>Constraint propagation</h4>
+        <p>Conditional game resolution as a dependency cascade &mdash; locking an upstream outcome invalidates impossible downstream states and enables new matchups. Analogous to constraint satisfaction problems in scheduling and configuration systems.</p>
+      </div>
+      <div class="sk">
+        <div class="lbl">Capability 04</div>
+        <h4>Frontend engineering</h4>
+        <p>SVG-based data visualization with programmatic geometry computation &mdash; connector line positioning, center-Y calculations, team-color-coded segments. Absolute-positioned layout on a fixed canvas. Single-file architecture with no framework or build step.</p>
+      </div>
+      <div class="sk">
+        <div class="lbl">Capability 05</div>
+        <h4>Product analytics framing</h4>
+        <p>Scoring model, probability engine, and UI all serve a product question (<em>can I still win?</em>) rather than a mathematical abstraction. The modal shows the specific path to victory, critical dependencies, and margin in the best-case scenario. The alert banner interprets structural dynamics into strategic insight.</p>
+      </div>
+      <div class="sk">
+        <div class="lbl">Capability 06</div>
+        <h4>Rapid iteration under pressure</h4>
+        <p>Five versions across a live tournament with games happening during the build. Each version added meaningful capability while maintaining correctness of the underlying probability engine. Architecture decisions optimized for iteration speed without sacrificing analytical rigor.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL SUMMARY -->
+  <section class="lf-final" id="final">
+    <div class="kicker">◆ &nbsp; Final Summary</div>
+    <h3>A real-time probability engine that answers the question every bracket-pool participant asks but <em>no consumer tool</em> solves.</h3>
+    <p>The tool correctly identifies mathematical eliminations, computes exact win probabilities to the tenth of a percent, handles edge cases like null picks and pre-eliminated champion selections, and provides per-participant tactical analysis. It runs entirely client-side with no backend, loads in under 200 ms, and deploys via drag-and-drop to a static hosting service.</p>
+    <p>This project demonstrates <strong>probability modeling, combinatorics, constraint propagation, SVG data visualization, single-file architecture, and rapid product iteration under live-event time pressure</strong>.</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="lf-footer">
+    <div class="sign">
+      Austin Stretz &nbsp;·&nbsp; <strong>a.stretz@outlook.com</strong> &nbsp;·&nbsp; 913-515-8304
+    </div>
+    <a href="Case Studies.html" class="back">← Back to Selected Work</a>
+  </footer>
+
+</div>
+
+</body>
+</html>

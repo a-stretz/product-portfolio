@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bracket Pool 2026 — Final Four</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d1117;--surf:#161b27;--card:#1c2233;--brd:#252f45;
+  --tx:#dde4f0;--mu:#5c6e91;--dim:#2a3548;
+  --gold:#f0b429;--green:#25c26e;--red:#f04a4a;--amb:#f5a623;--teal:#14b8a6;
+}
+body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--tx);padding-bottom:80px}
+.hdr{background:var(--surf);border-bottom:1px solid var(--brd);padding:13px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:60}
+.hdr h1{font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:700}
+.hdr h1 em{color:var(--gold);font-style:normal}
+.hdr-sub{font-size:11px;color:var(--mu);margin-top:1px}
+.ff-badge{background:rgba(240,180,41,.15);color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:.06em;padding:3px 9px;border-radius:5px;border:1px solid rgba(240,180,41,.25)}
+.slbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);padding:14px 22px 5px;display:flex;align-items:baseline;gap:8px}
+.slbl-note{font-size:10px;color:var(--dim);font-weight:400;letter-spacing:0;text-transform:none}
+.brk-scroll{overflow-x:auto;padding:0 22px 16px}
+.brk-wrap{width:942px}
+.rnd-row{display:flex;margin-bottom:8px}
+.rh{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);text-align:center;width:158px}
+.rh-s{font-size:9px;color:var(--dim);font-weight:400;display:block;margin-top:1px}
+.rh-gap{width:40px;flex-shrink:0}
+.brk-canvas{position:relative;width:942px;height:500px}
+.gc{position:absolute;width:158px;border-radius:8px;overflow:hidden;border:1px solid var(--brd);background:var(--card)}
+.gc-nc{pointer-events:none}
+.gc-live{border-color:rgba(240,180,41,.45);box-shadow:0 0 14px rgba(240,180,41,.09)}
+.tr{display:flex;align-items:center;height:34px;padding:0 9px;border:none;background:transparent;cursor:pointer;width:100%;font-family:'Barlow',sans-serif;text-align:left;transition:background .12s;border-bottom:1px solid var(--brd)}
+.tr:last-child{border-bottom:none}
+.tr:hover:not(:disabled):not(.nc){background:rgba(255,255,255,.06)}
+.tr.win,.tr.done{background:rgba(37,194,110,.12)}
+.tr.loss{opacity:.25}
+.tr.nc{cursor:default}
+.sd{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;color:var(--mu);background:var(--dim);min-width:17px;height:17px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:7px;padding:0 3px}
+.nm{font-size:12px;font-weight:500;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tx)}
+.tr.win .nm,.tr.done .nm{color:var(--green);font-weight:600}
+.tr.loss .nm{color:var(--mu)}
+.ap{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--mu);margin-left:4px}
+.chk{font-size:10px;color:var(--green);margin-left:4px;opacity:.6}
+.tbd-c{display:flex;align-items:center;justify-content:center;height:68px;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.cbox{position:absolute;background:var(--card);border:1px solid var(--gold);border-radius:10px;padding:11px 10px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.clbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.cnm{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;text-align:center}
+.crow{display:flex;justify-content:space-between;width:100%;font-size:11px;padding:1px 0}
+.crow span:first-child{color:var(--mu)}
+.crow span:last-child{color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:700}
+.alert{margin:14px 22px 0;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.6;border:1px solid rgba(240,180,41,.22);background:rgba(240,180,41,.06);color:var(--mu)}
+.alert strong{color:var(--gold)}
+.stn-wrap{overflow-x:auto;padding:0 22px}
+.stn{width:100%;border-collapse:collapse;min-width:760px}
+.stn th{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);padding:5px 8px;text-align:right;border-bottom:1px solid var(--brd);white-space:nowrap}
+.stn th.la{text-align:left}.stn th.ca{text-align:center}
+.stn td{padding:6px 8px;border-bottom:1px solid rgba(37,47,69,.45);font-size:13px;text-align:right;vertical-align:middle}
+.stn td.la{text-align:left}.stn td.ca{text-align:center;color:var(--mu);font-family:'Barlow Condensed',sans-serif}
+.stn tr.ldr td{background:rgba(240,180,41,.05)}
+.nb{background:none;border:none;cursor:pointer;font-family:'Barlow',sans-serif;font-size:13px;font-weight:500;color:var(--tx);padding:0;text-align:left;text-decoration:underline;text-decoration-color:var(--dim);text-underline-offset:2px;transition:color .15s}
+.nb:hover{color:var(--gold);text-decoration-color:var(--gold)}
+.you{font-size:10px;background:rgba(240,180,41,.14);color:var(--gold);padding:1px 5px;border-radius:4px;margin-left:4px}
+.pv{font-weight:600}
+.bdg{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500;white-space:nowrap}
+.ba{background:rgba(37,194,110,.14);color:var(--green)}
+.bd{background:rgba(240,74,74,.1);color:var(--red);text-decoration:line-through}
+.pc{font-family:'Barlow Condensed',sans-serif;font-size:12px}
+.pe{color:var(--red);font-size:10px}.pl{color:var(--mu)}.ph{color:var(--gold);font-weight:600}
+.pbar{display:inline-block;height:4px;border-radius:2px;background:var(--gold);margin-right:4px;vertical-align:middle}
+.mxv{font-size:12px;color:var(--mu)}
+.ins{margin:8px 22px 12px;padding:10px 14px;background:var(--surf);border:1px solid var(--brd);border-radius:8px;font-size:13px;color:var(--mu);line-height:1.6}
+.ins strong{color:var(--tx)}
+.note{font-size:11px;color:var(--dim);margin:4px 22px;padding-left:8px;border-left:2px solid var(--dim)}
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:200;align-items:center;justify-content:center;padding:20px}
+.mbox{background:var(--surf);border:1px solid var(--brd);border-radius:14px;width:100%;max-width:540px;max-height:90vh;overflow-y:auto}
+.mhead{padding:18px 20px 14px;border-bottom:1px solid var(--brd);display:flex;justify-content:space-between;align-items:flex-start}
+.mhead h2{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700}
+.msub{font-size:12px;color:var(--mu);margin-top:2px}
+.mx2{background:none;border:1px solid var(--brd);color:var(--mu);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.mx2:hover{border-color:var(--tx);color:var(--tx)}
+.mbody{padding:16px 20px}
+.mstats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.mstat{background:var(--card);border:1px solid var(--brd);border-radius:8px;padding:10px 12px;text-align:center}
+.mstat .sl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--mu);margin-bottom:4px}
+.mstat .sv{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700}
+.sv.g{color:var(--gold)}.sv.n{color:var(--green)}.sv.e{color:var(--red);font-size:14px}
+.msec{margin-bottom:14px}
+.msec h3{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);margin-bottom:8px}
+.prow{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:var(--card);border-radius:6px;margin-bottom:3px;font-size:13px}
+.prow .gl{color:var(--mu);font-size:11px;min-width:150px}
+.prow .gr.ok{color:var(--green)}.prow .gr.neu{color:var(--tx)}.prow .gr.past{color:var(--dim)}
+.frow{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-bottom:1px solid var(--brd);font-size:12px}
+.frow:last-child{border-bottom:none}
+.fl2{color:var(--mu)}
+.elimbox{background:rgba(240,74,74,.07);border:1px solid rgba(240,74,74,.18);border-radius:8px;padding:12px 14px;font-size:13px;color:var(--red);line-height:1.6}
+.cur-row{background:rgba(37,194,110,.06);border:1px solid rgba(37,194,110,.15);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--mu);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.cur-row strong{color:var(--green)}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <h1><em>2026</em> Bracket Pool</h1>
+    <div class="hdr-sub">21 brackets · Final Four set · click matchups to lock results</div>
+  </div>
+  <span class="ff-badge">🏟 Final Four</span>
+</div>
+
+<div class="alert">
+  <strong>⚠ Key pool dynamic:</strong> Nobody picked UConn or Illinois to win the championship.
+  If either wins the title, the <strong>32 + seed pts champion bonus is uncaptured by the entire pool</strong> — 
+  compressing final scores and making current point leads more durable.
+  Only Arizona and Michigan champion pickers have a live title bonus.
+</div>
+
+<div class="slbl">Bracket <span class="slbl-note">— completed games locked · click Final Four to advance</span></div>
+<div class="brk-scroll">
+  <div class="brk-wrap">
+    <div class="rnd-row">
+      <div class="rh" style="color:var(--dim)">Sweet 16<span class="rh-s">Complete</span></div>
+      <div class="rh-gap"></div>
+      <div class="rh" style="color:var(--dim)">Elite Eight<span class="rh-s">Complete</span></div>
+      <div class="rh-gap"></div>
+      <div class="rh" style="color:var(--gold)">Final Four<span class="rh-s" style="color:var(--gold);opacity:.7">Click to lock →</span></div>
+      <div class="rh-gap"></div>
+      <div class="rh">Championship<span class="rh-s">Apr 6</span></div>
+      <div class="rh-gap"></div>
+      <div class="rh" style="width:124px">Champion</div>
+    </div>
+    <div class="brk-canvas" id="brk"></div>
+  </div>
+</div>
+
+<div class="slbl">Standings <span class="slbl-note">— points through Elite Eight · 8 scenarios remain —</span></div>
+<div class="stn-wrap">
+  <table class="stn">
+    <thead><tr>
+      <th class="ca">#</th><th class="la">participant</th>
+      <th>pts</th><th>max</th><th class="la">champion</th>
+      <th>win 1st</th><th>top 2</th><th>top 3</th>
+    </tr></thead>
+    <tbody id="stn-body"></tbody>
+  </table>
+</div>
+<div id="ins" class="ins" style="display:none"></div>
+<div class="note">only 8 scenarios remain (2 FF outcomes × championship) · click any name for their win path</div>
+
+<div class="mo" id="mo" onclick="closeMo(event)">
+  <div class="mbox" onclick="event.stopPropagation()">
+    <div class="mhead">
+      <div><h2 id="mo-t"></h2><div class="msub" id="mo-s"></div></div>
+      <button class="mx2" onclick="closeMo()">×</button>
+    </div>
+    <div class="mbody" id="mo-b"></div>
+  </div>
+</div>
+
+<script>
+const GW=158,HALF=34,GH=HALF*2;
+const CX=[0,198,396,594,792];
+const SLOTS={
+  east_top:{col:0,y:0},east_bot:{col:0,y:82},
+  east_e8:{col:1,y:41},south_e8:{col:1,y:165},
+  ff_es:{col:2,y:103},
+  mw_top:{col:0,y:255},mw_bot:{col:0,y:337},
+  mw_e8:{col:1,y:296},west_e8:{col:1,y:418},
+  ff_wm:{col:2,y:357},
+  ncg:{col:3,y:230},
+};
+const cY=g=>SLOTS[g].y+HALF;
+const CONNS=[
+  {a:'east_top',b:'east_bot',dst:'east_e8'},
+  {a:'east_e8',b:'south_e8',dst:'ff_es'},
+  {a:'mw_top',b:'mw_bot',dst:'mw_e8'},
+  {a:'mw_e8',b:'west_e8',dst:'ff_wm'},
+  {a:'ff_es',b:'ff_wm',dst:'ncg'},
+];
+const FEEDS={east_e8:['east_top','east_bot'],mw_e8:['mw_top','mw_bot'],ff_es:['east_e8','south_e8'],ff_wm:['mw_e8','west_e8'],ncg:['ff_es','ff_wm']};
+const SEEDS={Duke:1,StJohns:5,MICHST:3,UConn:2,Michigan:1,Alabama:4,Tennessee:6,IowaState:2,Arizona:1,Purdue:2,Iowa:9,Illinois:3};
+const RAT={Arizona:96,Michigan:91,Duke:88,Illinois:83,Purdue:79,IowaState:74,UConn:76,MICHST:73,StJohns:71,Iowa:62,Alabama:66,Tennessee:64};
+const TN={StJohns:"St John's",MICHST:"Mich St",IowaState:"Iowa St"};
+const tn=t=>TN[t]||t;
+const TC={Duke:'#4f87d4',StJohns:'#d45b6a',Michigan:'#4da8d4',Alabama:'#d45b82',Tennessee:'#f08522',IowaState:'#d94255',MICHST:'#4db882',UConn:'#4d7bcc',Arizona:'#e05566',Purdue:'#d4ac45',Iowa:'#c4a030',Illinois:'#d06040'};
+const DIM='#2a3548';
+const tc=t=>TC[t]||DIM;
+function h2h(a,b){const ra=RAT[a]||70,rb=RAT[b]||70;return ra/(ra+rb);}
+
+// ALL completed results pre-locked
+let OC={
+  east_top:'Duke',east_bot:'UConn',
+  mw_top:'Michigan',mw_bot:'Tennessee',
+  south_e8:'Illinois',west_e8:'Arizona',
+  east_e8:'UConn',mw_e8:'Michigan',
+  ff_es:null,ff_wm:null,ncg:null,
+};
+
+const P=[
+  {name:'austin stretz',pts:242,tb:131,champ:'Duke',s16:{east_top:'Duke',east_bot:'MICHST',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'Duke',south:'Houston',west:'Arizona',mw:'Michigan'},ff:{es:'Duke',wm:'Arizona'}},
+  {name:'D●●●●● M●●●●●',pts:226,tb:131,champ:'Arizona',s16:{east_top:'StJohns',east_bot:'UConn',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'StJohns',south:'Houston',west:'Arizona',mw:'Michigan'},ff:{es:'Houston',wm:'Arizona'}},
+  {name:'S●●●● H●●●●●',pts:225,tb:152,champ:'Florida',s16:{east_top:'Duke',east_bot:'UConn',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'Duke',south:'Florida',west:'Arizona',mw:'IowaState'},ff:{es:'Florida',wm:'Arizona'}},
+  {name:'C●●●● W●●●●●●',pts:223,tb:153,champ:'Arizona',s16:{east_top:'Duke',east_bot:'UConn',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'Duke',south:'Houston',west:'Arizona',mw:'IowaState'},ff:{es:'Duke',wm:'Arizona'}},
+  {name:'M●●●●●● G●●●●●●',pts:217,tb:141,champ:'Houston',s16:{east_top:'StJohns',east_bot:'UConn',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'StJohns',south:'Houston',west:'Arizona',mw:'Michigan'},ff:{es:'Houston',wm:'Michigan'}},
+  {name:'J●● F●●●●●●●●',pts:203,tb:122,champ:'Houston',s16:{east_top:'StJohns',east_bot:'UConn',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'StJohns',south:'Houston',west:'Arizona',mw:'Michigan'},ff:{es:'Houston',wm:'Michigan'}},
+  {name:'E●●● H●●●●●●●●●●',pts:202,tb:145,champ:'Arizona',s16:{east_top:'Duke',east_bot:'UConn',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'UConn',south:'Florida',west:'Arizona',mw:'IowaState'},ff:{es:'UConn',wm:'Arizona'}},
+  {name:'S●● C●●●●',pts:201,tb:134,champ:'Michigan',s16:{east_top:'Duke',east_bot:'UConn',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'Duke',south:'Houston',west:'Arizona',mw:'Michigan'},ff:{es:'Duke',wm:'Michigan'}},
+  {name:'R●●●● A●●●●●●',pts:199,tb:124,champ:'Arizona',s16:{east_top:'Duke',east_bot:'MICHST',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'Duke',south:'Florida',west:'Arizona',mw:'IowaState'},ff:{es:'Duke',wm:'Arizona'}},
+  {name:'N●●●●●●● V●●●●●●●●●',pts:196,tb:160,champ:'Houston',s16:{east_top:'StJohns',east_bot:'MICHST',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'StJohns',south:'Houston',west:'Arizona',mw:'Michigan'},ff:{es:'Houston',wm:'Michigan'}},
+  {name:'M●●● W●●●●●●',pts:194,tb:160,champ:'Arizona',s16:{east_top:'Duke',east_bot:'MICHST',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'Duke',south:'Illinois',west:'Arizona',mw:'Michigan'},ff:{es:'Duke',wm:'Arizona'}},
+  {name:'R●●● C●●●●●',pts:193,tb:145,champ:'Duke',s16:{east_top:'Duke',east_bot:'UConn',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'Duke',south:'Houston',west:'Purdue',mw:'Michigan'},ff:{es:'Duke',wm:'Michigan'}},
+  {name:'j●●●●● h●●●●●●',pts:193,tb:139,champ:'Houston',s16:{east_top:'StJohns',east_bot:'UConn',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'UConn',south:'Houston',west:'Arizona',mw:'IowaState'},ff:{es:'Houston',wm:'Arizona'}},
+  {name:'J●●●●● H●●●●',pts:191,tb:174,champ:'Arizona',s16:{east_top:'Duke',east_bot:'UConn',mw_top:'Michigan',mw_bot:'Tennessee'},e8:{east:'Duke',south:'Houston',west:'Arizona',mw:'Tennessee'},ff:{es:'Duke',wm:'Arizona'}},
+  {name:'M●●● F●●●●●●',pts:186,tb:187,champ:'Michigan',s16:{east_top:'Duke',east_bot:'MICHST',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'Duke',south:'Houston',west:'Arkansas',mw:'Michigan'},ff:{es:'Houston',wm:'Michigan'}},
+  {name:'K●●●●●● N●●●●●',pts:184,tb:144,champ:'IowaState',s16:{east_top:'Duke',east_bot:'MICHST',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'MICHST',south:'Houston',west:'Arizona',mw:'IowaState'},ff:{es:'Houston',wm:'IowaState'}},
+  {name:'C●●●●●● W●●●●●●',pts:182,tb:150,champ:'Arizona',s16:{east_top:'Duke',east_bot:'MICHST',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'MICHST',south:'Houston',west:'Arizona',mw:'IowaState'},ff:{es:'Houston',wm:'Arizona'}},
+  {name:'W●●● H●●●●●',pts:175,tb:147,champ:'Arizona',s16:{east_top:'StJohns',east_bot:'MICHST',mw_top:'Michigan',mw_bot:null},e8:{east:'MICHST',south:'Houston',west:'Arizona',mw:'Michigan'},ff:{es:'Houston',wm:'Arizona'}},
+  {name:'M●● C●●●●●●●●●',pts:166,tb:165,champ:'Michigan',s16:{east_top:'Duke',east_bot:'MICHST',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'Duke',south:'Houston',west:'Arizona',mw:'Michigan'},ff:{es:'Duke',wm:'Michigan'}},
+  {name:'H●●●●● P●●●●●●●',pts:165,tb:168,champ:'Kansas',s16:{east_top:null,east_bot:'UConn',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'Kansas',south:'Florida',west:'Purdue',mw:'IowaState'},ff:{es:'Kansas',wm:'IowaState'}},
+  {name:'R●●●●● S●●●●●●●',pts:132,tb:168,champ:'Arizona',s16:{east_top:'Duke',east_bot:'MICHST',mw_top:'Michigan',mw_bot:'IowaState'},e8:{east:'Duke',south:'Houston',west:'Arizona',mw:'IowaState'},ff:{es:'Houston',wm:'Arizona'}},
+];
+
+const DEAD_CHAMPS=['Houston','Florida','Kansas','Arkansas','Duke','IowaState','StJohns','MICHST','Alabama','Tennessee','Purdue','Iowa'];
+function csStatus(p){return DEAD_CHAMPS.includes(p.champ)||!['UConn','Illinois','Arizona','Michigan'].includes(p.champ)?'dead':'alive';}
+
+function scoreGain(p,sim){
+  let g=0;
+  [['east_top',p.s16.east_top],['east_bot',p.s16.east_bot],['mw_top',p.s16.mw_top],['mw_bot',p.s16.mw_bot]]
+    .forEach(([id,pk])=>{const w=sim[id];if(w&&pk===w)g+=4+(SEEDS[w]||5);});
+  [['east_e8',p.e8.east],['south_e8',p.e8.south],['west_e8',p.e8.west],['mw_e8',p.e8.mw]]
+    .forEach(([id,pk])=>{const w=sim[id];if(w&&pk===w)g+=8+(SEEDS[w]||5);});
+  if(sim.ff_es&&p.ff.es===sim.ff_es)g+=16+(SEEDS[sim.ff_es]||5);
+  if(sim.ff_wm&&p.ff.wm===sim.ff_wm)g+=16+(SEEDS[sim.ff_wm]||5);
+  if(sim.ncg&&p.champ===sim.ncg)g+=32+(SEEDS[sim.ncg]||5);
+  return g;
+}
+function currentPts(p){return p.pts+scoreGain(p,OC);}
+
+let ALL=[],PROBS={},SR=[];
+
+function sProb(sim){
+  let p=1;
+  const xe=(id,t,srcs)=>{if(!OC[id]){const o=srcs.find(x=>x!==t);if(o)p*=h2h(t,o);}};
+  xe('ff_es',sim.ff_es,['UConn','Illinois']);
+  xe('ff_wm',sim.ff_wm,['Arizona','Michigan']);
+  xe('ncg',sim.ncg,[sim.ff_es,sim.ff_wm]);
+  return p;
+}
+
+function computeAll(){
+  const opt=k=>OC[k]?[OC[k]]:null;
+  ALL=[];
+  for(const fes of(opt('ff_es')||['UConn','Illinois']))
+  for(const fwm of(opt('ff_wm')||['Arizona','Michigan']))
+  for(const ncg of(opt('ncg')||[fes,fwm])){
+    const sim={east_top:'Duke',east_bot:'UConn',mw_top:'Michigan',mw_bot:'Tennessee',
+      west_e8:'Arizona',south_e8:'Illinois',east_e8:'UConn',mw_e8:'Michigan',
+      ff_es:fes,ff_wm:fwm,ncg};
+    ALL.push({sim,prob:sProb(sim)});
+  }
+  SR=ALL.map(({sim,prob})=>{
+    const sc=P.map(p=>({name:p.name,total:p.pts+scoreGain(p,sim),tb:p.tb}));
+    sc.sort((a,b)=>b.total-a.total||a.tb-b.tb);
+    const r={};sc.forEach((s,i)=>r[s.name]=i+1);
+    return{sim,prob,ranks:r};
+  });
+  PROBS={};
+  P.forEach(p=>PROBS[p.name]={p1:0,p2:0,p3:0,winning:[],maxScore:0});
+  SR.forEach(sr=>{
+    P.forEach(p=>{
+      const r=sr.ranks[p.name];
+      const sc=p.pts+scoreGain(p,sr.sim);
+      if(sc>PROBS[p.name].maxScore)PROBS[p.name].maxScore=sc;
+      if(r===1){PROBS[p.name].p1+=sr.prob;PROBS[p.name].winning.push(sr);}
+      if(r<=2)PROBS[p.name].p2+=sr.prob;
+      if(r<=3)PROBS[p.name].p3+=sr.prob;
+    });
+  });
+}
+
+function aggP(gid){
+  let tot=0;const r={};
+  ALL.forEach(({sim,prob})=>{const t=sim[gid];if(t){r[t]=(r[t]||0)+prob;tot+=prob;}});
+  if(tot>0)Object.keys(r).forEach(k=>r[k]/=tot);
+  return r;
+}
+function leading(gid){
+  if(OC[gid])return{team:OC[gid],prob:1};
+  const agg=aggP(gid);
+  const e=Object.entries(agg).sort((a,b)=>b[1]-a[1]);
+  return e.length?{team:e[0][0],prob:e[0][1]}:{team:null,prob:0};
+}
+
+function buildSVG(){
+  let s=`<svg style="position:absolute;left:0;top:0;width:942px;height:500px;pointer-events:none;overflow:visible">`;
+  const SW=2.8;
+  CONNS.forEach(({a,b,dst})=>{
+    const rx=CX[SLOTS[a].col]+GW,dlx=CX[SLOTS[dst].col],mx=(rx+dlx)/2;
+    const ay=cY(a),by=cY(b),dy=cY(dst);
+    const la=leading(a),lb=leading(b),ld=leading(dst);
+    const ca=tc(la.team),cb=tc(lb.team),cd=tc(ld.team);
+    const oa=OC[a]?1:Math.max(.35,la.prob*.95);
+    const ob=OC[b]?1:Math.max(.35,lb.prob*.95);
+    const od=OC[dst]?1:Math.max(.4,ld.prob*.9);
+    s+=`<line x1="${rx}" y1="${ay}" x2="${mx}" y2="${ay}" stroke="${ca}" stroke-opacity="${oa}" stroke-width="${SW}" stroke-linecap="round"/>`;
+    s+=`<line x1="${rx}" y1="${by}" x2="${mx}" y2="${by}" stroke="${cb}" stroke-opacity="${ob}" stroke-width="${SW}" stroke-linecap="round"/>`;
+    s+=`<line x1="${mx}" y1="${Math.min(ay,by)}" x2="${mx}" y2="${Math.max(ay,by)}" stroke="${DIM}" stroke-opacity="0.85" stroke-width="${SW}"/>`;
+    s+=`<line x1="${mx}" y1="${dy}" x2="${dlx}" y2="${dy}" stroke="${cd}" stroke-opacity="${od}" stroke-width="${SW}" stroke-linecap="round"/>`;
+    if(ld.prob>0&&ld.prob<.999){
+      const lx=mx+(dlx-mx)*.62,ly=dy-7;
+      s+=`<text x="${lx}" y="${ly}" fill="${cd}" fill-opacity="${Math.min(1,od+.15)}" font-size="11.5" font-family="Barlow Condensed,sans-serif" font-weight="700" text-anchor="middle">${Math.round(ld.prob*100)}%</text>`;
+    }
+  });
+  const ncgR=CX[3]+GW,champL=CX[4],ncy=cY('ncg');
+  const ln=leading('ncg');
+  s+=`<line x1="${ncgR}" y1="${ncy}" x2="${champL}" y2="${ncy}" stroke="${tc(ln.team)}" stroke-opacity="${OC.ncg?1:Math.max(.4,ln.prob*.9)}" stroke-width="${SW}" stroke-linecap="round"/>`;
+  const divY=(SLOTS.east_bot.y+GH+SLOTS.mw_top.y)/2;
+  s+=`<line x1="0" y1="${divY}" x2="${GW+12}" y2="${divY}" stroke="${DIM}" stroke-opacity="0.3" stroke-width="1" stroke-dasharray="4,5"/>`;
+  s+=`</svg>`;
+  return s;
+}
+
+function buildCard(gid){
+  const{col,y}=SLOTS[gid];
+  const x=CX[col],st=`left:${x}px;top:${y}px;height:${GH}px`;
+  const w=OC[gid];
+  const isFF=gid==='ff_es'||gid==='ff_wm';
+  const isNCG=gid==='ncg';
+
+  // Completed locked card — show winner
+  if(w&&!isFF&&!isNCG){
+    return`<div class="gc gc-nc" style="${st}">
+      <div class="tr done nc"><span class="sd">${SEEDS[w]||'?'}</span><span class="nm">${tn(w)}</span><span class="chk">✓</span></div>
+      <div class="tr nc" style="opacity:.14"><span class="nm" style="padding-left:24px;font-size:11px">—</span></div>
+    </div>`;
+  }
+
+  // FF games
+  if(isFF){
+    const[fa,fb]=FEEDS[gid];
+    const wa=OC[fa],wb=OC[fb];
+    if(wa&&wb){
+      if(w){
+        // Locked FF result
+        const loser=wa===w?wb:wa;
+        return`<div class="gc gc-nc" style="${st}">
+          <div class="tr win nc"><span class="sd">${SEEDS[w]||'?'}</span><span class="nm">${tn(w)}</span><span class="chk">✓</span></div>
+          <div class="tr loss nc"><span class="sd">${SEEDS[loser]||'?'}</span><span class="nm">${tn(loser)}</span></div>
+        </div>`;
+      }
+      // Clickable FF matchup
+      const pa=h2h(wa,wb);
+      const rows=[wa,wb].map((t,i)=>{
+        const prob=i===0?pa:1-pa;
+        return`<button class="tr" onclick="setPick('${gid}','${t}')">
+          <span class="sd">${SEEDS[t]||'?'}</span><span class="nm">${tn(t)}</span>
+          <span class="ap">${Math.round(prob*100)}%</span>
+        </button>`;
+      }).join('');
+      return`<div class="gc gc-live" style="${st}">${rows}</div>`;
+    }
+  }
+
+  // NCG
+  if(isNCG){
+    if(w){
+      const loser=[OC.ff_es,OC.ff_wm].find(t=>t!==w);
+      return`<div class="gc gc-nc" style="${st}">
+        <div class="tr done nc"><span class="sd">${SEEDS[w]||'?'}</span><span class="nm">${tn(w)}</span><span class="chk">✓</span></div>
+        ${loser?`<div class="tr loss nc"><span class="sd">${SEEDS[loser]||'?'}</span><span class="nm">${tn(loser)}</span></div>`:''}
+      </div>`;
+    }
+    if(OC.ff_es&&OC.ff_wm){
+      const pa=h2h(OC.ff_es,OC.ff_wm);
+      const rows=[OC.ff_es,OC.ff_wm].map((t,i)=>{
+        const prob=i===0?pa:1-pa;
+        return`<button class="tr" onclick="setPick('ncg','${t}')">
+          <span class="sd">${SEEDS[t]||'?'}</span><span class="nm">${tn(t)}</span>
+          <span class="ap">${Math.round(prob*100)}%</span>
+        </button>`;
+      }).join('');
+      return`<div class="gc" style="${st}">${rows}</div>`;
+    }
+    const ap=aggP('ncg');
+    const sorted=Object.entries(ap).sort((x,y_)=>y_[1]-x[1]);
+    const rows=sorted.slice(0,4).map(([t,p])=>`<div class="tr nc">
+      <span class="sd">${SEEDS[t]||'?'}</span><span class="nm">${tn(t)}</span>
+      <span class="ap">${Math.round(p*100)}%</span>
+    </div>`).join('');
+    return`<div class="gc gc-nc" style="${st}">${rows||'<div class="tbd-c">Pending</div>'}</div>`;
+  }
+
+  return`<div class="gc gc-nc" style="${st}"><div class="tbd-c">—</div></div>`;
+}
+
+function buildChamp(){
+  const bw=124,bh=88,x=CX[4],ncy=cY('ncg'),y=ncy-bh/2;
+  const w=OC.ncg;
+  if(w)return`<div class="cbox" style="left:${x}px;top:${y}px;width:${bw}px">
+    <div class="clbl">🏆 Champion</div>
+    <div class="cnm">${tn(w)}</div>
+    <div style="font-size:11px;color:var(--mu)">Seed #${SEEDS[w]||'?'}</div>
+  </div>`;
+  const ap=aggP('ncg');
+  const rows=Object.entries(ap).sort((a,b)=>b[1]-a[1]).slice(0,4)
+    .map(([t,p])=>`<div class="crow"><span>(${SEEDS[t]}) ${tn(t)}</span><span>${Math.round(p*100)}%</span></div>`).join('');
+  return`<div class="cbox" style="left:${x}px;top:${y}px;width:${bw}px"><div class="clbl">Projected</div>${rows}</div>`;
+}
+
+function renderBracket(){
+  let h=buildSVG();
+  for(const gid of Object.keys(SLOTS))h+=buildCard(gid);
+  h+=buildChamp();
+  document.getElementById('brk').innerHTML=h;
+}
+
+function fmt(v,hi=false){
+  if(v===0)return{c:'pe',t:'ELIM'};
+  const p=v*100;
+  if(p<.05)return{c:'pl',t:'<0.1%'};
+  return{c:hi&&p>=10?'ph':'pl',t:p.toFixed(1)+'%'};
+}
+
+function renderStandings(){
+  const base=P.map(p=>({...p,cur:currentPts(p),cs:csStatus(p)})).sort((a,b)=>b.cur-a.cur||a.tb-b.tb);
+  const maxP1=Math.max(...P.map(p=>PROBS[p.name]?.p1||0));
+  const rows=base.map((p,i)=>{
+    const nr=i+1,ldr=nr===1;
+    const bc=p.cs==='dead'?'bd':'ba';
+    const you=p.name==='austin stretz'?'<span class="you">you</span>':'';
+    const pr=PROBS[p.name]||{p1:0,p2:0,p3:0,maxScore:0};
+    const f1=fmt(pr.p1,true),f2=fmt(pr.p2),f3=fmt(pr.p3);
+    const bw2=maxP1>0?Math.round((pr.p1/maxP1)*52):0;
+    const p1d=pr.p1>0?`<span class="pbar" style="width:${bw2}px"></span><span class="${f1.c}">${f1.t}</span>`:`<span class="${f1.c}">${f1.t}</span>`;
+    return`<tr class="${ldr?'ldr':''}">
+      <td class="ca">${nr}</td>
+      <td class="la"><button class="nb" onclick="showMo('${p.name}')">${p.name}</button>${you}</td>
+      <td class="pv">${p.cur}</td>
+      <td class="mxv">${pr.maxScore||p.cur}</td>
+      <td class="la"><span class="bdg ${bc}">${tn(p.champ)}</span></td>
+      <td class="pc">${p1d}</td>
+      <td class="pc"><span class="${f2.c}">${f2.t}</span></td>
+      <td class="pc"><span class="${f3.c}">${f3.t}</span></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('stn-body').innerHTML=rows;
+
+  const ins=document.getElementById('ins');
+  const base2=P.map(p=>({name:p.name,cur:currentPts(p)})).sort((a,b)=>b.cur-a.cur);
+  const austin=base2.find(x=>x.name==='austin stretz');
+  const austinRank=base2.findIndex(x=>x.name==='austin stretz')+1;
+  const leader=base2[0];
+  const ap2=PROBS['austin stretz']?.p1||0;
+  ins.innerHTML=`<strong>Austin sits at #${austinRank}</strong> with ${austin.cur} pts · champion pick (Duke) is eliminated · pool win probability: <strong style="color:${ap2>0?'var(--gold)':'var(--red)'}">${ap2>0?(ap2*100).toFixed(1)+'%':'0% — ELIM'}</strong> · <strong>${leader.name.split(' ')[0]} leads</strong> at ${leader.cur} pts`;
+  ins.style.display='block';
+}
+
+const GL={east_top:'East S16',east_bot:'East S16',mw_top:'MW S16',mw_bot:'MW S16',south_e8:'South E8',west_e8:'West E8',east_e8:'East E8',mw_e8:'MW E8',ff_es:'Final Four (UConn/Ill)',ff_wm:'Final Four (AZ/Mich)',ncg:'Championship'};
+
+function showMo(name){
+  const person=P.find(p=>p.name===name);
+  const pr=PROBS[name]||{p1:0,p2:0,p3:0,winning:[],maxScore:0};
+  const cur=currentPts(person);
+  const isE=pr.p1===0;
+  document.getElementById('mo-t').textContent=name;
+  document.getElementById('mo-s').textContent=`${cur} pts current · champion: ${tn(person.champ)} (${csStatus(person)==='dead'?'eliminated':'alive'})`;
+  const f1=fmt(pr.p1,true),f2=fmt(pr.p2),f3=fmt(pr.p3);
+  let h=`<div class="cur-row"><span>Current: <strong>${cur} pts</strong></span><span>Max possible: <strong>${pr.maxScore||cur} pts</strong></span></div>`;
+  h+=`<div class="mstats">
+    <div class="mstat"><div class="sl">Win pool</div><div class="sv ${isE?'e':pr.p1>=.05?'g':''}">${isE?'ELIM':f1.t}</div></div>
+    <div class="mstat"><div class="sl">Top 2</div><div class="sv ${pr.p2>0?'n':''}">${f2.t}</div></div>
+    <div class="mstat"><div class="sl">Top 3</div><div class="sv">${f3.t}</div></div>
+  </div>`;
+
+  if(isE){
+    let best=21;SR.forEach(sr=>{const r=sr.ranks[name];if(r<best)best=r;});
+    h+=`<div class="elimbox"><strong>Cannot finish 1st</strong> — no remaining combination of results puts ${name.split(' ')[0]} in first place.<br>
+      <span style="color:var(--tx);display:block;margin-top:8px">Best possible finish: <strong>#${best}</strong></span></div>`;
+  } else {
+    const best=[...pr.winning].sort((a,b)=>b.prob-a.prob)[0];
+    if(best){
+      const sb=person.pts+scoreGain(person,best.sim);
+      const ranked=P.map(p=>({name:p.name,total:p.pts+scoreGain(p,best.sim)})).sort((a,b)=>b.total-a.total);
+      const runner=ranked[1];
+      const picks={east_top:person.s16.east_top,east_bot:person.s16.east_bot,mw_top:person.s16.mw_top,mw_bot:person.s16.mw_bot,south_e8:person.e8.south,west_e8:person.e8.west,east_e8:person.e8.east,mw_e8:person.e8.mw,ff_es:person.ff.es,ff_wm:person.ff.wm,ncg:person.champ};
+      const gorder=['east_top','east_bot','mw_top','mw_bot','south_e8','west_e8','east_e8','mw_e8','ff_es','ff_wm','ncg'];
+      h+=`<div class="msec"><h3>Winning scenario (${(best.prob*100).toFixed(0)}% likely)</h3>`;
+      h+=gorder.map(gid=>{
+        const w=best.sim[gid],ok=picks[gid]===w,done=!!OC[gid];
+        return`<div class="prow"><span class="gl">${GL[gid]}</span><span class="gr ${done?'past':ok?'ok':'neu'}">${tn(w)} wins${done?' ✓':ok?' ✓':''}</span></div>`;
+      }).join('');
+      h+=`<div style="font-size:12px;color:var(--mu);padding:6px 10px">${name.split(' ')[0]} finishes at ${sb} pts · runner-up: ${runner.name.split(' ')[0]} at ${runner.total}</div></div>`;
+    }
+    h+=`<div class="msec"><h3>Remaining games needed</h3><div style="background:var(--card);border-radius:8px;overflow:hidden">`;
+    const remaining=['ff_es','ff_wm','ncg'].filter(g=>!OC[g]);
+    if(!remaining.length){
+      h+=`<div style="padding:10px 12px;font-size:13px;color:var(--green)">All results locked — standings are final.</div>`;
+    } else {
+      remaining.forEach(gid=>{
+        const picks2={ff_es:person.ff.es,ff_wm:person.ff.wm,ncg:person.champ};
+        const pick=picks2[gid];
+        const ff4=['UConn','Illinois','Arizona','Michigan'];
+        const live=ff4.includes(pick);
+        h+=`<div class="frow"><span class="fl2">${GL[gid]}</span>
+          <span style="font-size:12px;color:${live?'var(--tx)':'var(--dim)'}">${live?`needs <strong style="color:var(--gold)">${tn(pick)}</strong>`:'no live pick here'}</span></div>`;
+      });
+    }
+    h+=`</div></div>`;
+  }
+  document.getElementById('mo-b').innerHTML=h;
+  document.getElementById('mo').style.display='flex';
+}
+
+function closeMo(e){if(!e||e.target===document.getElementById('mo'))document.getElementById('mo').style.display='none';}
+
+function deriveConditional(){
+  if(OC.ff_es&&OC.ff_wm&&OC.ncg&&![OC.ff_es,OC.ff_wm].includes(OC.ncg))OC.ncg=null;
+}
+function setPick(gid,team){OC[gid]=OC[gid]===team?null:team;deriveConditional();refresh();}
+function refresh(){computeAll();renderBracket();renderStandings();}
+refresh();
+</script>
+</body>
+</html>
