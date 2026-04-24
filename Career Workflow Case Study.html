@@ -1,0 +1,1064 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>AI Career Workflow System — Case Study</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<template id="__bundler_thumbnail" data-bg-color="#f7f3ea">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#f7f3ea"/>
+    <g transform="translate(120,120)">
+      <text x="0" y="0" font-family="JetBrains Mono, monospace" font-size="28" letter-spacing="6" fill="#a8145f">CASE STUDY · 03</text>
+      <text x="0" y="180" font-family="Georgia, serif" font-size="140" fill="#15120d">AI Career</text>
+      <text x="0" y="320" font-family="Georgia, serif" font-size="140" font-style="italic" fill="#a8145f">Workflow.</text>
+      <rect x="0" y="400" width="960" height="2" fill="#15120d"/>
+      <g transform="translate(0,470)" font-family="Inter, sans-serif" font-size="30" fill="#2b3038">
+        <text y="0">Knowledge architecture for job search, application,</text>
+        <text y="50">interview prep, and answer coaching.</text>
+      </g>
+    </g>
+  </svg>
+</template>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css?v=2"/>
+<style>
+/* ================================================
+   Long-form case study — one topic, deep
+   Case 03 · Garnet
+   ================================================ */
+:root {
+  --primary: var(--garnet);
+  --primary-2: var(--garnet-2);
+  --primary-3: var(--garnet-3);
+  --primary-wash: var(--garnet-wash);
+}
+body.cs {
+  background: var(--paper);
+  color: var(--ink);
+}
+.lf-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+@media (max-width: 900px){
+  .lf-shell { padding: 0 28px; }
+}
+
+/* ============ Top bar ============ */
+.lf-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 0 18px;
+  border-bottom: 0.5pt solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 8pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.lf-topbar a {
+  color: var(--ink-3);
+  text-decoration: none;
+  border-bottom: 0.5pt solid transparent;
+  transition: color .15s;
+}
+.lf-topbar a:hover { color: var(--primary-2); border-bottom-color: var(--primary-2); }
+.lf-topbar .home { display: inline-flex; align-items: center; gap: 8px; }
+.lf-topbar .home::before {
+  content: '';
+  width: 14px; height: 1.2pt;
+  background: var(--primary-2);
+  display: inline-block;
+}
+.lf-topbar .right { display: flex; gap: 26px; }
+
+/* ============ Hero ============ */
+.lf-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.55fr);
+  gap: 64px;
+  padding: 80px 0 56px;
+  border-bottom: 1pt solid var(--ink);
+}
+@media (max-width: 960px){
+  .lf-hero { grid-template-columns: 1fr; gap: 32px; padding: 48px 0 36px; }
+}
+.lf-hero .kicker {
+  font-family: var(--font-mono);
+  font-size: 9pt;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--primary-2);
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.lf-hero .kicker::before {
+  content: '';
+  width: 20px; height: 1.5pt;
+  background: var(--primary-2);
+  display: inline-block;
+}
+.lf-hero h1 {
+  font-family: var(--font-serif);
+  font-size: 64pt;
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  margin: 0 0 18px;
+}
+.lf-hero h1 em {
+  font-style: italic;
+  color: var(--primary-2);
+  font-weight: 400;
+}
+.lf-hero .tagline {
+  font-family: var(--font-serif);
+  font-size: 17pt;
+  font-style: italic;
+  color: var(--ink-2);
+  line-height: 1.32;
+  max-width: 700px;
+  margin: 0 0 28px;
+}
+.lf-hero .tags {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-top: 10px;
+}
+.lf-hero .tags span {
+  font-family: var(--font-mono);
+  font-size: 8pt;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border: 0.5pt solid var(--ink-4);
+  color: var(--ink-2);
+}
+.lf-hero .tags span.accent {
+  border-color: var(--primary-2);
+  color: var(--primary-2);
+  background: var(--primary-wash);
+}
+
+.lf-hero aside {
+  font-family: var(--font-mono);
+  font-size: 8pt;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-top: 1pt solid var(--ink);
+  padding-top: 18px;
+  align-self: end;
+}
+.lf-hero aside dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px 16px;
+}
+.lf-hero aside dt { color: var(--ink-4); font-weight: 600; }
+.lf-hero aside dd {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+/* ============ Overview band ============ */
+.lf-overview {
+  padding: 56px 0 48px;
+  border-bottom: 0.5pt solid var(--rule);
+  display: grid;
+  grid-template-columns: 0.38fr 1fr;
+  gap: 56px;
+}
+@media (max-width: 900px){
+  .lf-overview { grid-template-columns: 1fr; gap: 14px; padding: 36px 0 32px; }
+}
+.lf-overview .side {
+  font-family: var(--font-mono);
+  font-size: 8.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--primary-2);
+  font-weight: 600;
+  padding-top: 4px;
+}
+.lf-overview p {
+  font-family: var(--font-serif);
+  font-size: 14pt;
+  line-height: 1.45;
+  color: var(--ink);
+  margin: 0 0 14px;
+  max-width: 700px;
+}
+.lf-overview p:last-child { margin-bottom: 0; }
+.lf-overview strong { color: var(--primary); font-weight: 600; }
+
+/* ============ Section headers ============ */
+.lf-section {
+  padding: 56px 0 40px;
+  border-bottom: 0.5pt solid var(--rule);
+}
+.lf-section.last { border-bottom: none; }
+.lf-section > .head {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 28px;
+  margin-bottom: 28px;
+  align-items: baseline;
+}
+@media (max-width: 900px){
+  .lf-section > .head { grid-template-columns: 1fr; gap: 6px; }
+}
+.lf-section > .head .n {
+  font-family: var(--font-mono);
+  font-size: 8.5pt;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.lf-section > .head .n .dot {
+  display: inline-block;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--primary);
+  margin-right: 10px;
+  vertical-align: 2px;
+}
+.lf-section > .head h2 {
+  font-family: var(--font-serif);
+  font-size: 32pt;
+  line-height: 1.03;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  margin: 0;
+  max-width: 820px;
+}
+.lf-section > .head h2 em {
+  font-style: italic;
+  color: var(--primary-2);
+  font-weight: 400;
+}
+
+/* ============ Body prose ============ */
+.lf-body {
+  max-width: 820px;
+  margin-left: 168px;
+  font-family: var(--font-serif);
+  font-size: 11.5pt;
+  line-height: 1.58;
+  color: var(--ink-2);
+}
+@media (max-width: 900px){
+  .lf-body { margin-left: 0; }
+}
+.lf-body p { margin: 0 0 14px; }
+.lf-body p:last-child { margin-bottom: 0; }
+.lf-body strong { color: var(--ink); font-weight: 600; }
+
+/* ============ Question block (distinct styling for the list of questions) ============ */
+.q-block {
+  margin: 20px 0 18px;
+  padding: 22px 26px;
+  border-left: 2pt solid var(--primary);
+  background: var(--primary-wash);
+}
+.q-block .q-label {
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.q-block ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--ink);
+  font-size: 12pt;
+  line-height: 1.45;
+}
+.q-block li {
+  padding: 4px 0;
+  border-bottom: 0.5pt solid rgba(168, 20, 95, 0.18);
+}
+.q-block li:last-child { border-bottom: none; }
+
+/* ============ Goal list (compact bullets) ============ */
+.goal-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 4px;
+  font-family: var(--font-sans);
+  font-size: 10pt;
+  line-height: 1.5;
+  color: var(--ink-2);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 24px;
+}
+@media (max-width: 720px){ .goal-list { grid-template-columns: 1fr; } }
+.goal-list li {
+  padding-left: 18px;
+  position: relative;
+}
+.goal-list li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.6em;
+  width: 8px; height: 1pt;
+  background: var(--primary);
+}
+
+/* ============ Knowledge engine schema diagram ============ */
+.engine {
+  margin: 28px 0 4px;
+  display: grid;
+  grid-template-columns: 0.8fr 1fr;
+  gap: 0;
+  border-top: 1pt solid var(--ink);
+  border-bottom: 1pt solid var(--ink);
+}
+@media (max-width: 900px){ .engine { grid-template-columns: 1fr; } }
+.engine .left {
+  padding: 22px 26px 22px 0;
+  border-right: 0.5pt solid var(--rule);
+}
+@media (max-width: 900px){ .engine .left { border-right: none; border-bottom: 0.5pt solid var(--rule); padding: 22px 0; } }
+.engine .engine-title {
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.engine h3 {
+  font-family: var(--font-serif);
+  font-size: 22pt;
+  font-weight: 500;
+  line-height: 1.08;
+  margin: 0 0 10px;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.engine .left p {
+  font-family: var(--font-sans);
+  font-size: 9.5pt;
+  line-height: 1.5;
+  color: var(--ink-2);
+  margin: 0 0 10px;
+}
+.engine .right {
+  padding: 22px 0 22px 26px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px 24px;
+  align-content: start;
+}
+@media (max-width: 900px){ .engine .right { padding: 22px 0; } }
+.engine .right .item {
+  padding: 8px 0;
+  border-bottom: 0.5pt solid var(--rule);
+  font-family: var(--font-sans);
+  font-size: 9.5pt;
+  color: var(--ink-2);
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+.engine .right .item .k {
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.12em;
+  color: var(--primary-2);
+  min-width: 22px;
+  font-weight: 600;
+}
+
+/* ============ Workflow cards (7 in a grid) ============ */
+.wf-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-top: 1pt solid var(--ink);
+  border-left: 0.5pt solid var(--rule);
+}
+@media (max-width: 900px){ .wf-grid { grid-template-columns: 1fr; } }
+.wf {
+  padding: 28px 30px 32px;
+  border-right: 0.5pt solid var(--rule);
+  border-bottom: 0.5pt solid var(--rule);
+  position: relative;
+  background: var(--paper);
+  min-width: 0;
+}
+.wf .wf-num {
+  font-family: var(--font-mono);
+  font-size: 8pt;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary-2);
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.wf .wf-num .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--primary);
+  display: inline-block;
+}
+.wf h4 {
+  font-family: var(--font-serif);
+  font-size: 15pt;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+  color: var(--ink);
+}
+.wf p {
+  font-family: var(--font-sans);
+  font-size: 9.5pt;
+  line-height: 1.5;
+  color: var(--ink-2);
+  margin: 0 0 10px;
+}
+.wf p:last-child { margin-bottom: 0; }
+.wf ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+  font-family: var(--font-sans);
+  font-size: 9pt;
+  line-height: 1.48;
+  color: var(--ink-2);
+}
+.wf ul li {
+  padding-left: 14px;
+  position: relative;
+  margin-bottom: 4px;
+}
+.wf ul li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.55em;
+  width: 6px; height: 1pt;
+  background: var(--primary);
+}
+.wf .labels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 16px;
+  padding-top: 10px;
+  margin-top: 12px;
+  border-top: 0.5pt solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.wf .labels span { line-height: 1.5; }
+
+.wf-output {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: var(--primary-wash);
+  border-left: 1.5pt solid var(--primary);
+  font-family: var(--font-sans);
+  font-size: 9pt;
+  line-height: 1.48;
+  color: var(--ink);
+}
+.wf-output .lbl {
+  font-family: var(--font-mono);
+  font-size: 7pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--primary);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* ============ Decisions grid (6 cards in a row, wraps to 2-col) ============ */
+.dec-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1pt solid var(--ink);
+  border-left: 0.5pt solid var(--rule);
+}
+@media (max-width: 1000px){ .dec-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px){ .dec-grid { grid-template-columns: 1fr; } }
+.dec {
+  padding: 22px 24px 26px;
+  border-right: 0.5pt solid var(--rule);
+  border-bottom: 0.5pt solid var(--rule);
+  min-width: 0;
+}
+.dec .n {
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.2em;
+  color: var(--primary-2);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.dec h4 {
+  font-family: var(--font-serif);
+  font-size: 14pt;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  margin: 0 0 8px;
+  color: var(--ink);
+}
+.dec p {
+  font-family: var(--font-sans);
+  font-size: 9.5pt;
+  line-height: 1.5;
+  color: var(--ink-2);
+  margin: 0;
+}
+
+/* ============ Stack ============ */
+.stack-wrap {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+}
+@media (max-width: 900px){ .stack-wrap { grid-template-columns: 1fr; gap: 20px; } }
+.stack-col h5 {
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+  font-weight: 600;
+  margin: 0 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 0.5pt solid var(--rule);
+}
+.stack-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 10pt;
+  line-height: 1.7;
+  color: var(--ink);
+  columns: 2;
+  column-gap: 20px;
+}
+@media (max-width: 600px){ .stack-col ul { columns: 1; } }
+.stack-col ul li { padding: 0; break-inside: avoid; }
+
+/* ============ Outcome + gaps ============ */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin-top: 10px;
+}
+@media (max-width: 900px){ .two-col { grid-template-columns: 1fr; gap: 24px; } }
+.two-col h4 {
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+  font-weight: 600;
+  margin: 0 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 0.5pt solid var(--rule);
+}
+.two-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 10pt;
+  line-height: 1.58;
+  color: var(--ink-2);
+}
+.two-col ul li {
+  padding: 8px 0 8px 16px;
+  position: relative;
+  border-bottom: 0.5pt solid var(--rule);
+}
+.two-col ul li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 1.1em;
+  width: 8px; height: 1pt;
+  background: var(--primary);
+}
+.two-col ul li strong { color: var(--ink); font-weight: 600; }
+
+/* ============ Pull quote ============ */
+.pull {
+  margin: 32px 0;
+  padding: 40px 0;
+  border-top: 1pt solid var(--ink);
+  border-bottom: 1pt solid var(--ink);
+  font-family: var(--font-serif);
+  font-size: 22pt;
+  line-height: 1.22;
+  font-style: italic;
+  color: var(--ink);
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+.pull::before {
+  content: '❝';
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 32pt;
+  line-height: 1;
+  color: var(--primary-2);
+  margin-bottom: 10px;
+}
+
+/* ============ Final summary ============ */
+.lf-final {
+  padding: 72px 0 48px;
+  border-top: 1pt solid var(--ink);
+  margin-top: 48px;
+}
+.lf-final .kicker {
+  font-family: var(--font-mono);
+  font-size: 9pt;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--primary-2);
+  margin-bottom: 18px;
+}
+.lf-final h3 {
+  font-family: var(--font-serif);
+  font-size: 36pt;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  margin: 0 0 22px;
+  max-width: 920px;
+}
+.lf-final h3 em {
+  font-style: italic;
+  color: var(--primary-2);
+}
+.lf-final p {
+  font-family: var(--font-serif);
+  font-size: 14pt;
+  line-height: 1.48;
+  color: var(--ink-2);
+  margin: 0 0 16px;
+  max-width: 820px;
+}
+.lf-final p strong { color: var(--ink); font-weight: 600; }
+
+/* ============ Footer ============ */
+.lf-footer {
+  padding: 48px 0 64px;
+  border-top: 0.5pt solid var(--rule);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: end;
+}
+@media (max-width: 900px){ .lf-footer { grid-template-columns: 1fr; gap: 20px; } }
+.lf-footer .sign {
+  font-family: var(--font-serif);
+  font-size: 13pt;
+  color: var(--ink-2);
+  font-style: italic;
+}
+.lf-footer .sign strong { color: var(--ink); font-weight: 500; font-style: normal; }
+.lf-footer .back {
+  font-family: var(--font-mono);
+  font-size: 9pt;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary-2);
+  text-decoration: none;
+  border: 1pt solid var(--primary-2);
+  padding: 12px 18px;
+  display: inline-block;
+  transition: all .15s;
+  background: var(--paper);
+}
+.lf-footer .back:hover {
+  background: var(--primary-2);
+  color: var(--paper);
+}
+
+/* print fixups */
+@media print {
+  .lf-topbar, .lf-footer .back { display: none !important; }
+  .lf-shell { padding: 0 0.5in; max-width: none; }
+  .wf-grid, .dec-grid, .engine { break-inside: auto; }
+  .wf, .dec { break-inside: avoid; }
+  body { background: white !important; }
+}
+</style>
+</head>
+<body class="cs">
+
+<div class="lf-shell">
+
+  <!-- TOP BAR -->
+  <nav class="lf-topbar">
+    <a href="Case Studies.html" class="home">Austin Stretz · Selected Work</a>
+    <div class="right">
+      <span>Case Study · 03</span>
+      <a href="#final">Jump to summary</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="lf-hero">
+    <div>
+      <div class="kicker">Case Study 03 · AI Career Workflow System</div>
+      <h1>From job discovery to <em>interview ready</em>, on one knowledge layer.</h1>
+      <p class="tagline">Opportunity evaluation, application strategy, interview preparation, and candidate knowledge management, unified around a single reusable knowledge base instead of one-off prompt generation.</p>
+      <div class="tags">
+        <span class="accent">AI Workflow System</span>
+        <span>Knowledge Architecture</span>
+        <span>Prompt Orchestration</span>
+        <span>Structured Evaluation</span>
+        <span>Product Strategy</span>
+      </div>
+    </div>
+    <aside>
+      <dl>
+        <dt>Role</dt><dd>Product design &amp; build</dd>
+        <dt>Domain</dt><dd>Career &amp; hiring workflows</dd>
+        <dt>Surface</dt><dd>Full-stack prototype</dd>
+        <dt>Users</dt><dd>Individual candidates</dd>
+        <dt>Status</dt><dd>Scoped v2 in progress</dd>
+      </dl>
+    </aside>
+  </header>
+
+  <!-- OVERVIEW -->
+  <section class="lf-overview">
+    <div class="side">Overview</div>
+    <div>
+      <p>I designed and built an AI-assisted career workflow system that moves a candidate from job discovery to application strategy, tailored materials, interview preparation, and answer improvement.</p>
+      <p>The system is built around a <strong>structured candidate knowledge base</strong> rather than one-off prompt generation. The core product insight was simple: high-quality career outputs depend on reusable candidate context. A strong story, proof point, positioning angle, or metric should not need to be recreated separately for every application, cover letter, recruiter message, resume version, or interview answer.</p>
+      <p>The scoped version of the product supports job fit analysis, application decisioning, tailored artifact generation, interview question generation, answer evaluation, rewrite coaching, session review, and workflow history.</p>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>01 · Problem</div>
+      <h2>Job search work is fragmented, and generic AI has made it <em>worse</em>.</h2>
+    </div>
+    <div class="lf-body">
+      <p>Candidates manage job descriptions, resumes, cover letters, recruiter messages, company research, interview notes, and story banks across disconnected tools. The result is repeated work and inconsistent positioning across every opportunity pursued.</p>
+      <p>Generic AI tools can generate drafts, but they lack durable memory of the candidate's experience. They produce polished language, but outputs drift toward repetitive, generic, or weakly grounded claims, exactly the kind of content hiring systems are now trained to filter out.</p>
+      <p>The practical problem was broader than creating documents. The candidate needed a system that could answer a set of connected questions, not a set of isolated prompts.</p>
+
+      <div class="q-block">
+        <div class="q-label">The questions the system had to answer</div>
+        <ul>
+          <li>Is this role worth pursuing?</li>
+          <li>What parts of my background are most relevant?</li>
+          <li>Which stories and proof points should I use?</li>
+          <li>How should I tailor my positioning for this company or role?</li>
+          <li>What application materials should I generate?</li>
+          <li>What interview questions should I prepare for?</li>
+          <li>How strong are my answers, and how should I improve them?</li>
+          <li>What have I already generated or practiced for this opportunity?</li>
+        </ul>
+      </div>
+
+      <p>The product needed to create continuity across the entire workflow, not just solve one piece of it.</p>
+    </div>
+  </section>
+
+  <!-- PRODUCT GOAL -->
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>02 · Product Goal</div>
+      <h2>A structured workflow system, not a collection of generators.</h2>
+    </div>
+    <div class="lf-body">
+      <p>The goal was to build a structured AI workflow system with six capabilities:</p>
+      <ul class="goal-list">
+        <li>Evaluate job opportunities against candidate goals and constraints</li>
+        <li>Generate role-specific application materials</li>
+        <li>Maintain a reusable candidate knowledge base</li>
+        <li>Prepare the candidate for role-specific interviews</li>
+        <li>Evaluate and improve interview answers</li>
+        <li>Track outputs, decisions, and progress over time</li>
+      </ul>
+      <p style="margin-top:18px;">The system was designed for any professional with objective skill sets, experience with specific products, tools, processes, software, or languages. Because it assists users with diverse backgrounds, it also needed strict guardrails around accuracy: emphasize real experience that demonstrates real capability without under or overstating it.</p>
+    </div>
+  </section>
+
+  <!-- PRODUCT DESIGN -->
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>03 · Product Design</div>
+      <h2>One shared foundation: the <em>candidate knowledge engine</em>.</h2>
+    </div>
+    <div class="lf-body">
+      <p>The product is organized around one shared foundation. Every workflow reads from and writes into the same structured knowledge layer, so context compounds instead of getting recreated.</p>
+
+      <div class="engine">
+        <div class="left">
+          <div class="engine-title">Knowledge Engine</div>
+          <h3>Stories as reusable product assets.</h3>
+          <p>A story from the candidate's background can support a resume bullet, a cover letter paragraph, an interview answer, a recruiter message, a hiring manager note, or a portfolio summary.</p>
+          <p>Each story includes context, ownership, actions, outcomes, metrics, tags, strengths, risks, and interview relevance. The richer story vault adds interview questions, STAR structure, debrief notes, and weighting for technical depth, product impact, and transferability.</p>
+          <p>The system recommends not just "a story" but the <strong>right story for the situation</strong>.</p>
+        </div>
+        <div class="right">
+          <div class="item"><span class="k">01</span>Candidate profile</div>
+          <div class="item"><span class="k">02</span>Master background summary</div>
+          <div class="item"><span class="k">03</span>Condensed background variants</div>
+          <div class="item"><span class="k">04</span>Story bank</div>
+          <div class="item"><span class="k">05</span>STAR story vault</div>
+          <div class="item"><span class="k">06</span>Proof points &amp; metrics</div>
+          <div class="item"><span class="k">07</span>Role-specific positioning</div>
+          <div class="item"><span class="k">08</span>Communication goals</div>
+          <div class="item"><span class="k">09</span>Known weaknesses</div>
+          <div class="item"><span class="k">10</span>Scoring rubrics</div>
+          <div class="item"><span class="k">11</span>Writing &amp; accuracy rules</div>
+          <div class="item"><span class="k">12</span>Claim boundaries</div>
+        </div>
+      </div>
+
+      <p style="margin-top: 26px;">The product is not built around isolated generators. It is built around <strong>reusable context and workflow-specific application of that context</strong>.</p>
+    </div>
+  </section>
+
+  <!-- CORE WORKFLOWS -->
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>04 · Core Workflows</div>
+      <h2>Seven connected workflows on one knowledge layer.</h2>
+    </div>
+
+    <div class="wf-grid">
+
+      <!-- 1 -->
+      <div class="wf">
+        <div class="wf-num"><span class="dot"></span>Workflow 01 · Intake</div>
+        <h4>Opportunity Intake and Normalization</h4>
+        <p>The system accepts pasted job descriptions, company notes, recruiter context, role labels, source links, or batch imports, and normalizes that input into a structured job record.</p>
+        <div class="labels">
+          <span>Company</span><span>Role title</span>
+          <span>Location</span><span>Remote / hybrid / onsite</span>
+          <span>Compensation</span><span>Seniority</span>
+          <span>Required skills</span><span>Preferred skills</span>
+          <span>Product domain</span><span>Disqualifiers</span>
+        </div>
+        <div class="wf-output">
+          <span class="lbl">Output</span>
+          Clean job record for downstream workflows, no more re-parsing raw job text on every run.
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="wf">
+        <div class="wf-num"><span class="dot"></span>Workflow 02 · Fit &amp; Decision</div>
+        <h4>Job Fit Analysis and Decisioning</h4>
+        <p>Evaluates whether an opportunity is worth pursuing. Deterministic checks (location, compensation, hard requirements) are transparent and testable; model reasoning handles nuanced fit, role summarization, and positioning.</p>
+        <ul>
+          <li>Responsibility alignment, domain relevance, AI or platform relevance</li>
+          <li>Technical skills match, requirements fit, compensation fit</li>
+          <li>Location, seniority, priority signals, reject criteria</li>
+        </ul>
+        <div class="wf-output">
+          <span class="lbl">Output</span>
+          Apply / reject / research decision, fit score, priority level, rationale, risk flags, recommended positioning angle, recommended next artifacts.
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="wf">
+        <div class="wf-num"><span class="dot"></span>Workflow 03 · Knowledge Base</div>
+        <h4>Candidate Knowledge Base</h4>
+        <p>The core product layer. Structured information about professional identity, experience, themes, technical-adjacent work, project stories, proof points, positioning, communication weaknesses, writing preferences, and claims that should not be made.</p>
+        <p>A major design choice: treat stories as <strong>reusable product assets</strong> with metadata for selection, not prose snippets.</p>
+        <div class="wf-output">
+          <span class="lbl">Role in the system</span>
+          Single source of truth consumed by every other workflow — resume, cover letter, interview question, recruiter message, thank-you note, portfolio summary.
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="wf">
+        <div class="wf-num"><span class="dot"></span>Workflow 04 · Artifacts</div>
+        <h4>Tailored Application Materials</h4>
+        <p>Generates application artifacts using the job record and candidate knowledge. The scoped direction replaces variant-based resume recommendation with tailored resume generation from a controlled source of truth.</p>
+        <ul>
+          <li>Selects relevant approved bullets</li>
+          <li>Adjusts summary for the target role</li>
+          <li>Emphasizes the right skills and projects</li>
+          <li>Avoids unsupported claims, preserves ownership boundaries</li>
+          <li>Explains what was changed and why</li>
+        </ul>
+        <div class="wf-output">
+          <span class="lbl">Artifact types</span>
+          Cover letters, recruiter follow-ups, hiring manager notes, LinkedIn connections, fit summaries, thank-you notes, tailored resume versions.
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="wf">
+        <div class="wf-num"><span class="dot"></span>Workflow 05 · Interview Prep</div>
+        <h4>Interview Preparation</h4>
+        <p>Uses the same job context and knowledge base to generate role-specific practice sessions. The user configures style, difficulty, focus area, session length, weakness to test, answer length, and input mode (typed or voice).</p>
+        <p>Questions are designed to test specificity, decision-making, tradeoffs, product judgment, technical fluency, and business framing. The system also suggests which stories from the knowledge base are most relevant to each question.</p>
+        <div class="wf-output">
+          <span class="lbl">Output</span>
+          Focused question set, grounded in both the target role and real background, with recommended stories per question.
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="wf">
+        <div class="wf-num"><span class="dot"></span>Workflow 06 · Answer Coaching</div>
+        <h4>Answer Evaluation and Coaching</h4>
+        <p>Feedback comes in two stages. <strong>Editorial markup</strong> breaks the answer into spans and labels each section:</p>
+        <ul>
+          <li>keep · cut · compress · reorder · upgrade · pivot</li>
+        </ul>
+        <p style="margin-top:10px;"><strong>Rubric scoring</strong> evaluates across relevance, structure, specificity, product judgment, technical fluency, business framing, metrics and outcomes, conciseness, and credibility. The system identifies recurring weaknesses — rambling, missing metrics, weak structure, generic language, no clear result, missing decision logic — and offers rewrite variants (core, full, detailed, more executive, more metrics-driven, more technically accessible).</p>
+        <div class="wf-output">
+          <span class="lbl">Loop</span>
+          Answer → review → score → rewrite → retry → compare improvement.
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="wf" style="grid-column: span 2;">
+        <div class="wf-num"><span class="dot"></span>Workflow 07 · History &amp; Memory</div>
+        <h4>History and Workflow Memory</h4>
+        <p>Tracks analyzed jobs, generated artifacts, interview sessions, answer evaluations, recurring weaknesses, and session summaries. The user can return to a role and see what was already analyzed, generated, practiced, and improved. The longer-term direction includes progress tracking across jobs analyzed, roles pursued, applications generated, interviews prepared, recurring answer weaknesses, strongest stories, overused stories, readiness by role type, and improvement over time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PULL QUOTE -->
+  <div class="pull">
+    The core product insight was that better AI outputs require a durable candidate knowledge layer. Instead of prompting from scratch for each job, message, resume, or interview answer, the system reuses structured profile facts, stories, proof points, positioning variants, and scoring criteria.
+  </div>
+
+  <!-- KEY DECISIONS -->
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>05 · Key Product Decisions</div>
+      <h2>Six decisions that shape how the system behaves.</h2>
+    </div>
+
+    <div class="dec-grid">
+      <div class="dec">
+        <div class="n">Decision 01</div>
+        <h4>Knowledge Base First</h4>
+        <p>The strongest design decision. The system does not start from a blank prompt each time. It reuses structured context, so positioning, stories, and metrics compound across workflows.</p>
+      </div>
+      <div class="dec">
+        <div class="n">Decision 02</div>
+        <h4>Human-in-the-Loop Control</h4>
+        <p>The system supports review, editing, overrides, story selection, retries, and rewrite choices. It assists the user without hiding the reasoning behind decisions.</p>
+      </div>
+      <div class="dec">
+        <div class="n">Decision 03</div>
+        <h4>Structured Scoring Over Generic Feedback</h4>
+        <p>The interview system uses dimension-based scoring rather than vague coaching. This makes feedback actionable, comparable over time, and amenable to trend analysis.</p>
+      </div>
+      <div class="dec">
+        <div class="n">Decision 04</div>
+        <h4>Story Selection as a Product Feature</h4>
+        <p>Answer quality depends heavily on story choice. The system helps the candidate match the right story to the right role, question, or artifact — not just produce "an" answer.</p>
+      </div>
+      <div class="dec">
+        <div class="n">Decision 05</div>
+        <h4>Deterministic Rules + Model Reasoning</h4>
+        <p>Hard checks stay deterministic: they must be transparent and testable. Model reasoning handles nuance, drafting, evaluation, story matching, and summarization where judgment is required.</p>
+      </div>
+      <div class="dec">
+        <div class="n">Decision 06</div>
+        <h4>Artifact Memory</h4>
+        <p>Generated outputs are saved, versioned, and tied to the job or session that produced them. This makes the workflow auditable and enables progress tracking across the full job search.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>06 · Stack</div>
+      <h2>Tools and technology.</h2>
+    </div>
+    <div class="lf-body" style="max-width: none; margin-left: 168px;">
+      <p>Built and prototyped with a front-end layer, back-end orchestration, knowledge storage, and model routing for cost and quality control. The scoped direction moves toward a cleaner full-stack architecture with a durable backend, shared database, model orchestration layer, structured knowledge base, artifact storage, and improved ingestion.</p>
+      <div class="stack-wrap" style="margin-top: 22px;">
+        <div class="stack-col">
+          <h5>Frontend &amp; client</h5>
+          <ul>
+            <li>React</li>
+            <li>TypeScript</li>
+            <li>Vite</li>
+            <li>Tailwind CSS</li>
+            <li>Zustand</li>
+            <li>Browser voice capture</li>
+            <li>Speech synthesis</li>
+          </ul>
+        </div>
+        <div class="stack-col">
+          <h5>Backend, data &amp; AI</h5>
+          <ul>
+            <li>Python</li>
+            <li>Flask</li>
+            <li>SQLite</li>
+            <li>Anthropic Claude API</li>
+            <li>Model routing</li>
+            <li>JSON-structured outputs</li>
+            <li>Markdown knowledge assets</li>
+            <li>CSV / XLSX batch processing</li>
+            <li>Document generation workflows</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL SUMMARY -->
+  <section class="lf-final" id="final">
+    <div class="kicker">◆ &nbsp; Final Summary</div>
+    <h3>An AI-assisted career workflow system that turns background into reusable structured knowledge, and applies it across the <em>entire</em> job search.</h3>
+    <p>The system evaluates opportunities, recommends pursuit decisions, generates tailored materials, prepares role-specific interview questions, scores answers, identifies recurring weaknesses, and improves responses through rewrite coaching.</p>
+    <p>This project demonstrates <strong>product strategy, workflow design, knowledge architecture, AI system design, prompt orchestration, structured evaluation, and practical AI-enabled product execution</strong>.</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="lf-footer">
+    <div class="sign">
+      Austin Stretz &nbsp;·&nbsp; <strong>a.stretz@outlook.com</strong> &nbsp;·&nbsp; 913-515-8304
+    </div>
+    <a href="Case Studies.html" class="back">← Back to Selected Work</a>
+  </footer>
+
+</div>
+
+</body>
+</html>
