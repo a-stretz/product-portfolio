@@ -1,0 +1,849 @@
+/* ============================================================
+   AI Product Readiness Framework — Design System
+   ============================================================ */
+
+:root {
+  /* Paper + ink */
+  --paper: #ffffff;
+  --paper-2: #f4f6f9;
+  --paper-3: #e9edf3;
+  --ink: #0d1014;
+  --ink-2: #2b3038;
+  --ink-3: #5a6270;
+  --ink-4: #8c94a2;
+  --rule: #d6dbe4;
+  --rule-2: #b9c0cc;
+
+  /* Jewel tones — primary + complementary set (brighter) */
+  --emerald: #0b7a5e;
+  --emerald-2: #10a37f;
+  --emerald-3: #34c8a0;
+  --emerald-wash: #d3f1e6;
+
+  --garnet: #a8145f;
+  --garnet-2: #d12a7c;
+  --garnet-3: #e75ba1;
+  --garnet-wash: #fbdbeb;
+
+  --sapphire: #1b4fd8;
+  --sapphire-2: #3d6ff0;
+  --sapphire-3: #6b92ff;
+  --sapphire-wash: #dbe6ff;
+
+  --amber: #c06a00;
+  --amber-2: #e88b0a;
+  --amber-3: #f5b544;
+  --amber-wash: #fde9c7;
+
+  /* Phase assignment — each framework phase gets a jewel */
+  --c-evaluate: var(--emerald);
+  --c-evaluate-2: var(--emerald-2);
+  --c-evaluate-wash: var(--emerald-wash);
+  --c-grade: var(--sapphire);
+  --c-grade-2: var(--sapphire-2);
+  --c-grade-wash: var(--sapphire-wash);
+  --c-roadmap: var(--garnet);
+  --c-roadmap-2: var(--garnet-2);
+  --c-roadmap-wash: var(--garnet-wash);
+  --c-execute: var(--amber);
+  --c-execute-2: var(--amber-2);
+  --c-execute-wash: var(--amber-wash);
+  --c-validate: var(--emerald);
+  --c-validate-2: var(--emerald-2);
+  --c-validate-wash: var(--emerald-wash);
+  --c-value: var(--garnet);
+  --c-value-2: var(--garnet-2);
+  --c-value-wash: var(--garnet-wash);
+
+  /* Primary (cycles with tweak) */
+  --primary: var(--emerald);
+  --primary-2: var(--emerald-2);
+  --primary-wash: var(--emerald-wash);
+
+  /* Type */
+  --font-serif: 'Source Serif 4', 'Source Serif Pro', 'Charter', Georgia, serif;
+  --font-sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Menlo', monospace;
+
+  /* Page */
+  --page-w: 8.5in;
+  --page-h: 11in;
+  --margin-top: 0.75in;
+  --margin-bottom: 0.75in;
+  --margin-outer: 0.55in;
+  --margin-inner: 0.55in;
+  --margin-column: 0in; /* marginalia column — disabled, content relocated */
+
+  --body-size: 10.25pt;
+  --body-lh: 1.48;
+}
+
+/* Density toggle */
+.density-dense {
+  --body-size: 9.75pt;
+  --body-lh: 1.38;
+  --margin-top: 0.75in;
+  --margin-bottom: 0.75in;
+}
+.density-airy {
+  --body-size: 10.75pt;
+  --body-lh: 1.58;
+  --margin-top: 1in;
+  --margin-bottom: 1in;
+}
+
+/* Dark mode */
+.theme-dark {
+  --paper: #14110c;
+  --paper-2: #1c1812;
+  --paper-3: #241f18;
+  --ink: #f0ead9;
+  --ink-2: #c9c1ae;
+  --ink-3: #978e7b;
+  --ink-4: #6b6253;
+  --rule: #3a342a;
+  --rule-2: #4a4336;
+  --emerald-wash: #1a2624;
+  --sapphire-wash: #171d2b;
+  --garnet-wash: #271820;
+  --amber-wash: #261e10;
+  --emerald-2: #3fb3a4;
+  --sapphire-2: #6f8ad8;
+  --garnet-2: #c76ba1;
+  --amber-2: #d4a63c;
+}
+
+/* ============================================================
+   Reset + base
+   ============================================================ */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: #e6eaef;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: var(--body-size);
+  line-height: var(--body-lh);
+  font-feature-settings: "liga", "kern", "onum";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ============================================================
+   Page chrome (screen view)
+   ============================================================ */
+.doc {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 36px 0 80px;
+}
+
+.page {
+  width: var(--page-w);
+  min-height: var(--page-h);
+  margin: 0 auto 28px;
+  background: var(--paper);
+  color: var(--ink);
+  position: relative;
+  padding: var(--margin-top) var(--margin-outer) var(--margin-bottom) var(--margin-inner);
+  box-shadow: 0 1px 2px rgba(15,23,42,0.06), 0 12px 32px rgba(15,23,42,0.12);
+  display: block;
+  overflow: hidden;
+}
+
+.page.no-margin-col {
+  display: block;
+}
+
+/* Marginalia removed by default — content relocated into body column. */
+.page .margin { display: none; }
+
+/* Running head + folio */
+.page::before {
+  content: attr(data-runhead);
+  position: absolute;
+  top: 0.4in;
+  left: var(--margin-inner);
+  right: var(--margin-outer);
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  border-bottom: 0.5pt solid var(--rule);
+  padding-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.page::after {
+  content: attr(data-folio);
+  position: absolute;
+  bottom: 0.4in;
+  left: var(--margin-inner);
+  right: var(--margin-outer);
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.12em;
+  color: var(--ink-4);
+  display: flex;
+  justify-content: space-between;
+  border-top: 0.5pt solid var(--rule);
+  padding-top: 6px;
+}
+
+.page[data-runhead=""]::before { display: none; }
+.page[data-folio=""]::after { display: none; }
+
+/* Marginalia column */
+.margin {
+  font-family: var(--font-mono);
+  font-size: 7.75pt;
+  line-height: 1.45;
+  color: var(--ink-3);
+  padding-top: 0.1in;
+  padding-right: 0.1in;
+  border-right: 0.5pt solid var(--rule);
+  margin-right: 0.4in;
+  position: sticky;
+  align-self: start;
+  top: 0;
+}
+
+.margin .m-label {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--primary);
+  font-weight: 600;
+  margin-bottom: 3px;
+  font-size: 7pt;
+}
+
+.margin .m-note { margin-bottom: 14px; }
+.margin .m-note:last-child { margin-bottom: 0; }
+.margin .m-num {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 9.5pt;
+  display: block;
+  letter-spacing: -0.01em;
+}
+
+.body-col {
+  min-width: 0;
+  padding-top: 0.1in;
+}
+
+/* ============================================================
+   Typography
+   ============================================================ */
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-serif);
+  color: var(--ink);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  text-wrap: pretty;
+  margin: 0;
+}
+
+.display {
+  font-size: 42pt;
+  line-height: 1.02;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.display-sm {
+  font-size: 28pt;
+  line-height: 1.05;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+}
+
+h2.section-title {
+  font-size: 22pt;
+  line-height: 1.08;
+  margin-bottom: 10px;
+  font-weight: 400;
+}
+
+h3.sub-title {
+  font-size: 14pt;
+  line-height: 1.2;
+  margin-top: 20px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+h4.minor {
+  font-size: 10.5pt;
+  line-height: 1.25;
+  margin-top: 14px;
+  margin-bottom: 4px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+}
+
+p { margin: 0 0 9px 0; text-wrap: pretty; hyphens: auto; }
+p + p { text-indent: 0; }
+p.lead {
+  font-size: 12pt;
+  line-height: 1.42;
+  color: var(--ink-2);
+  margin-bottom: 14px;
+  font-weight: 400;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--primary);
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.section-mark {
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.2em;
+  color: var(--ink-4);
+  text-transform: uppercase;
+}
+
+/* Drop cap */
+.dropcap::first-letter {
+  font-family: var(--font-serif);
+  float: left;
+  font-size: 3.2em;
+  line-height: 0.88;
+  padding: 3px 6px 0 0;
+  color: var(--primary);
+  font-weight: 400;
+}
+
+/* Small caps / smallcaps treatment */
+.sc {
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+/* ============================================================
+   Rules + ornaments
+   ============================================================ */
+.rule { height: 0; border: 0; border-top: 0.5pt solid var(--rule); margin: 12px 0; }
+.rule-heavy { height: 0; border: 0; border-top: 1.25pt solid var(--ink); margin: 10px 0; }
+.rule-primary { height: 0; border: 0; border-top: 1.5pt solid var(--primary); margin: 10px 0; }
+.rule-dotted { height: 0; border: 0; border-top: 0.6pt dotted var(--rule-2); margin: 10px 0; }
+
+/* ============================================================
+   Lists
+   ============================================================ */
+ul.clean, ol.clean { list-style: none; padding: 0; margin: 0 0 10px 0; }
+ul.clean li, ol.clean li {
+  position: relative;
+  padding-left: 14px;
+  margin-bottom: 3px;
+}
+ul.clean li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0.56em;
+  width: 4px; height: 4px;
+  background: var(--primary);
+  border-radius: 50%;
+}
+ol.clean {
+  counter-reset: cl;
+}
+ol.clean li {
+  counter-increment: cl;
+  padding-left: 24px;
+}
+ol.clean li::before {
+  content: counter(cl, decimal-leading-zero);
+  font-family: var(--font-mono);
+  font-size: 8pt;
+  position: absolute;
+  left: 0; top: 0.25em;
+  color: var(--primary);
+  background: transparent;
+  width: auto; height: auto;
+  border-radius: 0;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+ul.checked { list-style: none; padding: 0; margin: 0 0 10px 0; }
+ul.checked li {
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 4px;
+}
+ul.checked li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0.5em;
+  width: 8px; height: 8px;
+  border: 1pt solid var(--primary);
+  background: var(--primary-wash);
+}
+
+/* ============================================================
+   Callouts + pullquotes
+   ============================================================ */
+.callout {
+  background: var(--primary-wash);
+  border-left: 2.5pt solid var(--primary);
+  padding: 12px 14px;
+  margin: 14px 0;
+  font-family: var(--font-sans);
+  font-size: 9.5pt;
+  line-height: 1.42;
+  color: var(--ink-2);
+}
+.callout .c-label {
+  font-family: var(--font-mono);
+  font-size: 7pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--primary);
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: block;
+}
+.callout strong { color: var(--ink); font-weight: 600; }
+
+.callout.warning {
+  background: var(--amber-wash);
+  border-left-color: var(--amber-2);
+}
+.callout.warning .c-label { color: var(--amber-2); }
+
+.callout.quote {
+  background: transparent;
+  border: none;
+  border-top: 0.5pt solid var(--rule-2);
+  border-bottom: 0.5pt solid var(--rule-2);
+  padding: 18px 0 14px;
+  font-family: var(--font-serif);
+  font-size: 14pt;
+  line-height: 1.28;
+  color: var(--ink);
+  text-align: left;
+  font-style: italic;
+  letter-spacing: -0.005em;
+}
+.callout.quote .c-label {
+  font-style: normal;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+/* ============================================================
+   Tables
+   ============================================================ */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: 9pt;
+  line-height: 1.35;
+  margin: 10px 0 14px;
+}
+
+table.framework-table th,
+table.framework-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 8px 10px;
+  border-bottom: 0.5pt solid var(--rule);
+}
+
+table.framework-table thead th {
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+  font-weight: 600;
+  border-top: 1pt solid var(--ink);
+  border-bottom: 0.75pt solid var(--ink);
+  padding-top: 8px; padding-bottom: 8px;
+  background: transparent;
+}
+
+table.framework-table tbody th {
+  font-weight: 600;
+  font-size: 9pt;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+table.framework-table tbody tr:last-child td,
+table.framework-table tbody tr:last-child th {
+  border-bottom: 1pt solid var(--ink);
+}
+
+table.framework-table .num {
+  font-family: var(--font-mono);
+  font-size: 8.5pt;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Rubric table — 5 level stripes */
+.rubric {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border: 0.5pt solid var(--rule);
+  border-top: 1pt solid var(--ink);
+  border-bottom: 1pt solid var(--ink);
+  margin: 8px 0 14px;
+}
+.rubric-cell {
+  padding: 9px 10px 11px;
+  border-right: 0.5pt solid var(--rule);
+  font-family: var(--font-sans);
+  font-size: 8.5pt;
+  line-height: 1.35;
+  color: var(--ink-2);
+  position: relative;
+}
+.rubric-cell:last-child { border-right: none; }
+.rubric-cell .r-num {
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.14em;
+  color: var(--primary);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 2px;
+}
+.rubric-cell .r-name {
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 9pt;
+  display: block;
+  margin-bottom: 4px;
+  letter-spacing: -0.005em;
+}
+.rubric-cell[data-level="0"] { background: linear-gradient(var(--paper), var(--paper)); }
+.rubric-cell[data-level="1"] { background: color-mix(in oklch, var(--primary-wash) 30%, var(--paper)); }
+.rubric-cell[data-level="2"] { background: color-mix(in oklch, var(--primary-wash) 55%, var(--paper)); }
+.rubric-cell[data-level="3"] { background: color-mix(in oklch, var(--primary-wash) 80%, var(--paper)); }
+.rubric-cell[data-level="4"] { background: var(--primary-wash); }
+
+/* ============================================================
+   Grid helpers
+   ============================================================ */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+.cell {
+  border-top: 1pt solid var(--ink);
+  padding-top: 10px;
+}
+.cell .c-head {
+  font-family: var(--font-mono);
+  font-size: 7pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--primary);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.cell h4 {
+  font-family: var(--font-serif);
+  font-size: 12pt;
+  font-weight: 500;
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+.cell p {
+  font-family: var(--font-sans);
+  font-size: 9pt;
+  line-height: 1.4;
+  color: var(--ink-2);
+}
+
+/* ============================================================
+   Section divider pages
+   ============================================================ */
+.page.divider {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 1.5in;
+  padding-bottom: 1.5in;
+}
+.page.divider .d-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-family: var(--font-mono);
+  font-size: 9pt;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+.page.divider .d-main {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.page.divider .d-num {
+  font-family: var(--font-serif);
+  font-size: 120pt;
+  line-height: 0.9;
+  color: var(--primary);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+}
+.page.divider h2 {
+  font-size: 40pt;
+  line-height: 1.02;
+  font-weight: 400;
+  max-width: 7in;
+  margin-top: 18px;
+  letter-spacing: -0.025em;
+}
+.page.divider .d-blurb {
+  font-family: var(--font-serif);
+  font-size: 13pt;
+  line-height: 1.38;
+  color: var(--ink-2);
+  max-width: 5in;
+  margin-top: 28px;
+  font-style: italic;
+}
+.page.divider .d-bottom {
+  border-top: 1pt solid var(--ink);
+  padding-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 8pt;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* ============================================================
+   Toolbar (screen only)
+   ============================================================ */
+.toolbar {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  background: rgba(245, 241, 232, 0.96);
+  backdrop-filter: blur(12px);
+  border: 0.5pt solid var(--rule-2);
+  padding: 10px 14px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 8pt;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+}
+.toolbar button {
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  background: transparent;
+  border: 0.5pt solid var(--ink-4);
+  color: var(--ink);
+  padding: 5px 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.toolbar button:hover { background: var(--primary); color: var(--paper); border-color: var(--primary); }
+.toolbar button.active { background: var(--primary); color: var(--paper); border-color: var(--primary); }
+.toolbar .t-sep { width: 1px; height: 18px; background: var(--rule-2); }
+.toolbar .t-label { color: var(--ink-3); font-weight: 600; }
+
+/* ============================================================
+   Cover
+   ============================================================ */
+.cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 0.9in;
+  padding-bottom: 0.85in;
+}
+.cover .c-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1pt solid var(--ink);
+  padding-bottom: 14px;
+  font-family: var(--font-mono);
+  font-size: 8pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.cover .c-mark {
+  font-weight: 700;
+  color: var(--primary);
+}
+.cover .c-title-block {
+  margin-top: 0.6in;
+}
+.cover h1.title {
+  font-size: 56pt;
+  line-height: 0.98;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  margin: 0;
+  max-width: 6.2in;
+}
+.cover h1.title em {
+  font-style: italic;
+  color: var(--primary);
+  font-weight: 400;
+}
+.cover .c-sub {
+  font-family: var(--font-serif);
+  font-size: 16pt;
+  font-style: italic;
+  color: var(--ink-2);
+  margin-top: 26px;
+  max-width: 5.4in;
+  line-height: 1.28;
+}
+.cover .c-kicker {
+  font-family: var(--font-mono);
+  font-size: 9pt;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
+.cover .c-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  border-top: 1pt solid var(--ink);
+  padding-top: 16px;
+}
+.cover .c-meta {
+  font-family: var(--font-mono);
+  font-size: 8.5pt;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  line-height: 1.7;
+}
+.cover .c-meta .m-k { color: var(--ink-4); display: inline-block; width: 72px; }
+
+/* ============================================================
+   Stage chip
+   ============================================================ */
+.stage-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--primary);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.stage-chip .s-num {
+  background: var(--primary);
+  color: var(--paper);
+  padding: 2px 6px;
+  font-size: 7pt;
+  letter-spacing: 0.1em;
+  border-radius: 0;
+}
+
+/* ============================================================
+   Utility
+   ============================================================ */
+.muted { color: var(--ink-3); }
+.tight { margin-top: 0; margin-bottom: 4px; }
+.mono { font-family: var(--font-mono); }
+.sans { font-family: var(--font-sans); }
+.center { text-align: center; }
+
+.two-col-body {
+  column-count: 2;
+  column-gap: 22px;
+  column-rule: 0.5pt solid var(--rule);
+}
+.two-col-body p { margin-bottom: 8px; }
+
+.keep { break-inside: avoid; page-break-inside: avoid; }
+
+/* ============================================================
+   Print
+   ============================================================ */
+@media print {
+  body { background: white; }
+  .toolbar, .doc-switcher { display: none !important; }
+  .doc { padding: 0; }
+  .page {
+    margin: 0;
+    box-shadow: none;
+    page-break-after: always;
+    break-after: page;
+  }
+  .page:last-child { page-break-after: auto; }
+  @page { size: letter; margin: 0; }
+}
+
+/* ============================================================
+   Document switcher
+   ============================================================ */
+.doc-switcher {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 100;
+  background: rgba(245, 241, 232, 0.96);
+  backdrop-filter: blur(12px);
+  border: 0.5pt solid var(--rule-2);
+  padding: 8px 10px;
+  display: flex;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 8pt;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+}
+.doc-switcher button {
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  background: transparent;
+  border: 0.5pt solid transparent;
+  color: var(--ink-2);
+  padding: 5px 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.doc-switcher button.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+.doc-switcher button:hover:not(.active) { border-color: var(--ink-4); }
