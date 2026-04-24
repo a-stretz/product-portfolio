@@ -36,12 +36,12 @@
 </head>
 <body>
 <main class="fallback" id="fallback">
-  <div class="kicker">Product Portfolio · Austin Stretz</div>
-  <h1>Austin Stretz <em>Product Portfolio</em>.</h1>
-  <p>This page presents selected AI product management case studies as the primary portfolio experience. Deeper framework references are connected below.</p>
+  <div class="kicker">Austin Stretz Product Portfolio</div>
+  <h1>AI product work built for <em>accuracy, trust, and action</em>.</h1>
+  <p>Selected case studies in AI evaluation, product strategy, knowledge systems, agentic workflows, and applied decision tools. Deeper framework references are linked for hiring teams that want more detail.</p>
   <div class="links">
-    <a href="Case Studies.html"><b>Open Case Studies</b><span>Main portfolio case studies covering AI evaluation, knowledge engineering, agentic workflows, product strategy, and probability modeling.</span></a>
-    <a href="Full Report.html"><b>Open Full Report</b><span>Detailed AI Product Value Creation Framework reference.</span></a>
+    <a href="Case Studies.html"><b>Open Portfolio Case Studies</b><span>The main portfolio page covering AI evaluation, knowledge engineering, agentic workflows, product strategy, and probability modeling.</span></a>
+    <a href="Full Report.html"><b>Open AI Value Creation Framework</b><span>Detailed framework reference supporting the portfolio's AI product strategy work.</span></a>
     <a href="Condensed Outline.html"><b>Open Condensed Outline</b><span>Scannable framework summary, when included in the published repo.</span></a>
   </div>
 </main>
@@ -58,7 +58,7 @@
 
     const bar = doc.createElement('div');
     bar.className = 'portfolio-reference-bar';
-    bar.innerHTML = '<strong>Portfolio References</strong><a href="Full Report.html">AI Value Creation Framework</a><a href="Condensed Outline.html">Condensed Outline</a><a href="Case Studies.html">Standalone Case Studies</a>';
+    bar.innerHTML = '<strong>Deeper References</strong><a href="Full Report.html">AI Value Creation Framework</a><a href="Condensed Outline.html">Condensed Outline</a>';
     shell.insertBefore(bar, hero.nextSibling);
   }
 
@@ -68,7 +68,16 @@
     if(brand) brand.innerHTML = '<span class="mark">◆</span> Austin Stretz · Product Portfolio';
 
     const kicker = doc.querySelector('.cs-hero .kicker');
-    if(kicker) kicker.textContent = 'Austin Stretz Product Portfolio · Rev. 2026.04';
+    if(kicker) kicker.textContent = 'Austin Stretz Product Portfolio';
+
+    const headline = doc.querySelector('.cs-hero h1');
+    if(headline) headline.innerHTML = 'AI product work built for <em>accuracy, trust, and action</em>.';
+
+    const tagline = doc.querySelector('.cs-hero .tagline');
+    if(tagline) tagline.textContent = 'Selected case studies in AI evaluation, product strategy, knowledge systems, agentic workflows, and applied decision tools. Built around the work required to make AI systems measurable, usable, and credible.';
+
+    const disciplines = doc.querySelector('.cs-hero .disciplines');
+    if(disciplines) disciplines.innerHTML = '<span>AI Product Management</span> &nbsp;·&nbsp; <span>Evaluation Systems</span> &nbsp;·&nbsp; <span>Agentic Workflows</span><br/><span>Knowledge Engineering</span> &nbsp;·&nbsp; <span>Product Strategy</span> &nbsp;·&nbsp; <span>Applied Decision Tools</span>';
 
     const nav = doc.querySelector('.cs-topbar nav');
     if(nav){
