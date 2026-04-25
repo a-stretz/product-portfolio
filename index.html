@@ -42,7 +42,6 @@
   <div class="links">
     <a href="Case Studies.html"><b>Open Portfolio Case Studies</b><span>The main portfolio page covering AI evaluation, knowledge engineering, agentic workflows, product strategy, and probability modeling.</span></a>
     <a href="Full Report.html"><b>Open AI Value Creation Framework</b><span>Detailed framework reference supporting the portfolio's AI product strategy work.</span></a>
-    <a href="Condensed Outline.html"><b>Open Condensed Outline</b><span>Scannable framework summary, when included in the published repo.</span></a>
   </div>
 </main>
 
@@ -58,7 +57,7 @@
 
     const bar = doc.createElement('div');
     bar.className = 'portfolio-reference-bar';
-    bar.innerHTML = '<strong>Deeper References</strong><a href="Full Report.html">AI Value Creation Framework</a><a href="Condensed Outline.html">Condensed Outline</a>';
+    bar.innerHTML = '<strong>Deeper References</strong><a href="Full Report.html">AI Value Creation Framework</a>';
     shell.insertBefore(bar, hero.nextSibling);
   }
 
@@ -86,12 +85,7 @@
         oldIndex.textContent = 'Framework';
         oldIndex.href = 'Full Report.html';
       }
-      if(!Array.from(nav.querySelectorAll('a')).some(a => a.textContent.trim().toLowerCase() === 'outline')){
-        const outline = doc.createElement('a');
-        outline.href = 'Condensed Outline.html';
-        outline.textContent = 'Outline';
-        nav.appendChild(outline);
-      }
+
     }
 
     const thumbnailText = doc.querySelector('template#__bundler_thumbnail');
