@@ -4,6 +4,14 @@
 <meta charset="utf-8"/>
 <title>Austin Stretz — Selected Work</title>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="AI Product Manager case studies in model evaluation, knowledge codification, and applied decision systems — Austin Stretz."/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,8 92,50 50,92 8,50' fill='%230b7a5e'/%3E%3C/svg%3E"/>
+<meta property="og:type" content="profile"/>
+<meta property="og:title" content="Austin Stretz — Selected Work"/>
+<meta property="og:description" content="AI Product Manager case studies in model evaluation, knowledge codification, and applied decision systems."/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Austin Stretz — Selected Work"/>
+<meta name="twitter:description" content="AI Product Manager case studies in model evaluation, knowledge codification, and applied decision systems."/>
 <template id="__bundler_thumbnail" data-bg-color="#f5efe4">
   <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
     <rect width="1200" height="800" fill="#f5efe4"/>
@@ -64,7 +72,7 @@ body.cs {
   z-index: 50;
 }
 .cs-topbar .brand { color: var(--ink); font-weight: 600; }
-.cs-topbar .brand .mark { color: var(--emerald-2); margin-right: 6px; }
+.cs-topbar .brand .mark { color: var(--emerald); margin-right: 6px; }
 .cs-topbar nav a {
   color: var(--ink-3);
   text-decoration: none;
@@ -72,7 +80,12 @@ body.cs {
   transition: color .15s;
 }
 .cs-topbar nav a:hover { color: var(--ink); }
-.cs-topbar nav a.active { color: var(--emerald-2); }
+.cs-topbar nav a.active { color: var(--emerald); }
+@media (max-width: 640px) {
+  .cs-topbar { flex-wrap: wrap; row-gap: 10px; padding: 16px 0 14px; }
+  .cs-topbar nav { display: flex; flex-wrap: wrap; margin-left: -8px; }
+  .cs-topbar nav a { margin-left: 0; padding: 7px 8px; min-height: 24px; display: inline-flex; align-items: center; }
+}
 
 /* Hero */
 .cs-hero {
@@ -90,7 +103,7 @@ body.cs {
   font-size: 9pt;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--emerald-2);
+  color: var(--emerald);
   margin-bottom: 22px;
   display: flex; align-items: center; gap: 12px;
 }
@@ -108,7 +121,7 @@ body.cs {
 }
 .cs-hero h1 em {
   font-style: italic;
-  color: var(--emerald-2);
+  color: var(--emerald);
   font-weight: 400;
 }
 .cs-hero .tagline {
@@ -174,7 +187,7 @@ body.cs {
 }
 .cs-contact dd { margin: 0; color: var(--ink); }
 .cs-contact dd a { color: inherit; text-decoration: none; border-bottom: 0.5pt solid var(--rule-2); }
-.cs-contact dd a:hover { color: var(--emerald-2); border-bottom-color: var(--emerald-2); }
+.cs-contact dd a:hover { color: var(--emerald); border-bottom-color: var(--emerald); }
 
 .cs-contact .name {
   font-family: var(--font-serif);
@@ -231,7 +244,7 @@ body.cs {
   letter-spacing: -0.003em;
   max-width: 740px;
 }
-.cs-about p em { color: var(--emerald-2); font-style: italic; }
+.cs-about p em { color: var(--emerald); font-style: italic; }
 
 /* Index of cases */
 .cs-index {
@@ -281,7 +294,7 @@ body.cs {
   margin: 4px 0 0;
   letter-spacing: -0.005em;
 }
-.cs-index a:hover .t { color: var(--emerald-2); }
+.cs-index a:hover .t { color: var(--emerald); }
 .cs-index .tags {
   font-family: var(--font-mono);
   font-size: 7pt;
@@ -460,6 +473,10 @@ body.cs {
   color: var(--ink-2);
 }
 .cs-context li::before { content: '— '; color: var(--ink-3); }
+@media (max-width: 600px) {
+  .cs-context { grid-template-columns: 1fr; gap: 6px; }
+  .cs-context ul { grid-template-columns: 1fr; }
+}
 
 /* Case color variants */
 .cs-c1 { --primary: var(--emerald); --primary-2: var(--emerald-2); --primary-wash: var(--emerald-wash); }
@@ -476,7 +493,7 @@ body.cs {
 .cs-c1 .cs-head h2 em { color: var(--emerald-2); }
 .cs-c2 .cs-head h2 em { color: var(--sapphire-2); }
 .cs-c3 .cs-head h2 em { color: var(--garnet-2); }
-.cs-c4 .cs-head h2 em { color: var(--amber-2); }
+.cs-c4 .cs-head h2 em { color: var(--amber); }
 .cs-c5 .cs-head h2 em { color: var(--emerald-2); }
 
 /* Skills section */
@@ -550,7 +567,7 @@ body.cs {
 .cs-footer .meta div { margin-bottom: 4px; }
 .cs-footer .meta b { color: var(--ink); font-weight: 600; }
 .cs-footer a { color: inherit; text-decoration: none; border-bottom: 0.5pt solid var(--rule-2); }
-.cs-footer a:hover { color: var(--emerald-2); border-bottom-color: var(--emerald-2); }
+.cs-footer a:hover { color: var(--emerald); border-bottom-color: var(--emerald); }
 
 /* Print */
 @media print {
@@ -582,7 +599,7 @@ body.cs {
   <!-- Hero -->
   <section class="cs-hero">
     <div>
-      <div class="kicker">Product Portfolio · Rev. 2026.04</div>
+      <div class="kicker">Product Portfolio · Rev. 2026.08</div>
       <h1>Structure for <em style="color: rgb(215, 33, 33)">AI-driven</em> products.</h1>
       <p class="tagline">Turning undefined or unverified capabilities into systems that are measurable, trustworthy, and ready to scale, where ambiguity, complexity, and unreliable information would otherwise stall progress.</p>
       <div class="disciplines">
@@ -598,6 +615,7 @@ body.cs {
       <dl>
         <dt>Email</dt><dd><a href="mailto:a.stretz@outlook.com">a.stretz@outlook.com</a></dd>
         <dt>Phone</dt><dd><a href="tel:+19135158304">913&nbsp;·&nbsp;515&nbsp;·&nbsp;8304</a></dd>
+        <dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/austin-stretz" target="_blank" rel="noopener">in/austin-stretz</a></dd>
         <dt>Based</dt><dd>Kansas City, MO</dd>
         <dt>Availability</dt><dd>Open to engagements</dd>
       </dl>
@@ -661,10 +679,11 @@ body.cs {
           <span>LLM-as-Judge</span>
           <span>Ground-Truth Engineering</span>
         </div>
+        <div style="font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-top: 10px;">Evidence: Production system · NeoSavant.ai</div>
       </div>
     </header>
 
-    <p class="cs-summary"><strong>Built the platform's first evaluation system</strong> for a computer vision product generating biomechanical analysis from pose estimation data. The core value proposition was precision, but no infrastructure existed to verify whether that claim was true. Established a structured evaluation framework combining statistical validation, manual annotation, and LLM-as-a-Judge to determine output reliability and system limitations.</p>
+    <p class="cs-summary"><strong>Built the platform's first evaluation system</strong> for a computer vision product generating biomechanical analysis from pose estimation data. The core value proposition was precision, but no infrastructure existed to verify whether that claim was true. Established a structured evaluation framework combining statistical validation, manual annotation, and LLM-as-a-Judge to determine output reliability and system limitations. &nbsp;<a href="case-study-01-biomechanics-qa.html" style="font-family: var(--font-mono); font-size: 9pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--emerald); border-bottom: 0.5pt solid var(--emerald); text-decoration: none;">→ Read the full case study</a></p>
 
     <div class="cs-context">
       <div class="label">Environment<br/>& Systems</div>
@@ -735,6 +754,7 @@ body.cs {
           <span>Interpretability</span>
           <span>Modular System Design</span>
         </div>
+        <div style="font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-top: 10px;">Evidence: Production system · NeoSavant.ai</div>
       </div>
     </header>
 
@@ -806,6 +826,7 @@ body.cs {
           <span>Shared Knowledge Base</span>
           <span>End-to-End Build</span>
         </div>
+        <div style="font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-top: 10px;">Evidence: Independent build · Self-directed prototype</div>
       </div>
     </header>
 
@@ -848,12 +869,12 @@ body.cs {
       </div>
       <div class="col">
         <div class="colhead"><span class="dot"></span>04 · Impact</div>
-        <h4>Authentic output at higher throughput.</h4>
+        <h4>Built for reuse, not yet externally validated.</h4>
         <ul>
-          <li>Reduced time required to evaluate and prioritize opportunities while increasing the number of quality applications submitted</li>
-          <li>Improved alignment between candidate experience and role requirements across submissions</li>
-          <li>Increased interview request rates and preparation quality through structured coaching workflows</li>
-          <li>Introduced a knowledge-driven, authentic approach to AI-assisted job search in a market that badly needs it</li>
+          <li>Replaced repeated, from-scratch application work with one shared knowledge base reused across every opportunity</li>
+          <li>Designed to keep candidate experience and role requirements aligned across every submission, rather than optimizing for ATS keyword matching</li>
+          <li>Currently a single-candidate prototype built and used for the author's own job search; external validation across other candidates is the next step</li>
+          <li>Introduces a knowledge-reuse approach to AI-assisted job search, prioritizing grounded, genuine candidate experience over generic output</li>
         </ul>
       </div>
     </div>
@@ -869,12 +890,12 @@ body.cs {
           <span class="accent">Diagnostic Framework</span>
           <span>B2B SaaS Portfolios</span>
           <span>Gating Constraints</span>
-          <span>Ready-to-Deploy Playbook</span>
         </div>
+        <div style="font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-top: 10px;">Evidence: Framework · Self-directed, not yet client-deployed</div>
       </div>
     </header>
 
-    <p class="cs-summary">Developed a structured <strong>diagnostic framework for evaluating AI readiness, prioritizing opportunities, and guiding execution</strong> across B2B SaaS portfolios, built as a consulting-ready playbook for organizations navigating AI adoption decisions. &nbsp;<a href="Full Report.html" style="font-family: var(--font-mono); font-size: 9pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber-2); border-bottom: 0.5pt solid var(--amber-2); text-decoration: none;">→ Read the full report</a></p>
+    <p class="cs-summary">Developed a structured <strong>diagnostic framework for evaluating AI readiness, prioritizing opportunities, and guiding execution</strong> across B2B SaaS portfolios, built independently as a self-directed framework for organizations navigating AI adoption decisions. &nbsp;<a href="Full Report.html" style="font-family: var(--font-mono); font-size: 9pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber); border-bottom: 0.5pt solid var(--amber); text-decoration: none;">→ Read the full report</a></p>
 
     <div class="cs-context">
       <div class="label">Environment<br/>& Systems</div>
@@ -913,11 +934,11 @@ body.cs {
       </div>
       <div class="col">
         <div class="colhead"><span class="dot"></span>04 · Impact</div>
-        <h4>A portable playbook.</h4>
+        <h4>A structured framework, ready to pressure-test.</h4>
         <ul>
-          <li>Produced a complete, ready-to-deploy playbook for evaluating AI adoption across B2B SaaS portfolios</li>
+          <li>Produced a complete diagnostic framework for evaluating AI adoption across B2B SaaS portfolios, built independently and not yet applied to a live client engagement</li>
           <li>Provides a structured method for determining when AI investment is warranted, where simpler solutions are sufficient, and what sequence of work will produce the highest return</li>
-          <li>Demonstrates comprehensive analytical capability across the full spectrum of AI product strategy, from technical feasibility through business impact prioritization</li>
+          <li>Next step: validate the scoring and gating logic against a real portfolio or company, and publish the result</li>
         </ul>
       </div>
     </div>
@@ -935,10 +956,11 @@ body.cs {
           <span>Solo Delivery</span>
           <span>End-to-End System</span>
         </div>
+        <div style="font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-top: 10px;">Evidence: Independent build · Solo project</div>
       </div>
     </header>
 
-    <p class="cs-summary">Designed and built a <strong>real-time probability engine to model all possible tournament outcomes</strong> and determine participant win likelihood, delivered as a fully functional analytical tool during a live event window. &nbsp;<a href="Probability Engine Case Study.html" style="font-family: var(--font-mono); font-size: 9pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--emerald-2); border-bottom: 0.5pt solid var(--emerald-2); text-decoration: none;">→ Read the full case study</a></p>
+    <p class="cs-summary">Designed and built a <strong>real-time probability engine to model all possible tournament outcomes</strong> and determine participant win likelihood, delivered as a fully functional analytical tool during a live event window. &nbsp;<a href="Probability Engine Case Study.html" style="font-family: var(--font-mono); font-size: 9pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--emerald); border-bottom: 0.5pt solid var(--emerald); text-decoration: none;">→ Read the full case study</a></p>
 
     <div class="cs-context">
       <div class="label">Environment<br/>& Systems</div>
