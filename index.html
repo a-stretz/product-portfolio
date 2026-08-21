@@ -251,7 +251,7 @@ body.cs {
   padding: 40px 0 32px;
   border-bottom: 1pt solid var(--ink);
 }
-.cs-index .label {
+.cs-index > .label {
   font-family: var(--font-mono);
   font-size: 8pt;
   letter-spacing: 0.2em;
@@ -263,45 +263,92 @@ body.cs {
   list-style: none;
   padding: 0;
   margin: 0;
+  border-top: 1pt solid var(--ink);
+}
+.cs-index li { border-bottom: 0.5pt solid var(--rule); }
+.cs-index .idx-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 0;
-  border-top: 0.5pt solid var(--rule);
-}
-.cs-index li {
-  border-bottom: 0.5pt solid var(--rule);
-  border-right: 0.5pt solid var(--rule);
-  padding: 16px 18px 16px 0;
-}
-.cs-index li:last-child { border-right: none; }
-.cs-index a {
+  grid-template-columns: 68px 1fr 24px;
+  gap: 28px;
+  align-items: start;
+  padding: 30px 6px;
   text-decoration: none;
   color: inherit;
-  display: block;
+  transition: padding-left 0.18s ease, background-color 0.18s ease;
 }
-.cs-index .n {
-  font-family: var(--font-mono);
-  font-size: 8pt;
-  letter-spacing: 0.2em;
-  color: var(--ink-3);
-  text-transform: uppercase;
-}
-.cs-index .t {
+.cs-index .idx-row:hover { padding-left: 18px; background: var(--primary-wash); }
+.cs-index .idx-num {
   font-family: var(--font-serif);
-  font-size: 13pt;
+  font-size: 34pt;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--primary);
+  letter-spacing: -0.02em;
+}
+.cs-index .idx-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  margin-bottom: 10px;
+}
+.cs-index .idx-evidence {
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary-2);
+  border: 0.5pt solid var(--primary-2);
+  padding: 2px 7px;
+}
+.cs-index .idx-stat {
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.cs-index .idx-title {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 16pt;
   line-height: 1.25;
   color: var(--ink);
-  margin: 4px 0 0;
+  margin: 0 0 8px;
   letter-spacing: -0.005em;
+  transition: color 0.15s;
 }
-.cs-index a:hover .t { color: var(--emerald); }
-.cs-index .tags {
+.cs-index .idx-title em { font-style: italic; color: var(--primary); font-weight: 400; }
+.cs-index .idx-row:hover .idx-title { color: var(--primary); }
+.cs-index .idx-hook {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 11.5pt;
+  line-height: 1.4;
+  color: var(--ink-2);
+  margin: 0 0 12px;
+  max-width: 620px;
+}
+.cs-index .idx-tags {
   font-family: var(--font-mono);
   font-size: 7pt;
   letter-spacing: 0.14em;
   color: var(--ink-3);
   text-transform: uppercase;
-  margin-top: 8px;
+}
+.cs-index .idx-arrow {
+  font-family: var(--font-serif);
+  font-size: 18pt;
+  color: var(--rule-2);
+  justify-self: end;
+  transition: color 0.18s ease, transform 0.18s ease;
+}
+.cs-index .idx-row:hover .idx-arrow { color: var(--primary); transform: translateX(4px); }
+@media (max-width: 640px) {
+  .cs-index .idx-row { grid-template-columns: 40px 1fr; gap: 16px; padding: 22px 4px; }
+  .cs-index .idx-arrow { display: none; }
+  .cs-index .idx-num { font-size: 22pt; }
+  .cs-index .idx-title { font-size: 14pt; }
 }
 
 /* Case study block */
@@ -637,30 +684,66 @@ body.cs {
   <section class="cs-index">
     <div class="label">◆ &nbsp;Selected Work · Five Cases</div>
     <ol>
-      <li><a href="#c1">
-        <div class="n">Case 01 · Emerald</div>
-        <p class="t">AI Model Performance QA Evaluation System for a Computer Vision Platform</p>
-        <div class="tags">Evaluation · Computer Vision · LLM-as-Judge</div>
+      <li class="cs-c1"><a href="#c1" class="idx-row">
+        <div class="idx-num">01</div>
+        <div>
+          <div class="idx-meta">
+            <span class="idx-evidence">Production System · NeoSavant.ai</span>
+            <span class="idx-stat">600+ events · 24,000 frames reviewed</span>
+          </div>
+          <h4 class="idx-title">AI Model Performance <em>QA Evaluation System</em> for a Computer Vision Platform</h4>
+          <p class="idx-hook">The product's core claim was precision. Nothing proved it was true until this existed.</p>
+          <div class="idx-tags">Evaluation · Computer Vision · LLM-as-Judge</div>
+        </div>
+        <div class="idx-arrow">→</div>
       </a></li>
-      <li><a href="#c2">
-        <div class="n">Case 02 · Sapphire</div>
-        <p class="t">Scalable Expert Knowledge Framework for Motion Evaluation</p>
-        <div class="tags">Knowledge Engineering · Heuristics · Scalability</div>
+      <li class="cs-c2"><a href="#c2" class="idx-row">
+        <div class="idx-num">02</div>
+        <div>
+          <div class="idx-meta">
+            <span class="idx-evidence">Production System · NeoSavant.ai</span>
+          </div>
+          <h4 class="idx-title">Scalable <em>Expert Knowledge Framework</em> for Motion Evaluation</h4>
+          <p class="idx-hook">One expert's judgment, hardcoded and un-auditable, rebuilt as logic anyone could inspect.</p>
+          <div class="idx-tags">Knowledge Engineering · Heuristics · Scalability</div>
+        </div>
+        <div class="idx-arrow">→</div>
       </a></li>
-      <li><a href="#c3">
-        <div class="n">Case 03 · Garnet</div>
-        <p class="t">AI Career Workflow System to enable Job Seekers to put their true best foot forward</p>
-        <div class="tags">Agentic Workflow · Hybrid Reasoning · Knowledge Base</div>
+      <li class="cs-c3"><a href="#c3" class="idx-row">
+        <div class="idx-num">03</div>
+        <div>
+          <div class="idx-meta">
+            <span class="idx-evidence">Independent Build · Prototype</span>
+          </div>
+          <h4 class="idx-title">AI Career <em>Workflow System</em> for Job Seekers</h4>
+          <p class="idx-hook">Built in response to a hiring market flooded with generic, AI-written noise on both sides.</p>
+          <div class="idx-tags">Agentic Workflow · Hybrid Reasoning · Knowledge Base</div>
+        </div>
+        <div class="idx-arrow">→</div>
       </a></li>
-      <li><a href="#c4">
-        <div class="n">Case 04 · Amber</div>
-        <p class="t">Framework for Evaluating Readiness of AI-Product Development for Value Creation</p>
-        <div class="tags">Diagnostic Framework · B2B SaaS · Strategy</div>
+      <li class="cs-c4"><a href="#c4" class="idx-row">
+        <div class="idx-num">04</div>
+        <div>
+          <div class="idx-meta">
+            <span class="idx-evidence">Framework · Prototype</span>
+          </div>
+          <h4 class="idx-title">Framework for Evaluating <em>AI-Product Readiness</em> for Value Creation</h4>
+          <p class="idx-hook">A structured way to tell real AI opportunity from noise, before committing budget to it.</p>
+          <div class="idx-tags">Diagnostic Framework · B2B SaaS · Strategy</div>
+        </div>
+        <div class="idx-arrow">→</div>
       </a></li>
-      <li><a href="#c5">
-        <div class="n">Case 05 · Emerald-2</div>
-        <p class="t">Interactive Probability Engine for Tournament Outcome Modeling</p>
-        <div class="tags">Probability · Real-time · Solo Delivery</div>
+      <li class="cs-c5"><a href="#c5" class="idx-row">
+        <div class="idx-num">05</div>
+        <div>
+          <div class="idx-meta">
+            <span class="idx-evidence">Independent Build · Solo Project</span>
+          </div>
+          <h4 class="idx-title">Interactive <em>Probability Engine</em> for Tournament Outcome Modeling</h4>
+          <p class="idx-hook">Built and shipped a complete analytical tool during the live event it was built for.</p>
+          <div class="idx-tags">Probability · Real-time · Solo Delivery</div>
+        </div>
+        <div class="idx-arrow">→</div>
       </a></li>
     </ol>
   </section>
