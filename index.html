@@ -585,6 +585,58 @@ body.cs {
   color: var(--ink);
   margin: 0;
 }
+.cs-skills .subhead {
+  font-family: var(--font-mono);
+  font-size: 8pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 0 0 14px;
+}
+.cs-builds-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1pt solid var(--ink);
+  border-left: 0.5pt solid var(--rule);
+  margin-bottom: 36px;
+}
+@media (max-width: 900px){ .cs-builds-grid { grid-template-columns: 1fr; } }
+.cs-builds-grid .cell {
+  border-right: 0.5pt solid var(--rule);
+  border-bottom: 0.5pt solid var(--rule);
+  padding: 20px 20px 24px;
+}
+.cs-builds-grid .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 7pt;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--emerald-2);
+  margin-bottom: 8px;
+}
+.cs-builds-grid h5 {
+  font-family: var(--font-serif);
+  font-size: 12.5pt;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 0 0 8px;
+  line-height: 1.25;
+}
+.cs-builds-grid p {
+  font-family: var(--font-sans);
+  font-size: 9.5pt;
+  line-height: 1.5;
+  color: var(--ink-2);
+  margin: 0 0 10px;
+}
+.cs-builds-grid .tags {
+  font-family: var(--font-mono);
+  font-size: 6.8pt;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
 
 /* Footer */
 .cs-footer {
@@ -1093,8 +1145,32 @@ body.cs {
 
   <!-- Skills -->
   <section class="cs-skills" id="skills">
-    <div class="label" style="font-family:var(--font-mono); font-size:8pt; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink-3); margin-bottom: 10px;">◆ &nbsp; Skills & Tools</div>
-    <h3 class="title">Across <em>product</em>, AI, development, and domain.</h3>
+    <div class="label" style="font-family:var(--font-mono); font-size:8pt; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink-3); margin-bottom: 10px;">◆ &nbsp; Capabilities & Applied Work</div>
+    <h3 class="title">Smaller builds, and what's <em>underneath all five</em>.</h3>
+
+    <div class="subhead">Smaller-Scale Builds</div>
+    <div class="cs-builds-grid">
+      <div class="cell">
+        <div class="eyebrow">NeoSavant.ai</div>
+        <h5>AI-Assisted Product Operations Workflow</h5>
+        <p>Built AI-assisted product operations workflows from meeting transcripts, Slack inputs, and project-specific agents, cutting acceptance-criteria iteration time by up to 10x.</p>
+        <div class="tags">Workflow Automation · Agent Systems · Product Operations</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">1872 Consulting</div>
+        <h5>GTM & Outbound Automation</h5>
+        <p>Selected as an Early Adopter Program contributor for Agency Leads and Clay, implementing automation-driven GTM workflows that improved outbound efficiency by 58%.</p>
+        <div class="tags">Workflow Automation · GTM · Revenue Operations</div>
+      </div>
+      <div class="cell">
+        <div class="eyebrow">1872 Consulting</div>
+        <h5>Internal CRM & Lifecycle Automation</h5>
+        <p>Designed and implemented the firm's internal CRM and business development platform: outbound workflows, lifecycle states, KPIs, and automations still in use today.</p>
+        <div class="tags">Workflow Automation · CRM Systems · Business Operations</div>
+      </div>
+    </div>
+
+    <div class="subhead">Skills, Tools & Domain</div>
     <div class="cs-skills-grid">
       <div class="cell">
         <h5>Product & Strategy</h5>
@@ -1110,7 +1186,7 @@ body.cs {
       </div>
       <div class="cell">
         <h5>Domain</h5>
-        <p>B2B SaaS · computer vision · biomechanics · hiring and talent systems.</p>
+        <p>B2B SaaS · computer vision · biomechanics · hiring and talent systems · workflow automation.</p>
       </div>
     </div>
   </section>
@@ -1125,7 +1201,7 @@ body.cs {
       </div>
     </div>
     <div class="meta" style="text-align:right;">
-      <div>April 2026</div>
+      <div>August 2026</div>
       <div><a href="#">↑ Back to top</a></div>
     </div>
   </footer>
