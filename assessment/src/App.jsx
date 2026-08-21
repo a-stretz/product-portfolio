@@ -85,7 +85,7 @@ export default function App() {
       <div className="sample-banner">
         <span>Illustrative example, not a real client engagement</span>
         <span style={{ marginLeft: 'auto' }}>
-          <a href="../../Case%20Studies.html#c4" style={{ color: 'inherit', textDecoration: 'underline' }}>← Back to portfolio</a>
+          <a href="../../case-studies.html#c4" style={{ color: 'inherit', textDecoration: 'underline' }}>← Back to portfolio</a>
         </span>
       </div>
       <header className="app-header">
