@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Austin Stretz — AI-Assisted Product Operations</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="Case study draft: project-specific agents that turn meeting transcripts and Slack threads into a first-pass draft of acceptance criteria, cutting iteration time up to 10x."/>
+<template id="__bundler_thumbnail" data-bg-color="#f7f3ea">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#f7f3ea"/>
+    <g transform="translate(120,120)">
+      <text x="0" y="0" font-family="JetBrains Mono, monospace" font-size="28" letter-spacing="6" fill="#0d7086">CASE STUDY &middot; 07 (DRAFT)</text>
+      <text x="0" y="180" font-family="Georgia, serif" font-size="110" fill="#15120d">Meetings to</text>
+      <text x="0" y="320" font-family="Georgia, serif" font-size="110" font-style="italic" fill="#0d7086">Criteria.</text>
+      <rect x="0" y="400" width="960" height="2" fill="#15120d"/>
+      <g transform="translate(0,470)" font-family="Inter, sans-serif" font-size="30" fill="#2b3038">
+        <text y="0">Project-specific agents draft acceptance criteria</text>
+        <text y="50">from transcripts and Slack. Iteration time: 10x faster.</text>
+      </g>
+    </g>
+  </svg>
+</template>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css?v=2"/>
+<style>
+/* Long-form case study — Case 07 · Teal (DRAFT, not yet linked from Selected Work) */
+:root {
+  --primary: var(--teal);
+  --primary-2: var(--teal-2);
+  --primary-3: var(--teal-3);
+  --primary-wash: var(--teal-wash);
+}
+body.cs { background: var(--paper); color: var(--ink); }
+.lf-shell { max-width: 1180px; margin: 0 auto; padding: 0 60px; }
+@media (max-width: 900px){ .lf-shell { padding: 0 28px; } }
+
+.draft-flag { background: var(--primary-wash); color: var(--primary); font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; padding: 4px 10px; border: 0.5pt solid var(--primary-2); }
+
+.lf-topbar { display: flex; justify-content: space-between; align-items: center; padding: 22px 0 18px; border-bottom: 0.5pt solid var(--rule); font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3); }
+.lf-topbar a { color: var(--ink-3); text-decoration: none; border-bottom: 0.5pt solid transparent; transition: color .15s; }
+.lf-topbar a:hover { color: var(--primary-2); border-bottom-color: var(--primary-2); }
+.lf-topbar .home { display: inline-flex; align-items: center; gap: 8px; }
+.lf-topbar .home::before { content: ''; width: 14px; height: 1.2pt; background: var(--primary-2); display: inline-block; }
+.lf-topbar .right { display: flex; gap: 18px; align-items: center; }
+
+.lf-hero { display: grid; grid-template-columns: minmax(0,1.05fr) minmax(0,0.55fr); gap: 64px; padding: 80px 0 56px; border-bottom: 1pt solid var(--ink); }
+@media (max-width: 960px){ .lf-hero { grid-template-columns: 1fr; gap: 32px; padding: 48px 0 36px; } }
+.lf-hero .kicker { font-family: var(--font-mono); font-size: 9pt; letter-spacing: 0.22em; text-transform: uppercase; color: var(--primary-2); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+.lf-hero .kicker::before { content: ''; width: 20px; height: 1.5pt; background: var(--primary-2); display: inline-block; }
+.lf-hero h1 { font-family: var(--font-serif); font-size: 56pt; line-height: 1.0; letter-spacing: -0.03em; font-weight: 400; margin: 0 0 18px; }
+.lf-hero h1 em { font-style: italic; color: var(--primary-2); font-weight: 400; }
+.lf-hero .tagline { font-family: var(--font-serif); font-size: 16pt; font-style: italic; color: var(--ink-2); line-height: 1.38; max-width: 700px; margin: 0 0 28px; }
+.lf-hero .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.lf-hero .tags span { font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; padding: 5px 10px; border: 0.5pt solid var(--ink-4); color: var(--ink-2); }
+.lf-hero .tags span.accent { border-color: var(--primary-2); color: var(--primary-2); background: var(--primary-wash); }
+.lf-hero aside { font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-top: 1pt solid var(--ink); padding-top: 18px; align-self: end; }
+.lf-hero aside dl { margin: 0; display: grid; grid-template-columns: 1fr 2fr; gap: 10px 16px; }
+.lf-hero aside dt { color: var(--ink-4); font-weight: 600; }
+.lf-hero aside dd { margin: 0; color: var(--ink); font-weight: 500; letter-spacing: 0.08em; }
+
+/* Before/after band, replaces a forced multi-stat strip — there is one real number here */
+.ba-strip { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1pt solid var(--ink); border-left: 0.5pt solid var(--rule); }
+@media (max-width: 700px){ .ba-strip { grid-template-columns: 1fr; } }
+.ba-strip div { padding: 24px 24px; border-right: 0.5pt solid var(--rule); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-3); font-size: 7.5pt; }
+.ba-strip b { display: block; font-family: var(--font-serif); font-size: 22pt; line-height: 1.15; color: var(--primary); font-weight: 400; letter-spacing: -0.01em; margin-bottom: 6px; text-transform: none; }
+.ba-strip .arrow { display: flex; align-items: center; justify-content: center; border-right: 0.5pt solid var(--rule); font-family: var(--font-serif); font-size: 20pt; color: var(--ink-4); font-style: italic; }
+
+.lf-overview { padding: 56px 0 48px; border-bottom: 0.5pt solid var(--rule); display: grid; grid-template-columns: 0.38fr 1fr; gap: 56px; }
+@media (max-width: 900px){ .lf-overview { grid-template-columns: 1fr; gap: 14px; padding: 36px 0 32px; } }
+.lf-overview .side { font-family: var(--font-mono); font-size: 8.5pt; letter-spacing: 0.18em; text-transform: uppercase; color: var(--primary-2); font-weight: 600; padding-top: 4px; }
+.lf-overview p { font-family: var(--font-serif); font-size: 14pt; line-height: 1.45; color: var(--ink); margin: 0 0 14px; max-width: 700px; }
+.lf-overview p:last-child { margin-bottom: 0; }
+.lf-overview strong { color: var(--primary); font-weight: 600; }
+
+.lf-section { padding: 56px 0 40px; border-bottom: 0.5pt solid var(--rule); }
+.lf-section.last { border-bottom: none; }
+.lf-section > .head { display: grid; grid-template-columns: 140px 1fr; gap: 28px; margin-bottom: 28px; align-items: baseline; }
+@media (max-width: 900px){ .lf-section > .head { grid-template-columns: 1fr; gap: 6px; } }
+.lf-section > .head .n { font-family: var(--font-mono); font-size: 8.5pt; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-3); }
+.lf-section > .head .n .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--primary); margin-right: 10px; vertical-align: 2px; }
+.lf-section > .head h2 { font-family: var(--font-serif); font-size: 30pt; line-height: 1.05; letter-spacing: -0.02em; font-weight: 400; margin: 0; max-width: 820px; }
+.lf-section > .head h2 em { font-style: italic; color: var(--primary-2); font-weight: 400; }
+
+.lf-body { max-width: 820px; margin-left: 168px; font-family: var(--font-serif); font-size: 11.5pt; line-height: 1.58; color: var(--ink-2); }
+@media (max-width: 900px){ .lf-body { margin-left: 0; } }
+.lf-body p { margin: 0 0 14px; }
+.lf-body p:last-child { margin-bottom: 0; }
+.lf-body strong { color: var(--ink); font-weight: 600; }
+.lf-body ul { font-family: var(--font-sans); font-size: 10pt; line-height: 1.55; color: var(--ink-2); margin: 0 0 14px; padding-left: 18px; }
+.lf-body li { margin-bottom: 6px; }
+
+/* Three-stage pipeline */
+.app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1pt solid var(--ink); border-left: 0.5pt solid var(--rule); }
+@media (max-width: 900px){ .app-grid { grid-template-columns: 1fr; } }
+.app { padding: 26px 24px 28px; border-right: 0.5pt solid var(--rule); border-bottom: 0.5pt solid var(--rule); min-width: 0; }
+.app .app-num { font-family: var(--font-mono); font-size: 7.5pt; letter-spacing: 0.18em; text-transform: uppercase; color: var(--primary-2); font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.app .app-num .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); display: inline-block; }
+.app h4 { font-family: var(--font-serif); font-size: 14.5pt; font-weight: 500; line-height: 1.18; letter-spacing: -0.01em; margin: 0 0 10px; color: var(--ink); }
+.app p { font-family: var(--font-sans); font-size: 9.3pt; line-height: 1.52; color: var(--ink-2); margin: 0; }
+
+.pull { margin: 32px 0; padding: 36px 0; border-top: 1pt solid var(--ink); border-bottom: 1pt solid var(--ink); font-family: var(--font-serif); font-size: 19pt; line-height: 1.28; font-style: italic; color: var(--ink); letter-spacing: -0.01em; text-wrap: balance; }
+.pull::before { content: '❝'; display: block; font-family: var(--font-serif); font-size: 28pt; line-height: 1; color: var(--primary-2); margin-bottom: 10px; }
+
+.dec-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; border-top: 1pt solid var(--ink); border-left: 0.5pt solid var(--rule); }
+@media (max-width: 700px){ .dec-grid { grid-template-columns: 1fr; } }
+.dec { padding: 22px 24px 26px; border-right: 0.5pt solid var(--rule); border-bottom: 0.5pt solid var(--rule); min-width: 0; }
+.dec .n { font-family: var(--font-mono); font-size: 7.5pt; letter-spacing: 0.2em; color: var(--primary-2); font-weight: 600; margin-bottom: 6px; }
+.dec h4 { font-family: var(--font-serif); font-size: 14pt; font-weight: 500; line-height: 1.15; margin: 0 0 8px; color: var(--ink); }
+.dec p { font-family: var(--font-sans); font-size: 9.5pt; line-height: 1.5; color: var(--ink-2); margin: 0; }
+
+.sk-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; border-top: 1pt solid var(--ink); border-left: 0.5pt solid var(--rule); }
+@media (max-width: 700px){ .sk-grid { grid-template-columns: 1fr; } }
+.sk { padding: 20px 24px 22px; border-right: 0.5pt solid var(--rule); border-bottom: 0.5pt solid var(--rule); min-width: 0; }
+.sk h4 { font-family: var(--font-serif); font-size: 12.5pt; font-weight: 500; margin: 0 0 8px; color: var(--ink); }
+.sk .lbl { font-family: var(--font-mono); font-size: 7pt; letter-spacing: 0.18em; text-transform: uppercase; color: var(--primary-2); font-weight: 600; margin-bottom: 4px; }
+.sk p { font-family: var(--font-sans); font-size: 9.3pt; line-height: 1.5; color: var(--ink-2); margin: 0; }
+
+.lf-final { padding: 64px 0 48px; border-top: 1pt solid var(--ink); margin-top: 40px; }
+.lf-final .kicker { font-family: var(--font-mono); font-size: 9pt; letter-spacing: 0.22em; text-transform: uppercase; color: var(--primary-2); margin-bottom: 18px; }
+.lf-final h3 { font-family: var(--font-serif); font-size: 32pt; line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 22px; max-width: 900px; }
+.lf-final h3 em { font-style: italic; color: var(--primary-2); }
+.lf-final p { font-family: var(--font-serif); font-size: 13.5pt; line-height: 1.5; color: var(--ink-2); margin: 0 0 16px; max-width: 820px; }
+.lf-final p strong { color: var(--ink); font-weight: 600; }
+
+.lf-footer { padding: 48px 0 64px; border-top: 0.5pt solid var(--rule); display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: end; }
+@media (max-width: 900px){ .lf-footer { grid-template-columns: 1fr; gap: 20px; } }
+.lf-footer .sign { font-family: var(--font-serif); font-size: 13pt; color: var(--ink-2); font-style: italic; }
+.lf-footer .sign strong { color: var(--ink); font-weight: 500; font-style: normal; }
+.lf-footer .back { font-family: var(--font-mono); font-size: 9pt; letter-spacing: 0.2em; text-transform: uppercase; color: var(--primary-2); text-decoration: none; border: 1pt solid var(--primary-2); padding: 12px 18px; display: inline-block; transition: all .15s; background: var(--paper); }
+.lf-footer .back:hover { background: var(--primary-2); color: var(--paper); }
+
+@media print {
+  .lf-topbar, .lf-footer .back { display: none !important; }
+  .lf-shell { padding: 0 0.5in; max-width: none; }
+  .app-grid, .dec-grid, .sk-grid, .ba-strip { break-inside: auto; }
+  .app, .dec, .sk { break-inside: avoid; }
+  body { background: white !important; }
+}
+</style>
+</head>
+<body class="cs">
+
+<div class="lf-shell">
+
+  <nav class="lf-topbar">
+    <a href="case-studies.html" class="home">Austin Stretz &middot; Selected Work</a>
+    <div class="right">
+      <span class="draft-flag">Draft &middot; not yet linked from index</span>
+      <a href="#final">Jump to summary</a>
+    </div>
+  </nav>
+
+  <header class="lf-hero">
+    <div>
+      <div class="kicker">Case Study 07 (Draft) &middot; AI-Assisted Product Operations</div>
+      <h1>Turning meetings into <em>acceptance criteria</em>, automatically.</h1>
+      <p class="tagline">As the sole product lead across nine productized systems, acceptance-criteria writing was a constant, recurring bottleneck. Rather than accept that as the cost of the role, built project-specific agents that read meeting transcripts and Slack threads and draft the first pass.</p>
+      <div class="tags">
+        <span class="accent">AI Agent Design</span>
+        <span>Requirements Automation</span>
+        <span>Applied AI Workflow</span>
+        <span>Product Operations</span>
+      </div>
+    </div>
+    <aside>
+      <dl>
+        <dt>Role</dt><dd>Product Manager</dd>
+        <dt>Company</dt><dd>NeoSavant.ai</dd>
+        <dt>Input</dt><dd>Meeting transcripts &middot; Slack</dd>
+        <dt>Output</dt><dd>Draft acceptance criteria</dd>
+        <dt>Status</dt><dd>In active use</dd>
+      </dl>
+    </aside>
+  </header>
+
+  <section class="ba-strip">
+    <div><b>Day-long manual cycles</b><span>Before &mdash; writing acceptance criteria by hand, per system, per change</span></div>
+    <div><b>Minutes, first-pass drafted</b><span>After &mdash; up to 10&times; faster, specifically on acceptance-criteria iteration time</span></div>
+  </section>
+
+  <section class="lf-overview">
+    <div class="side">Overview</div>
+    <div>
+      <p>Product ownership at NeoSavant.ai spans two AI product lines and nine productized systems, coordinated with roughly 40 internal engineers and 7 external partners across computer vision, ML, infrastructure, and field operations. Every one of those systems generates a steady stream of changes that need acceptance criteria, and until this build, each one was written by hand.</p>
+      <p>The fix wasn't a better template. It was an agent layer: project-specific agents that read the raw inputs a PM already produces, meeting transcripts and Slack threads, and turn them into a structured first draft.</p>
+    </div>
+  </section>
+
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>01 &middot; Problem</div>
+      <h2>The bottleneck wasn't judgment. It was <em>transcription</em>.</h2>
+    </div>
+    <div class="lf-body">
+      <p>Writing acceptance criteria doesn't require new information most of the time. The decisions were usually already made, in a meeting, in a Slack thread, in a back-and-forth with an engineer. The work was re-reading all of that and manually converting it into structured epics, user stories, and Definition of Done, one system at a time, across a backlog spanning nine products.</p>
+      <p>As the only product lead across that surface area, the iteration cycle for a single set of acceptance criteria could take a full day, not because the decision was hard, but because turning a conversation into a document was slow, repetitive, and easy to defer.</p>
+    </div>
+  </section>
+
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>02 &middot; Approach</div>
+      <h2>Three stages, <em>one operating loop</em>.</h2>
+    </div>
+
+    <div class="app-grid">
+      <div class="app">
+        <div class="app-num"><span class="dot"></span>Input</div>
+        <h4>Meetings &amp; Slack, as they already exist</h4>
+        <p>No separate intake step. The agent reads the same meeting transcripts and Slack threads a PM already has, rather than requiring requirements to be re-entered into a structured form first.</p>
+      </div>
+      <div class="app">
+        <div class="app-num"><span class="dot"></span>Processing</div>
+        <h4>Project-specific agents</h4>
+        <p>Each of the nine productized systems gets its own agent context, so a draft is grounded in that system's specific requirements and history, not a generic prompt applied everywhere.</p>
+      </div>
+      <div class="app">
+        <div class="app-num"><span class="dot"></span>Output</div>
+        <h4>A first-pass draft, not a final answer</h4>
+        <p>The agent produces a structured starting point, epics, stories, acceptance criteria, for the PM to review and edit, rather than a decision that ships unreviewed.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="pull">
+    The win wasn't "AI wrote my job for me." It was narrower and more honest than that: the specific, repetitive step of turning a conversation into a document got up to 10&times; faster. Everything upstream of that, the judgment calls, still belonged to the PM.
+  </div>
+
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>03 &middot; Key Decisions</div>
+      <h2>Four decisions that kept it <em>useful</em>.</h2>
+    </div>
+
+    <div class="dec-grid">
+      <div class="dec">
+        <div class="n">Decision 01</div>
+        <h4>Feed It What Already Exists</h4>
+        <p>Used raw meeting transcripts and Slack threads as input, rather than building a separate structured-intake step that would itself become new manual work.</p>
+      </div>
+      <div class="dec">
+        <div class="n">Decision 02</div>
+        <h4>Scope Agents Per Project</h4>
+        <p>One agent context per productized system, not one general-purpose prompt, so drafts stay grounded in that system's actual requirements rather than generic boilerplate.</p>
+      </div>
+      <div class="dec">
+        <div class="n">Decision 03</div>
+        <h4>Keep the PM in the Loop</h4>
+        <p>Agents draft; the PM reviews, edits, and approves before anything reaches the backlog, consistent with the human-in-the-loop principle applied across every AI system built at NeoSavant.</p>
+      </div>
+      <div class="dec">
+        <div class="n">Decision 04</div>
+        <h4>Measure the Bottleneck It Actually Fixes</h4>
+        <p>The 10&times; figure is scoped narrowly and deliberately to acceptance-criteria iteration time, not a claim about the entire product role.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>04 &middot; Skills Demonstrated</div>
+      <h2>What the build exercises.</h2>
+    </div>
+    <div class="sk-grid">
+      <div class="sk">
+        <div class="lbl">Capability 01</div>
+        <h4>Applied AI agent design</h4>
+        <p>Building project-specific agents around existing inputs rather than requiring new process overhead.</p>
+      </div>
+      <div class="sk">
+        <div class="lbl">Capability 02</div>
+        <h4>Requirements engineering</h4>
+        <p>Structuring epics, user stories, and acceptance criteria consistently across nine concurrent systems.</p>
+      </div>
+      <div class="sk">
+        <div class="lbl">Capability 03</div>
+        <h4>Product operations automation</h4>
+        <p>Identifying a recurring, low-judgment bottleneck in a PM's own workflow and automating specifically that step.</p>
+      </div>
+      <div class="sk">
+        <div class="lbl">Capability 04</div>
+        <h4>Honest impact measurement</h4>
+        <p>Scoping a performance claim to exactly what was measured, rather than generalizing it into a broader story.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="lf-final" id="final">
+    <div class="kicker">&#9670; &nbsp; Final Summary</div>
+    <h3>The PM function, <em>automating its own busywork</em>.</h3>
+    <p>Meeting transcripts and Slack threads already contained the decisions. The agents just closed the gap between a conversation and a structured backlog item, cutting a day-long manual cycle down to minutes.</p>
+    <p>This project demonstrates <strong>practical AI agent design, requirements engineering, and a disciplined, narrowly-scoped approach to measuring AI-driven productivity gains</strong>.</p>
+  </section>
+
+  <footer class="lf-footer">
+    <div class="sign">
+      Austin Stretz &nbsp;&middot;&nbsp; <strong>a.stretz@outlook.com</strong> &nbsp;&middot;&nbsp; 913-515-8304
+    </div>
+    <a href="case-studies.html" class="back">&larr; Back to Selected Work</a>
+  </footer>
+
+</div>
+
+</body>
+</html>

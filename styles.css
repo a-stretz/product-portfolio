@@ -35,6 +35,16 @@
   --amber-3: #f5b544;
   --amber-wash: #fde9c7;
 
+  --amethyst: #7a2f9e;
+  --amethyst-2: #9b4bc4;
+  --amethyst-3: #c48fdb;
+  --amethyst-wash: #f1e3f7;
+
+  --teal: #0d7086;
+  --teal-2: #1596b0;
+  --teal-3: #5cc4d6;
+  --teal-wash: #d9f1f5;
+
   /* Phase assignment — each framework phase gets a jewel */
   --c-evaluate: var(--emerald);
   --c-evaluate-2: var(--emerald-2);
@@ -107,10 +117,14 @@
   --sapphire-wash: #171d2b;
   --garnet-wash: #271820;
   --amber-wash: #261e10;
+  --amethyst-wash: #241a2c;
+  --teal-wash: #142228;
   --emerald-2: #3fb3a4;
   --sapphire-2: #6f8ad8;
   --garnet-2: #c76ba1;
   --amber-2: #d4a63c;
+  --amethyst-2: #b87ad4;
+  --teal-2: #4ec2d8;
 }
 
 /* ============================================================

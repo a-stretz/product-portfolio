@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Austin Stretz — Legacy Platform Modernization</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="Case study draft: retiring a legacy AS400 platform, building the CRM and recruiting systems around it, and the revenue operations engine that sold it, at a regulated-enterprise HR tech consulting firm."/>
+<template id="__bundler_thumbnail" data-bg-color="#f7f3ea">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#f7f3ea"/>
+    <g transform="translate(120,120)">
+      <text x="0" y="0" font-family="JetBrains Mono, monospace" font-size="28" letter-spacing="6" fill="#7a2f9e">CASE STUDY &middot; 06 (DRAFT)</text>
+      <text x="0" y="180" font-family="Georgia, serif" font-size="120" fill="#15120d">Legacy to</text>
+      <text x="0" y="320" font-family="Georgia, serif" font-size="120" font-style="italic" fill="#7a2f9e">Platform.</text>
+      <rect x="0" y="400" width="960" height="2" fill="#15120d"/>
+      <g transform="translate(0,470)" font-family="Inter, sans-serif" font-size="30" fill="#2b3038">
+        <text y="0">Retiring an AS400, building the CRM and recruiting</text>
+        <text y="50">systems around it, and the revenue engine that sold it.</text>
+      </g>
+    </g>
+  </svg>
+</template>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css?v=2"/>
+<style>
+/* Long-form case study — Case 06 · Amethyst (DRAFT, not yet linked from Selected Work) */
+:root {
+  --primary: var(--amethyst);
+  --primary-2: var(--amethyst-2);
+  --primary-3: var(--amethyst-3);
+  --primary-wash: var(--amethyst-wash);
+}
+body.cs { background: var(--paper); color: var(--ink); }
+.lf-shell { max-width: 1180px; margin: 0 auto; padding: 0 60px; }
+@media (max-width: 900px){ .lf-shell { padding: 0 28px; } }
+
+.draft-flag {
+  background: var(--primary-wash); color: var(--primary);
+  font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 4px 10px; border: 0.5pt solid var(--primary-2);
+}
+
+.lf-topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 22px 0 18px; border-bottom: 0.5pt solid var(--rule);
+  font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.lf-topbar a { color: var(--ink-3); text-decoration: none; border-bottom: 0.5pt solid transparent; transition: color .15s; }
+.lf-topbar a:hover { color: var(--primary-2); border-bottom-color: var(--primary-2); }
+.lf-topbar .home { display: inline-flex; align-items: center; gap: 8px; }
+.lf-topbar .home::before { content: ''; width: 14px; height: 1.2pt; background: var(--primary-2); display: inline-block; }
+.lf-topbar .right { display: flex; gap: 18px; align-items: center; }
+
+.lf-hero {
+  display: grid; grid-template-columns: minmax(0,1.05fr) minmax(0,0.55fr);
+  gap: 64px; padding: 80px 0 56px; border-bottom: 1pt solid var(--ink);
+}
+@media (max-width: 960px){ .lf-hero { grid-template-columns: 1fr; gap: 32px; padding: 48px 0 36px; } }
+.lf-hero .kicker { font-family: var(--font-mono); font-size: 9pt; letter-spacing: 0.22em; text-transform: uppercase; color: var(--primary-2); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+.lf-hero .kicker::before { content: ''; width: 20px; height: 1.5pt; background: var(--primary-2); display: inline-block; }
+.lf-hero h1 { font-family: var(--font-serif); font-size: 60pt; line-height: 0.98; letter-spacing: -0.03em; font-weight: 400; margin: 0 0 18px; }
+.lf-hero h1 em { font-style: italic; color: var(--primary-2); font-weight: 400; }
+.lf-hero .tagline { font-family: var(--font-serif); font-size: 16.5pt; font-style: italic; color: var(--ink-2); line-height: 1.36; max-width: 710px; margin: 0 0 28px; }
+.lf-hero .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.lf-hero .tags span { font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; padding: 5px 10px; border: 0.5pt solid var(--ink-4); color: var(--ink-2); }
+.lf-hero .tags span.accent { border-color: var(--primary-2); color: var(--primary-2); background: var(--primary-wash); }
+.lf-hero aside { font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-top: 1pt solid var(--ink); padding-top: 18px; align-self: end; }
+.lf-hero aside dl { margin: 0; display: grid; grid-template-columns: 1fr 2fr; gap: 10px 16px; }
+.lf-hero aside dt { color: var(--ink-4); font-weight: 600; }
+.lf-hero aside dd { margin: 0; color: var(--ink); font-weight: 500; letter-spacing: 0.08em; }
+
+.stat-strip { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1pt solid var(--ink); border-left: 0.5pt solid var(--rule); }
+@media (max-width: 800px){ .stat-strip { grid-template-columns: repeat(2, 1fr); } }
+.stat-strip div { padding: 22px 18px; border-right: 0.5pt solid var(--rule); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.16em; color: var(--ink-3); font-size: 7.5pt; }
+.stat-strip b { display: block; font-family: var(--font-serif); font-size: 28pt; line-height: 1; color: var(--primary); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 6px; }
+.stat-strip span { display: block; }
+
+.lf-overview { padding: 56px 0 48px; border-bottom: 0.5pt solid var(--rule); display: grid; grid-template-columns: 0.38fr 1fr; gap: 56px; }
+@media (max-width: 900px){ .lf-overview { grid-template-columns: 1fr; gap: 14px; padding: 36px 0 32px; } }
+.lf-overview .side { font-family: var(--font-mono); font-size: 8.5pt; letter-spacing: 0.18em; text-transform: uppercase; color: var(--primary-2); font-weight: 600; padding-top: 4px; }
+.lf-overview p { font-family: var(--font-serif); font-size: 14pt; line-height: 1.45; color: var(--ink); margin: 0 0 14px; max-width: 700px; }
+.lf-overview p:last-child { margin-bottom: 0; }
+.lf-overview strong { color: var(--primary); font-weight: 600; }
+
+.lf-section { padding: 56px 0 40px; border-bottom: 0.5pt solid var(--rule); }
+.lf-section.last { border-bottom: none; }
+.lf-section > .head { display: grid; grid-template-columns: 140px 1fr; gap: 28px; margin-bottom: 28px; align-items: baseline; }
+@media (max-width: 900px){ .lf-section > .head { grid-template-columns: 1fr; gap: 6px; } }
+.lf-section > .head .n { font-family: var(--font-mono); font-size: 8.5pt; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-3); }
+.lf-section > .head .n .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--primary); margin-right: 10px; vertical-align: 2px; }
+.lf-section > .head h2 { font-family: var(--font-serif); font-size: 32pt; line-height: 1.03; letter-spacing: -0.02em; font-weight: 400; margin: 0; max-width: 820px; }
+.lf-section > .head h2 em { font-style: italic; color: var(--primary-2); font-weight: 400; }
+
+.lf-body { max-width: 820px; margin-left: 168px; font-family: var(--font-serif); font-size: 11.5pt; line-height: 1.58; color: var(--ink-2); }
+@media (max-width: 900px){ .lf-body { margin-left: 0; } }
+.lf-body p { margin: 0 0 14px; }
+.lf-body p:last-child { margin-bottom: 0; }
+.lf-body strong { color: var(--ink); font-weight: 600; }
+.lf-body ul { font-family: var(--font-sans); font-size: 10pt; line-height: 1.55; color: var(--ink-2); margin: 0 0 14px; padding-left: 18px; }
+.lf-body li { margin-bottom: 6px; }
+
+/* Four fronts */
+.wf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1pt solid var(--ink); border-left: 0.5pt solid var(--rule); }
+@media (max-width: 900px){ .wf-grid { grid-template-columns: 1fr; } }
+.wf { padding: 28px 30px 32px; border-right: 0.5pt solid var(--rule); border-bottom: 0.5pt solid var(--rule); min-width: 0; }
+.wf .wf-num { font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.2em; text-transform: uppercase; color: var(--primary-2); font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+.wf .wf-num .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); display: inline-block; }
+.wf h4 { font-family: var(--font-serif); font-size: 15pt; font-weight: 500; line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 12px; color: var(--ink); }
+.wf p { font-family: var(--font-sans); font-size: 9.5pt; line-height: 1.5; color: var(--ink-2); margin: 0 0 10px; }
+.wf p:last-child { margin-bottom: 0; }
+.wf-output { margin-top: 12px; padding: 10px 14px; background: var(--primary-wash); border-left: 1.5pt solid var(--primary); font-family: var(--font-sans); font-size: 9pt; line-height: 1.48; color: var(--ink); }
+.wf-output .lbl { font-family: var(--font-mono); font-size: 7pt; letter-spacing: 0.18em; text-transform: uppercase; color: var(--primary); font-weight: 600; display: block; margin-bottom: 4px; }
+
+.pull { margin: 32px 0; padding: 40px 0; border-top: 1pt solid var(--ink); border-bottom: 1pt solid var(--ink); font-family: var(--font-serif); font-size: 22pt; line-height: 1.24; font-style: italic; color: var(--ink); letter-spacing: -0.015em; text-wrap: balance; }
+.pull::before { content: '❝'; display: block; font-family: var(--font-serif); font-size: 32pt; line-height: 1; color: var(--primary-2); margin-bottom: 10px; }
+
+.dec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1pt solid var(--ink); border-left: 0.5pt solid var(--rule); }
+@media (max-width: 1000px){ .dec-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px){ .dec-grid { grid-template-columns: 1fr; } }
+.dec { padding: 22px 24px 26px; border-right: 0.5pt solid var(--rule); border-bottom: 0.5pt solid var(--rule); min-width: 0; }
+.dec .n { font-family: var(--font-mono); font-size: 7.5pt; letter-spacing: 0.2em; color: var(--primary-2); font-weight: 600; margin-bottom: 6px; }
+.dec h4 { font-family: var(--font-serif); font-size: 14pt; font-weight: 500; line-height: 1.15; margin: 0 0 8px; color: var(--ink); }
+.dec p { font-family: var(--font-sans); font-size: 9.5pt; line-height: 1.5; color: var(--ink-2); margin: 0; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 10px; }
+@media (max-width: 900px){ .two-col { grid-template-columns: 1fr; gap: 24px; } }
+.two-col h4 { font-family: var(--font-mono); font-size: 7.5pt; letter-spacing: 0.2em; text-transform: uppercase; color: var(--primary); font-weight: 600; margin: 0 0 12px; padding-bottom: 6px; border-bottom: 0.5pt solid var(--rule); }
+.two-col ul { list-style: none; padding: 0; margin: 0; font-family: var(--font-sans); font-size: 10pt; line-height: 1.58; color: var(--ink-2); }
+.two-col ul li { padding: 8px 0 8px 16px; position: relative; border-bottom: 0.5pt solid var(--rule); }
+.two-col ul li::before { content: ''; position: absolute; left: 0; top: 1.1em; width: 8px; height: 1pt; background: var(--primary); }
+.two-col ul li strong { color: var(--ink); font-weight: 600; }
+
+.sk-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; border-top: 1pt solid var(--ink); border-left: 0.5pt solid var(--rule); }
+@media (max-width: 700px){ .sk-grid { grid-template-columns: 1fr; } }
+.sk { padding: 22px 26px 24px; border-right: 0.5pt solid var(--rule); border-bottom: 0.5pt solid var(--rule); min-width: 0; }
+.sk h4 { font-family: var(--font-serif); font-size: 13pt; font-weight: 500; margin: 0 0 8px; color: var(--ink); }
+.sk .lbl { font-family: var(--font-mono); font-size: 7pt; letter-spacing: 0.18em; text-transform: uppercase; color: var(--primary-2); font-weight: 600; margin-bottom: 4px; }
+.sk p { font-family: var(--font-sans); font-size: 9.5pt; line-height: 1.5; color: var(--ink-2); margin: 0; }
+
+.lf-final { padding: 72px 0 48px; border-top: 1pt solid var(--ink); margin-top: 48px; }
+.lf-final .kicker { font-family: var(--font-mono); font-size: 9pt; letter-spacing: 0.22em; text-transform: uppercase; color: var(--primary-2); margin-bottom: 18px; }
+.lf-final h3 { font-family: var(--font-serif); font-size: 34pt; line-height: 1.08; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 22px; max-width: 920px; }
+.lf-final h3 em { font-style: italic; color: var(--primary-2); }
+.lf-final p { font-family: var(--font-serif); font-size: 14pt; line-height: 1.48; color: var(--ink-2); margin: 0 0 16px; max-width: 820px; }
+.lf-final p strong { color: var(--ink); font-weight: 600; }
+
+.lf-footer { padding: 48px 0 64px; border-top: 0.5pt solid var(--rule); display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: end; }
+@media (max-width: 900px){ .lf-footer { grid-template-columns: 1fr; gap: 20px; } }
+.lf-footer .sign { font-family: var(--font-serif); font-size: 13pt; color: var(--ink-2); font-style: italic; }
+.lf-footer .sign strong { color: var(--ink); font-weight: 500; font-style: normal; }
+.lf-footer .back { font-family: var(--font-mono); font-size: 9pt; letter-spacing: 0.2em; text-transform: uppercase; color: var(--primary-2); text-decoration: none; border: 1pt solid var(--primary-2); padding: 12px 18px; display: inline-block; transition: all .15s; background: var(--paper); }
+.lf-footer .back:hover { background: var(--primary-2); color: var(--paper); }
+
+@media print {
+  .lf-topbar, .lf-footer .back { display: none !important; }
+  .lf-shell { padding: 0 0.5in; max-width: none; }
+  .wf-grid, .dec-grid, .sk-grid, .stat-strip { break-inside: auto; }
+  .wf, .dec, .sk { break-inside: avoid; }
+  body { background: white !important; }
+}
+</style>
+</head>
+<body class="cs">
+
+<div class="lf-shell">
+
+  <nav class="lf-topbar">
+    <a href="case-studies.html" class="home">Austin Stretz &middot; Selected Work</a>
+    <div class="right">
+      <span class="draft-flag">Draft &middot; not yet linked from index</span>
+      <a href="#final">Jump to summary</a>
+    </div>
+  </nav>
+
+  <header class="lf-hero">
+    <div>
+      <div class="kicker">Case Study 06 (Draft) &middot; 1872 Consulting</div>
+      <h1>From legacy system to <em>scalable operating platform</em>.</h1>
+      <p class="tagline">Nine years as product owner and de facto co-founder at an HR-tech consulting firm: retiring a legacy AS400 platform, building the internal CRM and recruiting systems that replaced its manual workflows, and the revenue operations engine that sold it all, for regulated enterprise clients who couldn't tolerate downtime or non-compliance.</p>
+      <div class="tags">
+        <span class="accent">Legacy Modernization</span>
+        <span>API Automation</span>
+        <span>0-to-1 Product</span>
+        <span>Revenue Operations</span>
+        <span>GTM Strategy</span>
+      </div>
+    </div>
+    <aside>
+      <dl>
+        <dt>Role</dt><dd>Product Manager &middot; Revenue Ops</dd>
+        <dt>Company</dt><dd>1872 Consulting, LLC</dd>
+        <dt>Scope</dt><dd>Founding-team member</dd>
+        <dt>Domain</dt><dd>HR tech &middot; regulated enterprise</dd>
+        <dt>Duration</dt><dd>Jun 2015 &ndash; Dec 2024</dd>
+      </dl>
+    </aside>
+  </header>
+
+  <section class="stat-strip">
+    <div><b>126%</b><span>Revenue Growth</span></div>
+    <div><b>$1.1M</b><span>Net-New Fortune 100 Contract</span></div>
+    <div><b>82%</b><span>Faster Fulfillment Time</span></div>
+    <div><b>$3.7M</b><span>Firm Revenue, Founding-Team</span></div>
+  </section>
+
+  <section class="lf-overview">
+    <div class="side">Overview</div>
+    <div>
+      <p>1872 Consulting was an HR-tech consulting firm: IT recruitment, staff augmentation, HR services, and platform modernization for regulated enterprise clients. As a founding-team member, the role spanned product, sales operations, CRM and lifecycle design, and revenue operations at once, closer to a startup co-founder's breadth than a single-function product management seat.</p>
+      <p>The firm's client-facing operations ran on a legacy AS400 platform. Internally, sales and recruiting ran on manual, fragmented workflows with no repeatable way to convert relationships into pipeline. Growth was capped by process and infrastructure, not by demand from regulated enterprise clients who needed compliance and security guarantees a legacy system made expensive to prove.</p>
+    </div>
+  </section>
+
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>01 &middot; Problem</div>
+      <h2>A firm that had <em>outgrown its own systems</em>.</h2>
+    </div>
+    <div class="lf-body">
+      <p>Every part of the business ran on something manual, legacy, or improvised: a client-facing platform old enough to require specialized knowledge to maintain, recruiting relationships that lived in individual heads rather than a shared system, and outbound business development tracked well enough to close deals but not well enough to compound.</p>
+      <ul>
+        <li>A legacy AS400 platform serving compliance-sensitive enterprise clients, with no API surface for modern integrations</li>
+        <li>Recruiting and referral relationships that were valuable but not productized into a repeatable offering</li>
+        <li>No internal CRM or lifecycle system, so outbound business development and account management ran on ad hoc tracking</li>
+        <li>Regulated-industry clients who needed provable compliance and security, not just a working product</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>02 &middot; Approach</div>
+      <h2>Four fronts, <em>one operating core</em>.</h2>
+    </div>
+
+    <div class="wf-grid">
+      <div class="wf">
+        <div class="wf-num"><span class="dot"></span>Front 01 &middot; Platform Modernization</div>
+        <h4>Retiring the AS400</h4>
+        <p>Owned product discovery and strategy for modernizing the compliance-driven HRIS platform, translating regulatory, security, and enterprise constraints into a scalable system architecture and implementation plan. Led the full product lifecycle to retire the legacy system and launch an integrated, API-enabled replacement.</p>
+        <div class="wf-output">
+          <span class="lbl">Outcome</span>
+          126% revenue growth, including a net-new $1.1M Fortune 100 energy contract.
+        </div>
+      </div>
+
+      <div class="wf">
+        <div class="wf-num"><span class="dot"></span>Front 02 &middot; Automation &amp; Efficiency</div>
+        <h4>API-driven background services</h4>
+        <p>Led product development of fully integrated, API-driven background services for compliance-sensitive client workflows, replacing manual fulfillment steps with automated ones across the client lifecycle.</p>
+        <div class="wf-output">
+          <span class="lbl">Outcome</span>
+          82% faster average fulfillment time; 76% lower labor cost on the same workflows.
+        </div>
+      </div>
+
+      <div class="wf">
+        <div class="wf-num"><span class="dot"></span>Front 03 &middot; Productized Recruiting</div>
+        <h4>Turning relationships into a repeatable offering</h4>
+        <p>Defined product vision, user flows, and MVP scope for an external, referral-based bounty platform, productizing candidate sourcing and network-driven recruiting into a scalable, repeatable service rather than an ad hoc favor economy.</p>
+        <div class="wf-output">
+          <span class="lbl">Role</span>
+          0-to-1 product design: vision, flows, and MVP scope for a customer-facing offering.
+        </div>
+      </div>
+
+      <div class="wf">
+        <div class="wf-num"><span class="dot"></span>Front 04 &middot; CRM &amp; Revenue Operations</div>
+        <h4>The system behind the sales</h4>
+        <p>Designed and implemented the firm's internal CRM and business development platform: outbound workflows, lifecycle states, OKRs, KPIs, and dashboards. Converted manual, legacy, and fragmented workflows into structured processes and operating rhythms across recruiting and business development.</p>
+        <div class="wf-output">
+          <span class="lbl">Outcome</span>
+          Operating processes still in use today, years after they were built.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="pull">
+    The role was never just product. It was product, sales operations, and revenue operations at once, because at a firm this size, the system you build and the system that sells it are the same system.
+  </div>
+
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>03 &middot; Key Decisions</div>
+      <h2>Six decisions across product <em>and</em> revenue.</h2>
+    </div>
+
+    <div class="dec-grid">
+      <div class="dec">
+        <div class="n">Decision 01</div>
+        <h4>Modernize Around Compliance, Not Despite It</h4>
+        <p>Treated regulatory, security, and enterprise constraints as the specification for the new architecture, not an obstacle to design around later.</p>
+      </div>
+      <div class="dec">
+        <div class="n">Decision 02</div>
+        <h4>API-First Over Rip-and-Replace</h4>
+        <p>Rebuilt background services as integrated, API-driven automation rather than a monolithic replacement, keeping compliance-sensitive workflows intact while modernizing around them.</p>
+      </div>
+      <div class="dec">
+        <div class="n">Decision 03</div>
+        <h4>Productize the Recruiting Motion</h4>
+        <p>Instead of leaving referral-based sourcing as informal favors, formalized it into a bounty platform with defined vision, flows, and scope.</p>
+      </div>
+      <div class="dec">
+        <div class="n">Decision 04</div>
+        <h4>Build the CRM the Firm Would Keep Using</h4>
+        <p>Designed lifecycle states, OKRs, KPIs, and dashboards meant to become permanent operating infrastructure, not a one-off internal tool.</p>
+      </div>
+      <div class="dec">
+        <div class="n">Decision 05</div>
+        <h4>Early-Adopt Before Competitors Do</h4>
+        <p>Joined the Early Adopter Program for Agency Leads and Clay ahead of the broader market, turning new GTM automation tools into a 58% outbound efficiency gain.</p>
+      </div>
+      <div class="dec">
+        <div class="n">Decision 06</div>
+        <h4>Own the Outcome, Not Just the Roadmap</h4>
+        <p>Paired product ownership with direct account management and revenue operations, including managing a 4-person account executive team against 12 structured KPIs.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>04 &middot; Impact</div>
+      <h2>Modernization that showed up in <em>revenue</em>.</h2>
+    </div>
+    <div class="two-col" style="margin-left:0;">
+      <div>
+        <h4>Delivered</h4>
+        <ul>
+          <li><strong>126% revenue growth</strong> following the AS400 retirement, including a net-new $1.1M Fortune 100 energy contract</li>
+          <li><strong>82% faster fulfillment</strong> and <strong>76% lower labor cost</strong> on API-automated background services</li>
+          <li>An internal CRM and BD platform with operating processes still in use today</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Scope &amp; Recognition</h4>
+        <ul>
+          <li>Helped drive the firm to <strong>$3.7M in annual revenue</strong> as a founding-team member, including $415K in new account revenue</li>
+          <li>Managed a 4-person account executive team against 12 structured KPIs</li>
+          <li>Selected for the Agency Leads / Clay Early Adopter Program; drove a 58% outbound efficiency gain</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="lf-section">
+    <div class="head">
+      <div class="n"><span class="dot"></span>05 &middot; Skills Demonstrated</div>
+      <h2>What the build exercises.</h2>
+    </div>
+    <div class="sk-grid">
+      <div class="sk">
+        <div class="lbl">Capability 01</div>
+        <h4>Legacy system modernization</h4>
+        <p>Retiring a compliance-era platform and replacing it with an API-enabled architecture without disrupting regulated client operations.</p>
+      </div>
+      <div class="sk">
+        <div class="lbl">Capability 02</div>
+        <h4>API &amp; workflow automation</h4>
+        <p>Converting manual, compliance-sensitive background services into automated, integrated workflows.</p>
+      </div>
+      <div class="sk">
+        <div class="lbl">Capability 03</div>
+        <h4>0-to-1 product design</h4>
+        <p>Defining vision, flows, and MVP scope for both a customer-facing recruiting product and an internal CRM platform.</p>
+      </div>
+      <div class="sk">
+        <div class="lbl">Capability 04</div>
+        <h4>Revenue &amp; GTM operations</h4>
+        <p>CRM and lifecycle system design, KPI dashboards, sales enablement, and outbound automation adoption.</p>
+      </div>
+      <div class="sk">
+        <div class="lbl">Capability 05</div>
+        <h4>People &amp; account leadership</h4>
+        <p>Managing an account executive team and national account strategy alongside product ownership.</p>
+      </div>
+      <div class="sk">
+        <div class="lbl">Capability 06</div>
+        <h4>Regulated-industry translation</h4>
+        <p>Turning compliance, security, and enterprise constraints into implementation-ready product direction.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="lf-final" id="final">
+    <div class="kicker">&#9670; &nbsp; Final Summary</div>
+    <h3>Legacy modernization that paid for itself, <em>and built the firm around it</em>.</h3>
+    <p>Retiring the AS400 platform wasn't an isolated engineering project. It was one front in a broader rebuild of the firm's operating core: the CRM and lifecycle systems that replaced manual sales tracking, the recruiting platform that productized referral relationships, and the revenue operations discipline that turned all of it into $3.7M in firm revenue and a Fortune 100 contract.</p>
+      <p>This project demonstrates <strong>legacy system modernization, 0-to-1 product design, revenue operations, and founder-scope ownership across product and go-to-market</strong>.</p>
+  </section>
+
+  <footer class="lf-footer">
+    <div class="sign">
+      Austin Stretz &nbsp;&middot;&nbsp; <strong>a.stretz@outlook.com</strong> &nbsp;&middot;&nbsp; 913-515-8304
+    </div>
+    <a href="case-studies.html" class="back">&larr; Back to Selected Work</a>
+  </footer>
+
+</div>
+
+</body>
+</html>
