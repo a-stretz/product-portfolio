@@ -265,6 +265,19 @@ body.cs {
   margin: 0;
   border-top: 1pt solid var(--ink);
 }
+.cs-index .idx-group-label { margin-top: 30px; }
+.cs-index .idx-group-sub { text-transform: none; letter-spacing: 0; font-size: 9.5pt; color: var(--ink-2); margin-left: 10px; }
+.cs-tier-label {
+  font-family: var(--font-mono);
+  font-size: 9pt;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--emerald);
+  padding: 44px 0 6px;
+  border-top: 1pt solid var(--ink);
+  margin-top: 40px;
+}
+.cs-tier-label:first-of-type { margin-top: 0; }
 .cs-index li { border-bottom: 0.5pt solid var(--rule); }
 .cs-index .idx-row {
   display: grid;
@@ -595,13 +608,14 @@ body.cs {
 }
 .cs-builds-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 0;
   border-top: 1pt solid var(--ink);
   border-left: 0.5pt solid var(--rule);
   margin-bottom: 36px;
 }
-@media (max-width: 900px){ .cs-builds-grid { grid-template-columns: 1fr; } }
+@media (max-width: 1100px){ .cs-builds-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px){ .cs-builds-grid { grid-template-columns: 1fr; } }
 .cs-builds-grid .cell {
   border-right: 0.5pt solid var(--rule);
   border-bottom: 0.5pt solid var(--rule);
@@ -686,9 +700,9 @@ body.cs {
   <div class="cs-topbar">
     <div class="brand"><span class="mark">◆</span> Austin Stretz · Selected Work</div>
     <nav>
-      <a href="#c1">01</a>
-      <a href="#c2">02</a>
-      <a href="#c3">03</a>
+      <a href="#c2">01</a>
+      <a href="#c3">02</a>
+      <a href="#c1">03</a>
       <a href="#c4">04</a>
       <a href="#c5">05</a>
       <a href="index.html">Index</a>
@@ -730,28 +744,18 @@ body.cs {
     <div>
       <p>I work in environments where <em>ground truth doesn't exist yet</em>, domain expertise hasn't been codified, and teams need clarity on what their product can actually deliver.</p>
       <p>I define the measurement, structure the logic, design the workflows, and build the systems that close those gaps. My work spans system design, AI evaluation, knowledge engineering, and product strategy — with a consistent focus on turning undefined or unverified capabilities into systems that are measurable, trustworthy, and ready to scale.</p>
+      <p>I'm not a designer or a software engineer — I'm the person who defines what needs to be true, then builds and proves it. The work below is grouped by depth, not chronology: <strong>Core Systems</strong> are the large, connected platforms I've built and owned end to end; <strong>Production Tools</strong> are focused systems solving one well-defined problem in production; <strong>Additional Builds</strong> are working prototypes and smaller tools that show range. Read top to bottom for depth, or jump straight to any card that matches what you're looking for.</p>
     </div>
   </section>
 
   <!-- Index -->
   <section class="cs-index">
-    <div class="label">◆ &nbsp;Selected Work · Five Cases</div>
+    <div class="label">◆ &nbsp;Selected Work</div>
+
+    <div class="label idx-group-label">Core Systems <span class="idx-group-sub">— large, connected platforms built and owned end to end</span></div>
     <ol>
-      <li class="cs-c1"><a href="#c1" class="idx-row">
-        <div class="idx-num">01</div>
-        <div>
-          <div class="idx-meta">
-            <span class="idx-evidence">Production System · NeoSavant.ai</span>
-            <span class="idx-stat">600+ events · 24,000 frames reviewed</span>
-          </div>
-          <h4 class="idx-title">AI Model Performance <em>QA Evaluation System</em> for a Computer Vision Platform</h4>
-          <p class="idx-hook">The product's core claim was precision. Nothing proved it was true until this existed.</p>
-          <div class="idx-tags">Evaluation · Computer Vision · LLM-as-Judge</div>
-        </div>
-        <div class="idx-arrow">→</div>
-      </a></li>
       <li class="cs-c2"><a href="#c2" class="idx-row">
-        <div class="idx-num">02</div>
+        <div class="idx-num">01</div>
         <div>
           <div class="idx-meta">
             <span class="idx-evidence">Production System · NeoSavant.ai</span>
@@ -763,7 +767,7 @@ body.cs {
         <div class="idx-arrow">→</div>
       </a></li>
       <li class="cs-c3"><a href="#c3" class="idx-row">
-        <div class="idx-num">03</div>
+        <div class="idx-num">02</div>
         <div>
           <div class="idx-meta">
             <span class="idx-evidence">Independent Build · Prototype</span>
@@ -774,6 +778,27 @@ body.cs {
         </div>
         <div class="idx-arrow">→</div>
       </a></li>
+    </ol>
+
+    <div class="label idx-group-label">Production Tools <span class="idx-group-sub">— focused systems solving one well-defined problem, in production</span></div>
+    <ol>
+      <li class="cs-c1"><a href="#c1" class="idx-row">
+        <div class="idx-num">03</div>
+        <div>
+          <div class="idx-meta">
+            <span class="idx-evidence">Production System · NeoSavant.ai</span>
+            <span class="idx-stat">600+ events · 24,000 frames reviewed</span>
+          </div>
+          <h4 class="idx-title">AI Model Performance <em>QA Evaluation System</em> for a Computer Vision Platform</h4>
+          <p class="idx-hook">The product's core claim was precision. Nothing proved it was true until this existed.</p>
+          <div class="idx-tags">Evaluation · Computer Vision · LLM-as-Judge</div>
+        </div>
+        <div class="idx-arrow">→</div>
+      </a></li>
+    </ol>
+
+    <div class="label idx-group-label">Additional Builds <span class="idx-group-sub">— working prototypes and smaller tools that show range</span></div>
+    <ol>
       <li class="cs-c4"><a href="#c4" class="idx-row">
         <div class="idx-num">04</div>
         <div>
@@ -801,86 +826,12 @@ body.cs {
     </ol>
   </section>
 
-  <!-- ==================== CASE 01 ==================== -->
-  <article class="cs cs-c1" id="c1">
-    <header class="cs-head">
-      <div class="n">Case Study<span class="big" style="color: rgb(13, 93, 88)">01</span></div>
-      <div>
-        <h2>AI Model Performance <em><b style="color: rgb(27, 161, 168)">QA Evaluation System</b></em> for a Computer Vision Platform.</h2>
-        <div class="tags">
-          <span class="accent">Evaluation Infrastructure</span>
-          <span>Computer Vision</span>
-          <span>Biomechanics</span>
-          <span>LLM-as-Judge</span>
-          <span>Ground-Truth Engineering</span>
-        </div>
-        <div style="font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-top: 10px;">Evidence: Production system · NeoSavant.ai</div>
-      </div>
-    </header>
-
-    <p class="cs-summary"><strong>Built the platform's first evaluation system</strong> for a computer vision product generating biomechanical analysis from pose estimation data. The core value proposition was precision, but no infrastructure existed to verify whether that claim was true. Established a structured evaluation framework combining statistical validation, manual annotation, and LLM-as-a-Judge to determine output reliability and system limitations. &nbsp;<a href="case-study-01-biomechanics-qa.html" style="font-family: var(--font-mono); font-size: 9pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--emerald); border-bottom: 0.5pt solid var(--emerald); text-decoration: none;">→ Read the full case study</a></p>
-
-    <div class="cs-context">
-      <div class="label">Environment<br/>& Systems</div>
-      <ul>
-        <li>Computer vision platform generating biomechanical metrics from pose estimation</li>
-        <li>Multi-stage evaluation system validating model outputs and interpretation quality</li>
-        <li>Pipeline combining statistical analysis, manual validation, and AI-based assessment</li>
-      </ul>
-    </div>
-
-    <div class="cs-spec">
-      <div class="col">
-        <div class="colhead"><span class="dot"></span>01 · Problem</div>
-        <h4>Precision claims with no way to prove them.</h4>
-        <p>The platform produced biomechanical analysis, but there was no mechanism to measure metric accuracy, assess model reliability, or determine where outputs broke down. The entire product strategy depended on delivering precision no competitor had achieved — yet the product was making claims it couldn't substantiate.</p>
-        <p style="margin-top:10px; color: var(--ink-3); font-size:8.5pt; font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.14em;">Risk surface</p>
-        <ul>
-          <li>Metric accuracy and consistency</li>
-          <li>Instability from noisy or occluded keypoints</li>
-          <li>No ground-truth validation</li>
-          <li>Unverified outputs presented as reliable</li>
-        </ul>
-      </div>
-      <div class="col">
-        <div class="colhead"><span class="dot"></span>02 · Approach</div>
-        <h4>Multi-stage evaluation as a core capability.</h4>
-        <ul>
-          <li>Designed and built a multi-stage evaluation system covering model output validation, measurement precision, and interpretation quality</li>
-          <li>Established ground truth through manual annotation and structured comparison against validated reference data</li>
-          <li>Implemented jitter analysis to quantify measurement instability across configurations and movement phases</li>
-          <li>Introduced LLM-as-a-Judge to assess output reasoning quality beyond statistical accuracy</li>
-          <li>Built the system using AI-assisted development workflows while maintaining full ownership of design and validation logic</li>
-        </ul>
-      </div>
-      <div class="col">
-        <div class="colhead"><span class="dot"></span>03 · Key Decisions</div>
-        <h4>Evaluation treated as a product, not QA.</h4>
-        <ul>
-          <li>Treated evaluation as a core product capability required before credible market positioning, not a post-launch QA step</li>
-          <li>Separated <em>measurement validation</em> (are the numbers right?) from <em>interpretation evaluation</em> (are the conclusions sound?)</li>
-          <li>Used statistical methods for accuracy verification and LLM-based evaluation for output quality, each applied where most appropriate</li>
-          <li>Prioritized surfacing system limitations honestly over forcing outputs that couldn't be trusted</li>
-        </ul>
-      </div>
-      <div class="col">
-        <div class="colhead"><span class="dot"></span>04 · Impact</div>
-        <h4>Precision made measurable.</h4>
-        <p>This was the platform's first method for evaluating AI model performance. Before this system, there was no way to verify whether the metrics, the heuristic scoring, or the keypoint detection models were producing reliable results.</p>
-        <ul>
-          <li>Processed 600+ tracked events and 24,000 manually reviewed frames through validation workflows</li>
-          <li>Identified primary sources of data instability and error propagation affecting downstream outputs</li>
-          <li>Enabled targeted model and pipeline corrections from observed failure patterns</li>
-          <li>Exposed logical flaws in the heuristic framework, directly informing the redesign in Case 02</li>
-        </ul>
-      </div>
-    </div>
-  </article>
+  <div class="cs-tier-label" id="tier-core">Core Systems</div>
 
   <!-- ==================== CASE 02 ==================== -->
   <article class="cs cs-c2" id="c2">
     <header class="cs-head">
-      <div class="n">Case Study<span class="big" style="color: rgb(13, 53, 151)">02</span></div>
+      <div class="n">Case Study<span class="big" style="color: rgb(13, 53, 151)">01</span></div>
       <div>
         <h2>Scalable <em>Expert Knowledge Codification</em> Framework for Motion Evaluation.</h2>
         <div class="tags">
@@ -1014,6 +965,86 @@ body.cs {
       </div>
     </div>
   </article>
+
+  <div class="cs-tier-label" id="tier-tools">Production Tools</div>
+
+  <!-- ==================== CASE 01 ==================== -->
+  <article class="cs cs-c1" id="c1">
+    <header class="cs-head">
+      <div class="n">Case Study<span class="big" style="color: rgb(13, 93, 88)">03</span></div>
+      <div>
+        <h2>AI Model Performance <em><b style="color: rgb(27, 161, 168)">QA Evaluation System</b></em> for a Computer Vision Platform.</h2>
+        <div class="tags">
+          <span class="accent">Evaluation Infrastructure</span>
+          <span>Computer Vision</span>
+          <span>Biomechanics</span>
+          <span>LLM-as-Judge</span>
+          <span>Ground-Truth Engineering</span>
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-top: 10px;">Evidence: Production system · NeoSavant.ai</div>
+      </div>
+    </header>
+
+    <p class="cs-summary"><strong>Built the platform's first evaluation system</strong> for a computer vision product generating biomechanical analysis from pose estimation data. The core value proposition was precision, but no infrastructure existed to verify whether that claim was true. Established a structured evaluation framework combining statistical validation, manual annotation, and LLM-as-a-Judge to determine output reliability and system limitations. &nbsp;<a href="case-study-01-biomechanics-qa.html" style="font-family: var(--font-mono); font-size: 9pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--emerald); border-bottom: 0.5pt solid var(--emerald); text-decoration: none;">→ Read the full case study</a></p>
+
+    <div class="cs-context">
+      <div class="label">Environment<br/>& Systems</div>
+      <ul>
+        <li>Computer vision platform generating biomechanical metrics from pose estimation</li>
+        <li>Multi-stage evaluation system validating model outputs and interpretation quality</li>
+        <li>Pipeline combining statistical analysis, manual validation, and AI-based assessment</li>
+      </ul>
+    </div>
+
+    <div class="cs-spec">
+      <div class="col">
+        <div class="colhead"><span class="dot"></span>01 · Problem</div>
+        <h4>Precision claims with no way to prove them.</h4>
+        <p>The platform produced biomechanical analysis, but there was no mechanism to measure metric accuracy, assess model reliability, or determine where outputs broke down. The entire product strategy depended on delivering precision no competitor had achieved — yet the product was making claims it couldn't substantiate.</p>
+        <p style="margin-top:10px; color: var(--ink-3); font-size:8.5pt; font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.14em;">Risk surface</p>
+        <ul>
+          <li>Metric accuracy and consistency</li>
+          <li>Instability from noisy or occluded keypoints</li>
+          <li>No ground-truth validation</li>
+          <li>Unverified outputs presented as reliable</li>
+        </ul>
+      </div>
+      <div class="col">
+        <div class="colhead"><span class="dot"></span>02 · Approach</div>
+        <h4>Multi-stage evaluation as a core capability.</h4>
+        <ul>
+          <li>Designed and built a multi-stage evaluation system covering model output validation, measurement precision, and interpretation quality</li>
+          <li>Established ground truth through manual annotation and structured comparison against validated reference data</li>
+          <li>Implemented jitter analysis to quantify measurement instability across configurations and movement phases</li>
+          <li>Introduced LLM-as-a-Judge to assess output reasoning quality beyond statistical accuracy</li>
+          <li>Built the system using AI-assisted development workflows while maintaining full ownership of design and validation logic</li>
+        </ul>
+      </div>
+      <div class="col">
+        <div class="colhead"><span class="dot"></span>03 · Key Decisions</div>
+        <h4>Evaluation treated as a product, not QA.</h4>
+        <ul>
+          <li>Treated evaluation as a core product capability required before credible market positioning, not a post-launch QA step</li>
+          <li>Separated <em>measurement validation</em> (are the numbers right?) from <em>interpretation evaluation</em> (are the conclusions sound?)</li>
+          <li>Used statistical methods for accuracy verification and LLM-based evaluation for output quality, each applied where most appropriate</li>
+          <li>Prioritized surfacing system limitations honestly over forcing outputs that couldn't be trusted</li>
+        </ul>
+      </div>
+      <div class="col">
+        <div class="colhead"><span class="dot"></span>04 · Impact</div>
+        <h4>Precision made measurable.</h4>
+        <p>This was the platform's first method for evaluating AI model performance. Before this system, there was no way to verify whether the metrics, the heuristic scoring, or the keypoint detection models were producing reliable results.</p>
+        <ul>
+          <li>Processed 600+ tracked events and 24,000 manually reviewed frames through validation workflows</li>
+          <li>Identified primary sources of data instability and error propagation affecting downstream outputs</li>
+          <li>Enabled targeted model and pipeline corrections from observed failure patterns</li>
+          <li>Exposed logical flaws in the heuristic framework, directly informing the redesign in Case 02</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <div class="cs-tier-label" id="tier-builds">Additional Builds</div>
 
   <!-- ==================== CASE 04 ==================== -->
   <article class="cs cs-c4" id="c4">
@@ -1152,6 +1183,12 @@ body.cs {
     <div class="subhead">Smaller-Scale Builds</div>
     <div class="cs-builds-grid">
       <div class="cell">
+        <div class="eyebrow">Self-Directed</div>
+        <h5>Voice Assistant Interaction Design</h5>
+        <p>Designed and built a working prototype of a voice-driven assistant, defining the conversation flow, intent handling, and response logic end to end.</p>
+        <div class="tags">Conversational Design · Prototype · Interaction Logic</div>
+      </div>
+      <div class="cell">
         <div class="eyebrow">NeoSavant.ai</div>
         <h5>AI-Assisted Product Operations Workflow</h5>
         <p>Built AI-assisted product operations workflows from meeting transcripts, Slack inputs, and project-specific agents, cutting acceptance-criteria iteration time by up to 10x.</p>
@@ -1211,7 +1248,7 @@ body.cs {
 
 <script>
 // Scroll-spy active state for top nav
-const sections = ['c1','c2','c3','c4','c5'];
+const sections = ['c2','c3','c1','c4','c5'];
 const links = Object.fromEntries(sections.map(id => [id, document.querySelector(`.cs-topbar nav a[href="#${id}"]`)]));
 const io = new IntersectionObserver((entries) => {
   entries.forEach(e => {
