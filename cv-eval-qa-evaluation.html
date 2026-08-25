@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Austin Stretz — QA & Evaluation Strategy</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="Technical deep dive: layered QA methods for validating a computer-vision evaluation system across the layers between model output and user-facing feedback."/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,8 92,50 50,92 8,50' fill='%231b4fd8'/%3E%3C/svg%3E"/>
+<meta property="og:type" content="article"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css?v=2"/>
+<link rel="stylesheet" href="cv-case-study-detail.css"/>
+</head>
+<body class="case-detail cs-c6">
+<div class="detail-shell">
+
+  <div class="detail-topbar">
+    <div class="brand"><span class="mark">◆</span> <a href="cv-evaluation-system-case-study.html">Improving a CV Evaluation System End to End</a> · Deep Dive 04/04</div>
+    <nav>
+      <a href="cv-eval-heuristics-metrics.html">← Prev</a>
+      <span class="nav-disabled">Next →</span>
+      <a href="cv-evaluation-system-case-study.html">Program</a>
+    </nav>
+  </div>
+
+  <section class="detail-hero">
+    <div>
+      <div class="kicker">Technical Deep Dive · 04 of 04</div>
+      <h1>QA &amp; <em>Evaluation Strategy</em></h1>
+      <p class="tagline">Developing and using multiple QA approaches to validate a computer-vision evaluation system across every layer between model output and user-facing feedback — there was no single "QA tool."</p>
+    </div>
+    <aside class="detail-meta">
+      <div class="label">Snapshot</div>
+      <dl>
+        <dt>Program</dt><dd><a href="cv-evaluation-system-case-study.html">CV Evaluation System</a></dd>
+        <dt>Workstream</dt><dd>04 of 04</dd>
+        <dt>Role</dt><dd>Designed and ran the layered QA strategy</dd>
+        <dt>Scale</dt><dd>600+ tracked events · 24,000 frames manually reviewed</dd>
+      </dl>
+    </aside>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">00</div>
+    <div>
+      <h3>Why It Mattered</h3>
+      <p class="lead">If a final score looked wrong, an end-to-end test alone couldn't tell us why. The wrong athlete could have been tracked, an action could have started late, a phase transition could have been late, a landmark could have been unstable, the measurement formula could have been wrong, or scoring configuration could have distorted a correct measurement.</p>
+      <p>The core principle: do not evaluate the whole system when you can isolate the variable that may be wrong. That required layered evaluation — a portfolio of complementary methods, not one QA pass.</p>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">01</div>
+    <div>
+      <h3>My Role</h3>
+      <p>I was the Product Lead responsible for the QA and validation strategy — designing the evaluation architecture, establishing ground-truth methodology, running precision/jitter analysis, and interpreting findings into release-readiness decisions. Implementation used AI-assisted development workflows to accelerate iteration; the system design, validation logic, and interpretation of results remained my responsibility.</p>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">02</div>
+    <div>
+      <h3>System Context</h3>
+      <p>The product pipeline runs from video through detection/tracking, pose, action boundary, phase boundary, metric window, measurement, score, to feedback. A structured output is more useful for QA than watching a playback and saying something "looks late" — so validation methods targeted specific stages of that chain.</p>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">03</div>
+    <div>
+      <h3>A Portfolio of QA Methods</h3>
+      <p>Six complementary methods, not one QA tool:</p>
+      <div class="grid-three">
+        <div class="card"><div class="eyebrow">Method 01</div><h4>Annotation &amp; reference boundaries</h4><p>Human-defined action/phase boundaries as a reference for comparison against model output. Ambiguity had to be documented, not treated as unquestioned truth.</p></div>
+        <div class="card"><div class="eyebrow">Method 02</div><h4>Model output review</h4><p>Structured action/phase ranges with explicit frame numbers, enabling deterministic comparison of predicted vs. reference timing.</p></div>
+        <div class="card"><div class="eyebrow">Method 03</div><h4>Controlled frame-range validation</h4><p>Known reference frames fed into the metric engine, bypassing production detection timing to isolate whether the metric behaves correctly given a correct frame.</p></div>
+        <div class="card"><div class="eyebrow">Method 04</div><h4>Expected vs. Actual review</h4><p>Comparing the intended metric definition with what the implementation actually calculated — catching the class of failure where code correctly calculates the wrong thing.</p></div>
+        <div class="card"><div class="eyebrow">Method 05</div><h4>End-to-end pipeline evaluation</h4><p>Reviewing model versions through the full inference pipeline, in the same environment where downstream behavior occurred — necessary but not sufficient on its own.</p></div>
+        <div class="card"><div class="eyebrow">Method 06</div><h4>AI-assisted validation experiments</h4><p>Independent measurement paths that didn't depend on the same production coordinates and formulas being tested, including experiments with Claude and ChatGPT.</p></div>
+      </div>
+      <div class="diagram-gate">
+        <div class="gate-row">
+          <div class="gate-box primary">Known Reference Frames</div>
+        </div>
+        <div class="gate-arrow">↓</div>
+        <div class="gate-box outcome">Metric / Heuristic Engine → Score</div>
+        <div class="gate-fallbacks">
+          <div class="gate-box alt">Production detection timing<span>bypassed for isolation</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">04</div>
+    <div>
+      <h3>A Validation Method Must Itself Be Validated</h3>
+      <p>One documented AI-assisted experiment attempted to independently measure angles from rendered pose keypoints visible in frames — using a visually independent path as a form of ground truth rather than asking the same coordinate system to validate itself. The implementation included keypoint-marker detection, configurable angle calculation, batch processing, and structured output.</p>
+      <p>It ultimately failed the reliability requirement: small visual markers, dynamic pose changes, and ambiguous keypoint identity made the approach too sensitive to image conditions to serve as trustworthy ground truth. I stopped investing in that methodology rather than accepting low-confidence QA because the tool happened to produce numbers.</p>
+      <div class="callout-detail"><strong>That failed experiment was useful.</strong> It clarified an important evaluation principle: a validation method must itself be validated. At least one additional AI-assisted QA effort was run beyond this one; the surviving documentation doesn't support describing its implementation in detail, so it isn't reconstructed here.</div>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">05</div>
+    <div>
+      <h3>QA Matrix &amp; Precision Evidence</h3>
+      <table class="detail-table">
+        <thead><tr><th>Layer</th><th>Primary QA question</th><th>Example method</th></tr></thead>
+        <tbody>
+          <tr><td>Annotation</td><td>Is the reference definition consistent?</td><td>Annotation review + ambiguity reporting</td></tr>
+          <tr><td>Object / person selection</td><td>Are we tracking the intended subject?</td><td>Output / footage comparison</td></tr>
+          <tr><td>Action detection</td><td>Are start/end boundaries correct?</td><td>Model vs. reference frames</td></tr>
+          <tr><td>Phase detection</td><td>Are transitions in the correct place and order?</td><td>Phase-range comparison</td></tr>
+          <tr><td>Metric timing</td><td>Is the metric running at the intended event?</td><td>Controlled reference windows</td></tr>
+          <tr><td>Metric formula</td><td>Does the calculation represent the intended behavior?</td><td>Expected → Actual → Proposed review</td></tr>
+          <tr><td>Scoring</td><td>Does the numeric mapping reflect product meaning?</td><td>Boundary / distribution tests</td></tr>
+          <tr><td>End-to-end</td><td>Does the complete pipeline behave coherently?</td><td>QA inference and result review</td></tr>
+          <tr><td>Independent validation</td><td>Can a second method corroborate the measurement?</td><td>AI-assisted / manual comparison</td></tr>
+        </tbody>
+      </table>
+      <p>Precision analysis quantified where the underlying technology's limits were, not just where the code had bugs:</p>
+      <table class="detail-table">
+        <thead><tr><th>Condition</th><th>Precision</th><th>Keypoint stability</th></tr></thead>
+        <tbody>
+          <tr><td>Best case</td><td>±2–3°</td><td>&lt;1.5 px jitter</td></tr>
+          <tr><td>Typical</td><td>±4–6°</td><td>2–5 px jitter</td></tr>
+          <tr><td>Worst case</td><td>±10–15°</td><td>5–12 px jitter</td></tr>
+        </tbody>
+      </table>
+      <div class="callout-detail"><strong>Critical finding:</strong> lower-body landmarks showed materially higher instability during occlusion and motion — a practical limitation of the underlying technology, not noise that could simply be filtered out. That finding directly shaped which metrics could ship and at what confidence level.</div>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">06</div>
+    <div>
+      <h3>Validation</h3>
+      <p>This work contributed to the broader model-improvement initiative — QA served as the mechanism for determining whether interventions in training data, temporal logic, and measurement actually improved behavior, rather than assuming they had.</p>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">07</div>
+    <div>
+      <h3>Outcome</h3>
+      <p class="lead">QA turned a complex AI pipeline from a largely end-to-end black box into a set of testable interfaces.</p>
+      <ul>
+        <li>Model / phase QA, heuristic tuning, and controlled comparison became routine, not one-off</li>
+        <li>Metric-timing validation and semantic-formula-defect detection ran independently of detector correctness</li>
+        <li>An unreliable validation method was identified and abandoned rather than kept for its numbers</li>
+        <li>Handoffs between Product, ML, Data Science, and engineering became clearer because failures could be isolated by layer</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">08</div>
+    <div>
+      <h3>Limits &amp; Attribution</h3>
+      <p>I designed the QA architecture, ground-truth methodology, and precision analysis, and made the release-readiness calls that followed from them. AI-assisted workflows (Claude Code, ChatGPT) accelerated implementation and iteration, but the validation logic and the decisions built on it were mine. I did not train the underlying pose-estimation or action-detection models.</p>
+    </div>
+  </section>
+
+  <footer class="detail-footer">
+    <div><a href="cv-evaluation-system-case-study.html">← Back to Improving a Computer Vision Evaluation System End to End</a></div>
+    <div class="footer-nav"><a href="cv-eval-heuristics-metrics.html">← Prev: Heuristics &amp; Metrics</a><a href="cv-evaluation-system-case-study.html">Back to Program</a></div>
+  </footer>
+</div>
+</body>
+</html>

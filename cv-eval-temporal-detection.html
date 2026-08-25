@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Austin Stretz — Temporal Detection & Event Boundaries</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="Technical deep dive: redefining how a computer-vision motion-analysis system identified meaningful event boundaries, treating timing as part of the measurement contract."/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,8 92,50 50,92 8,50' fill='%231b4fd8'/%3E%3C/svg%3E"/>
+<meta property="og:type" content="article"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css?v=2"/>
+<link rel="stylesheet" href="cv-case-study-detail.css"/>
+</head>
+<body class="case-detail cs-c6">
+<div class="detail-shell">
+
+  <div class="detail-topbar">
+    <div class="brand"><span class="mark">◆</span> <a href="cv-evaluation-system-case-study.html">Improving a CV Evaluation System End to End</a> · Deep Dive 02/04</div>
+    <nav>
+      <a href="cv-eval-training-data.html">← Prev</a>
+      <a href="cv-eval-heuristics-metrics.html">Next →</a>
+      <a href="cv-evaluation-system-case-study.html">Program</a>
+    </nav>
+  </div>
+
+  <section class="detail-hero">
+    <div>
+      <div class="kicker">Technical Deep Dive · 02 of 04</div>
+      <h1>Temporal Detection &amp; <em>Event Boundaries</em></h1>
+      <p class="tagline">Helping redefine how a computer-vision motion-analysis system identified meaningful event boundaries — because downstream metrics depended on exactly which frame or frame window represented the intended biomechanical event.</p>
+    </div>
+    <aside class="detail-meta">
+      <div class="label">Snapshot</div>
+      <dl>
+        <dt>Program</dt><dd><a href="cv-evaluation-system-case-study.html">CV Evaluation System</a></dd>
+        <dt>Workstream</dt><dd>02 of 04</dd>
+        <dt>Role</dt><dd>Product-side boundary definitions &amp; validation strategy</dd>
+        <dt>Partners</dt><dd>ML, engineering</dd>
+      </dl>
+    </aside>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">00</div>
+    <div>
+      <h3>Why It Mattered</h3>
+      <p class="lead">The problem was not simply detecting an action. The evaluation engine was phase-aware — a joint angle measured too early or too late could be mathematically correct for that frame and still wrong for the evaluation.</p>
+      <p>The dependency ran: event detection → frame selection → keypoint state → metric value → score → user feedback. A late boundary could propagate into an inaccurate evaluation even when every downstream formula executed correctly. That made temporal detection part of the product's measurement system, not just an ML classification problem.</p>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">01</div>
+    <div>
+      <h3>My Role</h3>
+      <p>I worked on the product-side definition of event boundaries and their relationship to downstream measurement, turning domain descriptions of movement into observable events that ML/engineering teams could detect consistently. I also tracked a later shot-detection delay related to post-processing state logic and helped structure validation so downstream heuristics could keep being tested while that upstream issue was investigated.</p>
+      <div class="callout-detail">I did not write the production state machine or LSTM implementation.</div>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">02</div>
+    <div>
+      <h3>System Context</h3>
+      <p>Boundaries function as measurement gates, not metadata:</p>
+      <div class="diagram-chain-wrap"><div class="diagram-chain">
+        <div class="chain-node zone"><span>Event Detection</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node"><span>Frame Selection</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node"><span>Keypoint State</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node zone"><span>Metric Value</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node"><span>Score</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node"><span>User Feedback</span></div>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">03</div>
+    <div>
+      <h3>Boundary Design Criteria</h3>
+      <p>A useful phase boundary had to satisfy three conditions, preventing the system from defining phases around coaching language humans understand but a model can't reliably observe.</p>
+      <div class="grid-three">
+        <div class="card"><div class="eyebrow">Criterion</div><h4>Objective</h4><p>Observable evidence that the event occurred.</p></div>
+        <div class="card"><div class="eyebrow">Criterion</div><h4>Reliable across technique</h4><p>The trigger stays meaningful even when athletes execute the movement differently.</p></div>
+        <div class="card"><div class="eyebrow">Criterion</div><h4>Detectable</h4><p>Available model outputs and sensor geometry support a high-confidence determination.</p></div>
+      </div>
+      <h4>Primary, confirmation, backup, fail-safe</h4>
+      <p>Rather than rely on one boolean trigger, the strategy layered complementary evidence — because the "best" landmark can disappear behind an object or body part at exactly the moment it's most useful.</p>
+      <div class="diagram-gate">
+        <div class="gate-row">
+          <div class="gate-box primary">Primary signal</div>
+          <div class="gate-plus">+</div>
+          <div class="gate-box">Confirmation signal</div>
+        </div>
+        <div class="gate-arrow">↓</div>
+        <div class="gate-box outcome">Declare event</div>
+        <div class="gate-fallbacks">
+          <div class="gate-box alt">Backup signal<span>used if primary is unavailable</span></div>
+          <div class="gate-box alt">Fail-safe<span>bounded fallback behavior</span></div>
+        </div>
+      </div>
+      <p>No production thresholds or proprietary event formulas are reproduced here.</p>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">04</div>
+    <div>
+      <h3>Isolating Timing From Measurement</h3>
+      <p>Later in the program, the team identified a delay in action detection. The suspected cause was not necessarily the trained model itself — the investigation focused on post-processing/state-machine behavior. From a product perspective this was high priority because timing affected metric frame selection, scoring, visible overlays, and the credibility of user feedback. But waiting for the full detection investigation to conclude would have blocked evaluation work.</p>
+      <p>I proposed continuing heuristic validation using controlled, known-good frame ranges — asking a narrower question: if we provide the correct action, phase, and metric timing manually, do the metric outputs reflect their intended purpose? That separated two hypotheses: the detector is choosing the wrong frame, versus the metric is wrong even given the correct frame. This let debugging continue in parallel instead of treating the entire inference-to-score chain as one black box.</p>
+      <div class="callout-detail">I helped structure the investigation and created a controlled-input path so downstream metric QA could continue while the timing defect was investigated. I did not fix the production state machine.</div>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">05</div>
+    <div>
+      <h3>Boundary Specification Pattern</h3>
+      <p class="code-card-caption">Illustrative only — no production thresholds or proprietary event formulas.</p>
+      <div class="code-card">event_boundary:
+  purpose: "physical transition represented by this event"
+
+  primary_signal:
+    type: "geometric_or_kinematic_condition"
+
+  confirmation:
+    type: "independent_supporting_signal"
+
+  backup:
+    when: "preferred landmark confidence is insufficient"
+    use: "alternate observable condition"
+
+  fail_safe:
+    type: "bounded fallback behavior"
+
+  downstream_use:
+    - metric_window_start
+    - metric_window_end
+    - visualization</div>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">06</div>
+    <div>
+      <h3>Validation</h3>
+      <p>The temporal work provided a more rigorous interface between activity recognition and the measurement engine, and directly informed the later metric redesign — where some metrics moved from broad phase ranges to a specific event frame, a deliberate interval between two events, or continuous measurement within a constrained window. This work contributed to the broader model-improvement initiative alongside training-data, measurement, model, and QA changes.</p>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">07</div>
+    <div>
+      <h3>Outcome</h3>
+      <p class="lead">Event boundaries stopped being treated as metadata and became explicit measurement gates.</p>
+      <ul>
+        <li>Boundary criteria became objective, technique-reliable, and detectable — not coaching language a model can't observe</li>
+        <li>Primary/confirmation/backup/fail-safe logic replaced single fragile triggers</li>
+        <li>A controlled-input testing path let metric validation and detector debugging proceed independently</li>
+        <li>Metric timing moved from broad phase windows toward metric-specific event windows</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">08</div>
+    <div>
+      <h3>Limits &amp; Attribution</h3>
+      <p>I defined boundary requirements at the product level and designed the controlled-input validation strategy. I did not write the production state machine or LSTM implementation, and I don't claim to have personally resolved the underlying detection-timing defect.</p>
+    </div>
+  </section>
+
+  <footer class="detail-footer">
+    <div><a href="cv-evaluation-system-case-study.html">← Back to Improving a Computer Vision Evaluation System End to End</a></div>
+    <div class="footer-nav"><a href="cv-eval-training-data.html">← Prev: Training Data</a><a href="cv-eval-heuristics-metrics.html">Next: Heuristics &amp; Metrics →</a></div>
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Austin Stretz — Heuristics & Metrics Engine</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="Technical deep dive: a structured product review of a biomechanics evaluation layer, converting coaching intent into explicit, auditable measurement logic."/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,8 92,50 50,92 8,50' fill='%231b4fd8'/%3E%3C/svg%3E"/>
+<meta property="og:type" content="article"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css?v=2"/>
+<link rel="stylesheet" href="cv-case-study-detail.css"/>
+</head>
+<body class="case-detail cs-c6">
+<div class="detail-shell">
+
+  <div class="detail-topbar">
+    <div class="brand"><span class="mark">◆</span> <a href="cv-evaluation-system-case-study.html">Improving a CV Evaluation System End to End</a> · Deep Dive 03/04</div>
+    <nav>
+      <a href="cv-eval-temporal-detection.html">← Prev</a>
+      <a href="cv-eval-qa-evaluation.html">Next →</a>
+      <a href="cv-evaluation-system-case-study.html">Program</a>
+    </nav>
+  </div>
+
+  <section class="detail-hero">
+    <div>
+      <div class="kicker">Technical Deep Dive · 03 of 04</div>
+      <h1>Heuristics &amp; <em>Metrics Engine</em></h1>
+      <p class="tagline">Leading a structured product review of the biomechanics evaluation layer to determine whether the system was actually measuring the physical behaviors it claimed to measure.</p>
+    </div>
+    <aside class="detail-meta">
+      <div class="label">Snapshot</div>
+      <dl>
+        <dt>Program</dt><dd><a href="cv-evaluation-system-case-study.html">CV Evaluation System</a></dd>
+        <dt>Workstream</dt><dd>03 of 04</dd>
+        <dt>Role</dt><dd>Owned the Heuristics &amp; Metrics specification revisions</dd>
+        <dt>Partners</dt><dd>Domain SMEs, engineering</dd>
+      </dl>
+    </aside>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">00</div>
+    <div>
+      <h3>Why It Mattered</h3>
+      <p class="lead">The product transformed pose and object data into coaching evaluation. That sounds like a simple pipeline — keypoints → measurement → score — but every metric carried hidden assumptions.</p>
+      <p>A metric could be wrong because the wrong landmarks were used, a derived point didn't represent the intended physical concept, an input was too unreliable under occlusion, a formula measured a proxy rather than the intended behavior, the metric ran across the wrong phase window, or the scoring range didn't match the coaching meaning. "The code runs" was not a sufficient acceptance criterion.</p>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">01</div>
+    <div>
+      <h3>My Role</h3>
+      <p>I reviewed the evaluation logic from the product/domain side and owned multiple revisions to the Heuristics &amp; Metrics specification — identifying outdated assumptions, comparing documented formulas with implemented formulas, flagging risky or unreliable landmark inputs, redefining metric timing, and documenting the intended physical meaning so future contributors could understand why the implementation existed.</p>
+      <div class="callout-detail">I collaborated with technical contributors to validate feasibility and implementation. I did not claim ownership of every engine feature or every code revision.</div>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">02</div>
+    <div>
+      <h3>System Context — Making Expertise Executable</h3>
+      <p>This workstream sits on top of an earlier one: turning one expert's coaching judgment into structured, auditable logic. Statements like "the hand should be vertical" or "measure the athlete at the set point" are understandable to a coach but insufficient for an automated system. Making that translation legible and reviewable end to end was the core of this work:</p>
+      <div class="diagram-chain-wrap"><div class="diagram-chain">
+        <div class="chain-node zone"><span>Coaching Expertise</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node"><span>Machine-Observable Signals</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node zone"><span>Measurable Geometry / Timing</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node"><span>Scoring Behavior</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node"><span>User Interpretation</span></div>
+      </div></div>
+      <p class="diagram-caption">Domain intent had to survive translation into explicit landmarks, geometric relationships, event boundaries, measurement formulas, timing windows, aggregation behavior, scoring rules, and edge-case behavior — without losing what the coach originally meant.</p>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">03</div>
+    <div>
+      <h3>Expected → Actual → Proposed</h3>
+      <p>For each metric, I compared the intended coaching/biomechanical purpose (<strong>Expected</strong>) against what the implemented code was actually calculating (<strong>Actual</strong>), then proposed a corrected approach using reliable inputs (<strong>Proposed</strong>). This caught semantic defects — cases where a formula was technically valid and still wrong for the product because it used unreliable landmarks, measured a proxy rather than the intended behavior, or ran at the wrong point in the movement.</p>
+      <div class="grid-three">
+        <div class="card">
+          <div class="eyebrow">Expected</div>
+          <h4>Intended behavior</h4>
+          <p>Measure body alignment using reliable landmarks at the critical event window.</p>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Actual</div>
+          <h4>Implemented behavior</h4>
+          <p>Measurement depends on fragile / indirect inputs and broad timing.</p>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Proposed</div>
+          <h4>Corrected approach</h4>
+          <p>Simpler landmarks + a player-relative reference + an explicit event window.</p>
+        </div>
+      </div>
+      <p>The repeated pattern: prefer the simplest reliable measurement that preserves the intended meaning.</p>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">04</div>
+    <div>
+      <h3>Timing Was Part of the Metric Definition</h3>
+      <p>Earlier configuration often attached many metrics to broad phase ranges. The mature model separated <em>what should be measured</em> from <em>when it should be measured</em>, defining each metric as single-frame, continuous-window, frame-average, ratio/percentage, or duration between events. The specification also moved toward neutral <strong>Primary/Support</strong> terminology instead of hard-coding one sport's left/right language — making asymmetric logic easier to reason about and reusable across activities. I contributed to these input and naming revisions; I do not claim sole ownership of the broader multi-activity architecture.</p>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">05</div>
+    <div>
+      <h3>Simplified Metric Contract</h3>
+      <p class="code-card-caption">Illustrative only — does not reproduce the production schema.</p>
+      <div class="code-card">metric:
+  purpose: "domain behavior being evaluated"
+
+  inputs:
+    landmarks: [...]
+    derived_points: [...]
+    reference_geometry: [...]
+
+  timing:
+    begin: event_A
+    end: event_B
+
+  measurement:
+    type: angle | distance | ratio | time
+
+  aggregation:
+    type: single_frame | frame_average | ratio | duration
+
+  scoring:
+    type: continuous_curve | threshold
+    target: "domain-defined ideal"
+
+  validity:
+    rule: "ignore invalid / implausible frames"</div>
+      <div class="grid-three">
+        <div class="card"><div class="eyebrow">Scoring type</div><h4>Continuous / linear</h4><p>Performance degrades progressively away from an ideal region.</p></div>
+        <div class="card"><div class="eyebrow">Scoring type</div><h4>Distribution-based</h4><p>Performance decays smoothly with distance from a target.</p></div>
+        <div class="card"><div class="eyebrow">Scoring type</div><h4>Binary</h4><p>Used when a condition is meaningfully pass/fail.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">06</div>
+    <div>
+      <h3>Validation</h3>
+      <p>Metric validation depended on isolating timing from formula correctness — using known-good frame ranges to ask whether, given the correct physical moment, a formula produced a measurement consistent with intended coaching behavior. This work contributed to the broader model-improvement initiative alongside training-data, temporal-boundary, model, and QA changes, and connected directly into the program's broader QA strategy.</p>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">07</div>
+    <div>
+      <h3>Outcome</h3>
+      <p class="lead">The evaluation layer became more explicit and auditable — reducing the risk of technically valid but semantically incorrect evaluation.</p>
+      <ul>
+        <li>Each metric's meaning, inputs, timing, aggregation, and scoring became explicit and documented</li>
+        <li>Configuration became a contract between Product, domain expertise, Data Science, and engineering</li>
+        <li>Terminology moved toward reusable, activity-scoped concepts instead of single-sport language</li>
+        <li>Future contributors could understand not just what number to compute, but why the metric existed</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">08</div>
+    <div>
+      <h3>Limits &amp; Attribution</h3>
+      <p>I owned the product-side review and multiple specification revisions, and contributed to the metric-input and naming changes. I did not write the core engine implementation, and I do not claim sole ownership of the multi-activity architecture or the full feedback/cue schema — those were collaborative and, in parts, implemented by others.</p>
+    </div>
+  </section>
+
+  <footer class="detail-footer">
+    <div><a href="cv-evaluation-system-case-study.html">← Back to Improving a Computer Vision Evaluation System End to End</a></div>
+    <div class="footer-nav"><a href="cv-eval-temporal-detection.html">← Prev: Temporal Detection</a><a href="cv-eval-qa-evaluation.html">Next: QA &amp; Evaluation →</a></div>
+  </footer>
+</div>
+</body>
+</html>

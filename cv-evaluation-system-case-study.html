@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Austin Stretz — Improving a Computer Vision Evaluation System End to End</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="AI product management case study on improving a markerless computer-vision evaluation system through training-data design, temporal event detection, biomechanics metrics, and layered QA."/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,8 92,50 50,92 8,50' fill='%231b4fd8'/%3E%3C/svg%3E"/>
+<meta property="og:type" content="article"/>
+<meta property="og:title" content="Improving a Computer Vision Evaluation System End to End"/>
+<meta property="og:description" content="A connected improvement program spanning training-data design, temporal detection, biomechanics metrics, and QA."/>
+<meta name="twitter:card" content="summary"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css?v=2"/>
+<link rel="stylesheet" href="cv-case-study-detail.css"/>
+</head>
+<body class="case-detail cs-c6">
+<div class="detail-shell">
+
+  <div class="detail-topbar">
+    <div class="brand"><span class="mark">◆</span> Austin Stretz · Flagship Program</div>
+    <nav>
+      <a href="cv-eval-training-data.html">01</a>
+      <a href="cv-eval-temporal-detection.html">02</a>
+      <a href="cv-eval-heuristics-metrics.html">03</a>
+      <a href="cv-eval-qa-evaluation.html">04</a>
+      <a href="case-studies.html">Portfolio</a>
+    </nav>
+  </div>
+
+  <section class="detail-hero">
+    <div>
+      <div class="kicker">AI Product Management · Program Case Study</div>
+      <h1>Improving a Computer Vision Evaluation System <em>End to End</em></h1>
+      <p class="tagline">A connected improvement program spanning training-data design, temporal detection, biomechanics metrics, and QA — not one model fix, but coordinated interventions across every place error could enter the evaluation system.</p>
+    </div>
+    <aside class="detail-meta">
+      <div class="label">Snapshot</div>
+      <dl>
+        <dt>Role</dt><dd>Product Owner / Product Manager</dd>
+        <dt>Product</dt><dd>Markerless computer-vision motion analysis</dd>
+        <dt>Focus</dt><dd>ML data, temporal activity recognition, biomechanics metrics, QA</dd>
+        <dt>Partners</dt><dd>ML, Data Science, AI engineering, annotation operations, domain SMEs</dd>
+        <dt>Contribution</dt><dd>Product requirements, technical specification, cross-functional decision-making, validation strategy</dd>
+      </dl>
+    </aside>
+  </section>
+
+  <section class="stat-strip">
+    <div><b>4</b><span>Workstreams</span></div>
+    <div><b>≈70%→≈90%*</b><span>Measured model accuracy</span></div>
+    <div><b>End‑to‑End</b><span>Evaluation system</span></div>
+    <div class="footnote-row">*Broader improvement initiative. Training-data, temporal logic, model, measurement, and QA changes all contributed — this figure is not attributable to any single workstream.</div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">00</div>
+    <div>
+      <h3>Executive Summary</h3>
+      <p class="lead">The product had to do more than recognize that a motion occurred. It had to determine who and what to track, when meaningful events occurred, which frames contained the correct biomechanical state, what to measure from those frames, and how to convert those measurements into a useful evaluation.</p>
+      <p>That created a cascading quality problem. A training-data ambiguity could weaken a model. A late event boundary could select the wrong frame. A mathematically valid formula could still measure the wrong physical behavior. A scoring rule could amplify an incorrect measurement into misleading feedback.</p>
+      <p>I helped lead a connected improvement program across those interfaces — redesigning annotation requirements around new model inputs, defining more deterministic temporal boundaries, auditing implemented measurement formulas against their intended coaching purpose, refining metric timing and configuration, and establishing multiple QA paths to isolate where errors originated.</p>
+      <p>The result was not simply a more accurate detector. It was a more explicit and testable evaluation system.</p>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">01</div>
+    <div>
+      <h3>Where Product Decisions Entered the System</h3>
+      <p>The product could be wrong for several different reasons while producing an output that looked superficially valid. That made the central challenge <strong>traceability</strong> — understanding which layer was responsible for an incorrect evaluation.</p>
+      <div class="diagram-chain-wrap"><div class="diagram-chain">
+        <div class="chain-node zone"><span>Training Data</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node"><span>Detection</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node zone"><span>Event Timing</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node"><span>Frame / Keypoint Selection</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node zone"><span>Metrics</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node"><span>Scoring</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node"><span>Feedback</span></div>
+      </div></div>
+      <p class="diagram-caption">Highlighted stages mark where this program intervened. QA is not one stage in this chain — it validated correctness across all of them.</p>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">02</div>
+    <div>
+      <h3>Four Connected Workstreams</h3>
+      <div class="grid-two">
+        <div class="card">
+          <div class="eyebrow">Workstream 01</div>
+          <h4>What information does the model actually need to learn the intended behavior?</h4>
+          <p>Redesigned the annotation specification to add the training signals downstream evaluation actually depended on — more precise object definitions, person-of-interest rules, additional action attributes, and explicit edge-case handling.</p>
+          <ul><li>Annotation taxonomy design</li><li>Model-input reasoning</li><li>Cost / information tradeoffs</li></ul>
+          <a class="deep-link" href="cv-eval-training-data.html">View technical deep dive →</a>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Workstream 02</div>
+          <h4>How do we reliably determine when a meaningful physical event has occurred?</h4>
+          <p>Developed a phase-boundary strategy built on objective, technique-reliable, detectable triggers — with primary, confirmation, backup, and fail-safe signals rather than one fragile cue.</p>
+          <ul><li>Temporal activity-recognition requirements</li><li>Failure isolation</li><li>Downstream dependency analysis</li></ul>
+          <a class="deep-link" href="cv-eval-temporal-detection.html">View technical deep dive →</a>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Workstream 03</div>
+          <h4>Is the system measuring the intended physical behavior, using reliable inputs, at the correct moment?</h4>
+          <p>Ran a structured Expected → Actual → Proposed audit of the evaluation layer, translating coaching intent into explicit landmarks, timing windows, and scoring behavior.</p>
+          <ul><li>Domain modeling</li><li>Configurable product systems</li><li>Measurement design</li></ul>
+          <a class="deep-link" href="cv-eval-heuristics-metrics.html">View technical deep dive →</a>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Workstream 04</div>
+          <h4>How do we prove which layer is wrong when an end-to-end AI output is incorrect?</h4>
+          <p>Treated QA as a system of complementary evaluation methods — reference boundaries, controlled frame ranges, Expected-vs-Actual review, and multiple AI-assisted validation experiments.</p>
+          <ul><li>AI evaluation strategy</li><li>Ground-truth design</li><li>Experiment design</li></ul>
+          <a class="deep-link" href="cv-eval-qa-evaluation.html">View technical deep dive →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">03</div>
+    <div>
+      <h3>Key Product Decisions</h3>
+      <div class="grid-two">
+        <div class="decision-card">
+          <h4>Treat accuracy as a systems problem</h4>
+          <div class="d-field"><span class="d-label">Why</span><p>The first instinct in an ML product can be to assume a model needs retraining. Evaluation quality depended on a chain of data, model, timing, geometry, configuration, and scoring decisions.</p></div>
+          <div class="d-field"><span class="d-label">Tradeoff</span><p>Slower than a single-point fix — required working backward from incorrect product behavior across every layer rather than forward from one favorite technical solution.</p></div>
+          <div class="d-field"><span class="d-label">What it enabled</span><p>A repeatable way to locate which layer actually caused a bad output, instead of guessing.</p></div>
+        </div>
+        <div class="decision-card">
+          <h4>Maximize information gain, not annotation volume</h4>
+          <div class="d-field"><span class="d-label">Why</span><p>Not every plausible new label was worth its annotation cost. New datapoints were added only when they had a clear downstream use.</p></div>
+          <div class="d-field"><span class="d-label">Tradeoff</span><p>Deliberately left some theoretically useful signals unlabeled at scale, favoring targeted proof-of-concept subsets over exhaustive coverage.</p></div>
+          <div class="d-field"><span class="d-label">What it enabled</span><p>A training-data revision scoped to what the model and downstream evaluation actually needed.</p></div>
+        </div>
+        <div class="decision-card">
+          <h4>Prefer reliable inputs over richer-but-fragile ones</h4>
+          <div class="d-field"><span class="d-label">Why</span><p>Several theoretically attractive inputs were operationally fragile under occlusion, tracking uncertainty, or inconsistent availability.</p></div>
+          <div class="d-field"><span class="d-label">Tradeoff</span><p>Sometimes gave up geometric precision on paper for a simpler measurement that behaved consistently in real footage.</p></div>
+          <div class="d-field"><span class="d-label">What it enabled</span><p>Metrics that stayed faithful to their intended meaning across a wider range of real conditions.</p></div>
+        </div>
+        <div class="decision-card">
+          <h4>Separate detector correctness from metric correctness</h4>
+          <div class="d-field"><span class="d-label">Why</span><p>When upstream detection timing was under investigation, waiting for that fix would have blocked all downstream evaluation work.</p></div>
+          <div class="d-field"><span class="d-label">Tradeoff</span><p>Required building a controlled-input testing path rather than only testing end to end.</p></div>
+          <div class="d-field"><span class="d-label">What it enabled</span><p>Metric validation and detector debugging to proceed in parallel instead of blocking on one another.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">04</div>
+    <div>
+      <h3>What Changed</h3>
+      <table class="detail-table">
+        <thead><tr><th>Earlier pattern</th><th>More mature pattern</th></tr></thead>
+        <tbody>
+          <tr><td>General annotation definitions</td><td>Model-driven datapoint requirements and edge-case rules</td></tr>
+          <tr><td>Broad object classes</td><td>More precise model-relevant definitions</td></tr>
+          <tr><td>Interpretation-heavy boundaries</td><td>Observable event criteria with backup / fail-safe logic</td></tr>
+          <tr><td>Broad phase windows for many metrics</td><td>Metric-specific event windows and aggregation</td></tr>
+          <tr><td>Documentation of intended formulas</td><td>Expected-vs-implemented code review and corrections</td></tr>
+          <tr><td>End-to-end failure as one problem</td><td>Layered QA that isolates detection, timing, measurement, and scoring</td></tr>
+          <tr><td>Sport-specific terminology</td><td>More reusable Primary / Support and activity-scoped concepts</td></tr>
+          <tr><td>Model output treated as the result</td><td>Traceable path from model output to measurement, score, and feedback</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">05</div>
+    <div>
+      <h3>Outcome</h3>
+      <p class="lead">Across the broader improvement initiative, measured model accuracy moved from approximately <strong>70% to approximately 90%</strong>.</p>
+      <p class="diagram-caption">Broader improvement initiative. Training-data, temporal logic, model, measurement, and QA changes all contributed.</p>
+      <p>The training-data redesign was a significant contributor, but the program also included changes to temporal event logic, measurement definitions, model implementation, heuristic timing, and QA. The value of the work was larger than a single accuracy metric — it produced a system that was easier to reason about:</p>
+      <ul>
+        <li>Training signals had clearer purpose</li>
+        <li>Temporal events had explicit detection criteria</li>
+        <li>Measurements were tied to intended physical behaviors</li>
+        <li>Metric timing became configurable and testable</li>
+        <li>QA could isolate failures by layer</li>
+        <li>Technical documentation preserved the intended meaning of the system for future contributors</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">06</div>
+    <div>
+      <h3>Evidence Without Exposing Proprietary Material</h3>
+      <div class="callout-detail"><strong>The original work produced internal SOWs, annotation specs, event-boundary strategies, measurement diagrams, configuration guides, and QA outputs.</strong> Those artifacts are confidential and are not reproduced here. The public case study instead reconstructs the useful evidence in sanitized form.</div>
+      <div class="grid-three">
+        <div class="card">
+          <div class="eyebrow">Artifact 01</div>
+          <h4>Training Data Specification Evolution</h4>
+          <p>A sanitized before/after requirements structure showing how a model need became an executable annotation requirement.</p>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Artifact 02</div>
+          <h4>Expected → Actual → Proposed Metric Audit</h4>
+          <p>The strongest evidence artifact in this program — a sanitized example of how an implemented metric was reviewed against its intended coaching purpose and corrected.</p>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Artifact 03</div>
+          <h4>Layered QA / Failure Isolation</h4>
+          <p>Detection correctness, measurement correctness, and evaluation correctness treated as independently testable — including controlled-input validation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">07</div>
+    <div>
+      <h3>Technical Deep Dives</h3>
+      <p>Each deep dive uses the same structure: the problem, my role, the system context, the investigation, key decisions, evidence, validation, and outcome — with an explicit accounting of what is and isn't mine to claim.</p>
+      <div class="skills">
+        <div><b>01</b><a href="cv-eval-training-data.html">Training Data &amp; Annotation Design →</a></div>
+        <div><b>02</b><a href="cv-eval-temporal-detection.html">Temporal Detection &amp; Event Boundaries →</a></div>
+        <div><b>03</b><a href="cv-eval-heuristics-metrics.html">Heuristics &amp; Metrics Engine →</a></div>
+        <div><b>04</b><a href="cv-eval-qa-evaluation.html">QA &amp; Evaluation Strategy →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="detail-footer">
+    <div>Designed and documented by Austin Stretz</div>
+    <div><a href="case-studies.html">Back to Portfolio</a></div>
+  </footer>
+</div>
+</body>
+</html>

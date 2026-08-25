@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Austin Stretz — Training Data & Annotation Design</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="Technical deep dive: redesigning annotation requirements for a markerless computer-vision product to add the training signals detection and evaluation actually needed."/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,8 92,50 50,92 8,50' fill='%231b4fd8'/%3E%3C/svg%3E"/>
+<meta property="og:type" content="article"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css?v=2"/>
+<link rel="stylesheet" href="cv-case-study-detail.css"/>
+</head>
+<body class="case-detail cs-c6">
+<div class="detail-shell">
+
+  <div class="detail-topbar">
+    <div class="brand"><span class="mark">◆</span> <a href="cv-evaluation-system-case-study.html">Improving a CV Evaluation System End to End</a> · Deep Dive 01/04</div>
+    <nav>
+      <span class="nav-disabled">← Prev</span>
+      <a href="cv-eval-temporal-detection.html">Next →</a>
+      <a href="cv-evaluation-system-case-study.html">Program</a>
+    </nav>
+  </div>
+
+  <section class="detail-hero">
+    <div>
+      <div class="kicker">Technical Deep Dive · 01 of 04</div>
+      <h1>Training Data &amp; <em>Annotation Design</em></h1>
+      <p class="tagline">Redesigning the annotation requirements for a markerless computer-vision product after recognizing the ML system needed additional, more precisely defined training signals to improve detection and downstream evaluation.</p>
+    </div>
+    <aside class="detail-meta">
+      <div class="label">Snapshot</div>
+      <dl>
+        <dt>Program</dt><dd><a href="cv-evaluation-system-case-study.html">CV Evaluation System</a></dd>
+        <dt>Workstream</dt><dd>01 of 04</dd>
+        <dt>Role</dt><dd>Owned the annotation-spec revisions</dd>
+        <dt>Partners</dt><dd>ML, Data Science, AI engineering, annotation operations</dd>
+      </dl>
+    </aside>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">00</div>
+    <div>
+      <h3>Why It Mattered</h3>
+      <p class="lead">This was not primarily a data-cleaning exercise. The central product question was: what new information is worth creating, how should it be represented, and how do we make it consistent enough for the model to learn from?</p>
+      <p>The existing annotation workflow was already reasonably mature — action boundaries, multiple phases, object detection, background examples, basic edge-case handling, and structured temporal output. But the model and evaluation stack had evolved. Downstream logic increasingly depended on knowing the correct person, object, side of the body, spatial relationships, and temporal context.</p>
+      <p>The need was not "label more data." It was <strong>add the right information</strong>.</p>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">01</div>
+    <div>
+      <h3>My Role</h3>
+      <p>I owned the revisions in the later annotation specification. The process was collaborative: ML and Data Science helped determine which datapoints could improve model behavior, AI engineering helped validate how those outputs would be consumed, and annotation specialists helped determine what could be labeled consistently and at reasonable cost. I translated those needs into the working specification, facilitated decisions, and maintained the executable requirement set.</p>
+      <div class="callout-detail">I did not personally annotate the full dataset or train the production models.</div>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">02</div>
+    <div>
+      <h3>System Context</h3>
+      <p>Annotation requirements sit at an unusual interface — understandable to humans while producing data that's useful to models. The work mattered because the downstream product depended on these outputs for event timing and asymmetric evaluation.</p>
+      <div class="diagram-chain-wrap"><div class="diagram-chain">
+        <div class="chain-node zone"><span>Domain / Model Need</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node"><span>Annotation Requirement</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node"><span>Human Annotation</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node"><span>Structured Training Data</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node"><span>Model Training</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node zone"><span>Action + Phase Outputs</span></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node"><span>Evaluation Engine</span></div>
+      </div></div>
+      <p class="diagram-caption">A richer label was useful only when there was a clear path from the label to model behavior or product behavior.</p>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">03</div>
+    <div>
+      <h3>The Design Problem</h3>
+      <p>A label can fail in at least four ways. The revision addressed all four.</p>
+      <div class="grid-two">
+        <div class="card"><div class="eyebrow">Failure mode</div><h4>Semantically wrong</h4><p>It does not represent what the model actually needs.</p></div>
+        <div class="card"><div class="eyebrow">Failure mode</div><h4>Ambiguous</h4><p>Two annotators could reasonably apply it differently.</p></div>
+        <div class="card"><div class="eyebrow">Failure mode</div><h4>Operationally expensive</h4><p>The incremental model value doesn't justify the annotation effort.</p></div>
+        <div class="card"><div class="eyebrow">Failure mode</div><h4>Temporally misleading</h4><p>Technically true for the action but not observable in every frame.</p></div>
+      </div>
+      <div class="callout-detail"><strong>Cross-functional decision example.</strong> One proposed object-keypoint task could have expanded into a very large annotation effort. Instead, the discussion focused on three questions: what downstream capability will actually consume these keypoints, how many examples are likely sufficient to test the hypothesis, and how do we sample across viewpoints and conditions rather than overrepresent one source. That moved the conversation from annotation completeness to experimental value per annotation dollar.</div>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">04</div>
+    <div>
+      <h3>What Changed</h3>
+      <table class="detail-table">
+        <thead><tr><th>Earlier state</th><th>Revised state</th></tr></thead>
+        <tbody>
+          <tr><td>Broad visual classes</td><td>More model-relevant object definitions</td></tr>
+          <tr><td>General object labeling</td><td>Persistent target-object identity rules</td></tr>
+          <tr><td>Action phases and boundaries</td><td>Additional model attributes and spatial datapoints</td></tr>
+          <tr><td>Basic edge-case guidance</td><td>Explicit instructions for occlusion, blur, perspective, atypical motion</td></tr>
+          <tr><td>Background examples</td><td>More intentional negative-class treatment</td></tr>
+          <tr><td>Multiple-person footage</td><td>Deterministic person-of-interest selection</td></tr>
+          <tr><td>"More data" as a possible answer</td><td>Targeted annotation based on expected model utility</td></tr>
+          <tr><td>Requirements reviewed mainly as labeling work</td><td>Requirements reviewed jointly as ML input + annotation ops + downstream consumption</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">05</div>
+    <div>
+      <h3>Sanitized Requirement Pattern</h3>
+      <p>A public-safe representation of the kind of requirement structure introduced — illustrative only, not the production schema.</p>
+      <p class="code-card-caption">Illustrative only — does not reproduce the production schema or proprietary class/field names.</p>
+      <div class="code-card">annotation_class:
+  target:
+    definition: "the object/person used by downstream evaluation"
+    identity_rule: "maintain identity across the action"
+    occlusion:
+      partial: "continue when location remains inferable"
+      full: "resume same identity when confidence supports continuity"
+
+  attributes:
+    execution_side:
+      values: [primary_side_a, primary_side_b]
+      ambiguity_note: "may not be visually learnable in every frame"
+
+  edge_cases:
+    - multiple_candidates
+    - motion_blur
+    - perspective_change
+    - atypical_form
+
+  qa:
+    report_ambiguities: true</div>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">06</div>
+    <div>
+      <h3>Validation</h3>
+      <p>The ML team used the revised data as part of subsequent model changes and QA. This work contributed to the broader model-improvement initiative alongside temporal-boundary logic, model changes, measurement formula revisions, and QA improvements.</p>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">07</div>
+    <div>
+      <h3>Outcome</h3>
+      <p class="lead">The revised training-data design was a significant contributor to the broader model-improvement initiative.</p>
+      <ul>
+        <li>Model-relevant object definitions replaced broader visual classes</li>
+        <li>Deterministic person-of-interest rules removed a source of annotator disagreement</li>
+        <li>New attributes and spatial datapoints were added only where a clear downstream use justified the cost</li>
+        <li>Difficult-scene requirements (occlusion, blur, perspective) became explicit rather than implicit</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="full-section">
+    <div class="section-num">08</div>
+    <div>
+      <h3>Limits &amp; Attribution</h3>
+      <p>I owned the specification and facilitated the cross-functional decisions behind it. I did not personally annotate the dataset, and the selection of which new model datapoints were worth adding was collaborative with ML and Data Science — not something I determined independently.</p>
+    </div>
+  </section>
+
+  <footer class="detail-footer">
+    <div><a href="cv-evaluation-system-case-study.html">← Back to Improving a Computer Vision Evaluation System End to End</a></div>
+    <div class="footer-nav"><span class="nav-disabled">← Prev</span><a href="cv-eval-temporal-detection.html">Next: Temporal Detection →</a></div>
+  </footer>
+</div>
+</body>
+</html>
