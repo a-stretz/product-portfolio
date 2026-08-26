@@ -317,6 +317,50 @@ body.cs {
   background: var(--primary);
 }
 
+/* ============ Product goal flow diagram ============ */
+.wf-flow-wrap { border-top: 1pt solid var(--ink); margin: 22px 0 4px; overflow-x: auto; }
+.wf-flow { display: flex; flex-wrap: nowrap; align-items: stretch; width: max-content; min-width: 100%; }
+.wf-flow-step {
+  flex: 0 0 auto;
+  min-width: 150px;
+  border: 0.5pt solid var(--rule);
+  border-top: 3pt solid var(--primary);
+  padding: 16px 16px 14px;
+  background: var(--primary-wash);
+}
+.wf-flow-step .fn {
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--primary-2);
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+}
+.wf-flow-step .ft {
+  font-family: var(--font-sans);
+  font-size: 10pt;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.wf-flow-arrow {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  color: var(--ink-3);
+  font-family: var(--font-serif);
+  font-size: 18pt;
+  min-width: 26px;
+}
+@media (max-width: 700px) {
+  .wf-flow-wrap { overflow-x: visible; }
+  .wf-flow { flex-direction: column; width: auto; min-width: 0; }
+  .wf-flow-step { min-width: 0; }
+}
+
 /* ============ Knowledge engine schema diagram ============ */
 .engine {
   margin: 28px 0 4px;
@@ -747,7 +791,7 @@ body.cs {
         <dt>Domain</dt><dd>Career &amp; hiring workflows</dd>
         <dt>Surface</dt><dd>Full-stack prototype</dd>
         <dt>Users</dt><dd>Individual candidates</dd>
-        <dt>Status</dt><dd>Scoped v2 in progress</dd>
+        <dt>Status</dt><dd>In active use</dd>
       </dl>
     </aside>
   </header>
@@ -757,8 +801,8 @@ body.cs {
     <div class="side">Overview</div>
     <div>
       <p>I designed and built an AI-assisted career workflow system that moves a candidate from job discovery to application strategy, tailored materials, interview preparation, and answer improvement.</p>
-      <p>The system is built around a <strong>structured candidate knowledge base</strong> rather than one-off prompt generation. The core product insight was simple: high-quality career outputs depend on reusable candidate context. A strong story, proof point, positioning angle, or metric should not need to be recreated separately for every application, cover letter, recruiter message, resume version, or interview answer.</p>
-      <p>The scoped version of the product supports job fit analysis, application decisioning, tailored artifact generation, interview question generation, answer evaluation, rewrite coaching, session review, and workflow history.</p>
+      <p>The system is built around a <strong>structured candidate knowledge base</strong> rather than one-off prompt generation. The core product insight was simple. High-quality career outputs depend on reusable candidate context, not a fresh prompt every time. A strong story, proof point, positioning angle, or metric should not need to be recreated separately for every application, cover letter, recruiter message, resume version, or interview answer.</p>
+      <p>The product supports candidate intake and knowledge-base creation, job fit analysis, application decisioning, tailored artifact generation, interview question generation, answer evaluation, rewrite coaching, session review, and workflow history.</p>
     </div>
   </section>
 
@@ -766,12 +810,12 @@ body.cs {
   <section class="lf-section">
     <div class="head">
       <div class="n"><span class="dot"></span>01 · Problem</div>
-      <h2>Job search work is fragmented, and generic AI has made it <em>worse</em>.</h2>
+      <h2>Job search work is fragmented, and generative AI has made it <em>worse</em>.</h2>
     </div>
     <div class="lf-body">
       <p>Candidates manage job descriptions, resumes, cover letters, recruiter messages, company research, interview notes, and story banks across disconnected tools. The result is repeated work and inconsistent positioning across every opportunity pursued.</p>
-      <p>Generic AI tools can generate drafts, but they lack durable memory of the candidate's experience. They produce polished language, but outputs drift toward repetitive, generic, or weakly grounded claims, exactly the kind of content hiring systems are now trained to filter out.</p>
-      <p>The practical problem was broader than creating documents. The candidate needed a system that could answer a set of connected questions, not a set of isolated prompts.</p>
+      <p>Generative AI tools can produce drafts, but they lack durable memory of the candidate's experience. They produce polished language, but outputs drift toward repetitive, generic, or weakly grounded claims, exactly the kind of content hiring systems are now trained to filter out. Most tools also work from whatever the candidate happens to paste in, usually a resume or a LinkedIn profile, which captures a fraction of the information that could actually make the case for a candidate while staying accurate and true to their real experience.</p>
+      <p>The deeper problem was never document creation. It was friction. The friction of putting your best case forward as a candidate, on the roles most likely to want you, in a way that doesn't just land the interview but sets up how to prepare for and win it. It's making the most of a job search by maximizing time, effort, and cost. Every part of that reduces to one question. How do you show a specific employer that you are their ideal candidate? The candidate needed a system that could answer that question end to end, not a set of isolated prompts.</p>
 
       <div class="q-block">
         <div class="q-label">The questions the system had to answer</div>
@@ -798,16 +842,23 @@ body.cs {
       <h2>A structured workflow system, not a collection of generators.</h2>
     </div>
     <div class="lf-body">
-      <p>The goal was to build a structured AI workflow system with six capabilities:</p>
-      <ul class="goal-list">
-        <li>Evaluate job opportunities against candidate goals and constraints</li>
-        <li>Generate role-specific application materials</li>
-        <li>Maintain a reusable candidate knowledge base</li>
-        <li>Prepare the candidate for role-specific interviews</li>
-        <li>Evaluate and improve interview answers</li>
-        <li>Track outputs, decisions, and progress over time</li>
-      </ul>
-      <p style="margin-top:18px;">The system was designed for any professional with objective skill sets, experience with specific products, tools, processes, software, or languages. Because it assists users with diverse backgrounds, it also needed strict guardrails around accuracy: emphasize real experience that demonstrates real capability without under or overstating it.</p>
+      <p>The goal was a structured AI workflow system built around six connected capabilities, run in order.</p>
+      <div class="wf-flow-wrap">
+        <div class="wf-flow">
+          <div class="wf-flow-step"><span class="fn">01</span><span class="ft">Build a reusable candidate knowledge base</span></div>
+          <div class="wf-flow-arrow">→</div>
+          <div class="wf-flow-step"><span class="fn">02</span><span class="ft">Evaluate job opportunities against candidate goals and constraints</span></div>
+          <div class="wf-flow-arrow">→</div>
+          <div class="wf-flow-step"><span class="fn">03</span><span class="ft">Generate role-specific application materials</span></div>
+          <div class="wf-flow-arrow">→</div>
+          <div class="wf-flow-step"><span class="fn">04</span><span class="ft">Prepare the candidate for role-specific interviews</span></div>
+          <div class="wf-flow-arrow">→</div>
+          <div class="wf-flow-step"><span class="fn">05</span><span class="ft">Evaluate and improve interview answers</span></div>
+          <div class="wf-flow-arrow">→</div>
+          <div class="wf-flow-step"><span class="fn">06</span><span class="ft">Track outputs, decisions, and progress over time</span></div>
+        </div>
+      </div>
+      <p style="margin-top:22px;">The system was designed for any professional with objective skill sets, experience with specific products, tools, processes, software, or languages. Because it assists users with diverse backgrounds, it also needed strict guardrails around accuracy. Every output has to emphasize real experience that demonstrates real capability, without under or overstating it.</p>
     </div>
   </section>
 
@@ -815,7 +866,7 @@ body.cs {
   <section class="lf-section">
     <div class="head">
       <div class="n"><span class="dot"></span>03 · Product Design</div>
-      <h2>One shared foundation: the <em>candidate knowledge engine</em>.</h2>
+      <h2>One shared foundation, the <em>candidate knowledge engine</em>.</h2>
     </div>
     <div class="lf-body">
       <p>The product is organized around one shared foundation. Every workflow reads from and writes into the same structured knowledge layer, so context compounds instead of getting recreated.</p>
@@ -839,7 +890,7 @@ body.cs {
           <div class="item"><span class="k">08</span>Communication goals</div>
           <div class="item"><span class="k">09</span>Known weaknesses</div>
           <div class="item"><span class="k">10</span>Scoring rubrics</div>
-          <div class="item"><span class="k">11</span>Writing &amp; accuracy rules</div>
+          <div class="item"><span class="k">11</span>Writing examples</div>
           <div class="item"><span class="k">12</span>Claim boundaries</div>
         </div>
       </div>
@@ -859,9 +910,27 @@ body.cs {
 
       <!-- 1 -->
       <div class="wf">
-        <div class="wf-num"><span class="dot"></span>Workflow 01 · Intake</div>
-        <h4>Opportunity Intake and Normalization</h4>
-        <p>The system accepts pasted job descriptions, company notes, recruiter context, role labels, source links, or batch imports, and normalizes that input into a structured job record.</p>
+        <div class="wf-num"><span class="dot"></span>Workflow 01 · Candidate Intake</div>
+        <h4>Candidate Intake and Knowledge Base</h4>
+        <p>The first step in the workflow, and the one everything else depends on. A structured intake process captures the candidate's full body of work, the complete extent of experience, tech stack, tools, software, achievements, domain knowledge, and industries, then organizes it into a structured knowledge base.</p>
+        <p>This is what makes downstream personalization accurate instead of generic, and what makes the workflow a repeatable, productized system rather than something built for one person.</p>
+        <div class="labels">
+          <span>Experience history</span><span>Tech stack &amp; tools</span>
+          <span>Achievements &amp; metrics</span><span>Domain knowledge</span>
+          <span>Industries</span><span>Skills &amp; fluency</span>
+          <span>Writing examples</span><span>Positioning goals</span>
+        </div>
+        <div class="wf-output">
+          <span class="lbl">Output</span>
+          A confirmed candidate knowledge base, reviewed and signed off by the user before any job processing begins.
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="wf">
+        <div class="wf-num"><span class="dot"></span>Workflow 02 · Job Intake</div>
+        <h4>Job Intake and Normalization</h4>
+        <p>Once the candidate knowledge base is confirmed, the system is ready to process opportunities. It accepts pasted job descriptions, company notes, recruiter context, role labels, source links, or batch imports, and normalizes each into a structured job record.</p>
         <div class="labels">
           <span>Company</span><span>Role title</span>
           <span>Location</span><span>Remote / hybrid / onsite</span>
@@ -871,15 +940,15 @@ body.cs {
         </div>
         <div class="wf-output">
           <span class="lbl">Output</span>
-          Clean job record for downstream workflows, no more re-parsing raw job text on every run.
+          Clean job record ready for fit analysis, no more re-parsing raw job text on every run.
         </div>
       </div>
 
-      <!-- 2 -->
+      <!-- 3 -->
       <div class="wf">
-        <div class="wf-num"><span class="dot"></span>Workflow 02 · Fit &amp; Decision</div>
+        <div class="wf-num"><span class="dot"></span>Workflow 03 · Fit &amp; Decision</div>
         <h4>Job Fit Analysis and Decisioning</h4>
-        <p>Evaluates whether an opportunity is worth pursuing. Deterministic checks (location, compensation, hard requirements) are transparent and testable; model reasoning handles nuanced fit, role summarization, and positioning.</p>
+        <p>Evaluates the job record against the candidate knowledge base to determine whether an opportunity is worth pursuing. Deterministic checks handle location, compensation, and hard requirements, so those results stay transparent and testable. Model reasoning, meaning the language model's generated judgment, handles nuanced fit, role summarization, and positioning.</p>
         <ul>
           <li>Responsibility alignment, domain relevance, AI or platform relevance</li>
           <li>Technical skills match, requirements fit, compensation fit</li>
@@ -891,33 +960,23 @@ body.cs {
         </div>
       </div>
 
-      <!-- 3 -->
-      <div class="wf">
-        <div class="wf-num"><span class="dot"></span>Workflow 03 · Knowledge Base</div>
-        <h4>Candidate Knowledge Base</h4>
-        <p>The core product layer. Structured information about professional identity, experience, themes, technical-adjacent work, project stories, proof points, positioning, communication weaknesses, writing preferences, and claims that should not be made.</p>
-        <p>A major design choice: treat stories as <strong>reusable product assets</strong> with metadata for selection, not prose snippets.</p>
-        <div class="wf-output">
-          <span class="lbl">Role in the system</span>
-          Single source of truth consumed by every other workflow — resume, cover letter, interview question, recruiter message, thank-you note, portfolio summary.
-        </div>
-      </div>
-
       <!-- 4 -->
       <div class="wf">
         <div class="wf-num"><span class="dot"></span>Workflow 04 · Artifacts</div>
         <h4>Tailored Application Materials</h4>
-        <p>Generates application artifacts using the job record and candidate knowledge. The scoped direction replaces variant-based resume recommendation with tailored resume generation from a controlled source of truth.</p>
+        <p>Generates application artifacts from the job record and the candidate knowledge base, replacing variant-based resume recommendation with tailored resume generation from a single controlled source of truth.</p>
         <ul>
           <li>Selects relevant approved bullets</li>
           <li>Adjusts summary for the target role</li>
           <li>Emphasizes the right skills and projects</li>
           <li>Avoids unsupported claims, preserves ownership boundaries</li>
           <li>Explains what was changed and why</li>
+          <li>Drafts custom outreach messaging tailored to its recipient, such as a short LinkedIn connection request, an InMail, or an introduction email</li>
+          <li>Answers custom questions required by an employer's application process</li>
         </ul>
         <div class="wf-output">
           <span class="lbl">Artifact types</span>
-          Cover letters, recruiter follow-ups, hiring manager notes, LinkedIn connections, fit summaries, thank-you notes, tailored resume versions.
+          Tailored resume versions, cover letters, recruiter follow-ups, hiring manager notes, custom recipient messaging, fit summaries, thank-you notes, evaluation notes, tracker updates.
         </div>
       </div>
 
@@ -925,7 +984,7 @@ body.cs {
       <div class="wf">
         <div class="wf-num"><span class="dot"></span>Workflow 05 · Interview Prep</div>
         <h4>Interview Preparation</h4>
-        <p>Uses the same job context and knowledge base to generate role-specific practice sessions. The user configures style, difficulty, focus area, session length, weakness to test, answer length, and input mode (typed or voice).</p>
+        <p>Uses the same job context and knowledge base to run background research and a fit evaluation on the role and company, then generates role-specific practice sessions. The user configures style, difficulty, focus area, session length, weakness to test, answer length, and input mode (typed or voice).</p>
         <p>Questions are designed to test specificity, decision-making, tradeoffs, product judgment, technical fluency, and business framing. The system also suggests which stories from the knowledge base are most relevant to each question.</p>
         <div class="wf-output">
           <span class="lbl">Output</span>
@@ -937,11 +996,8 @@ body.cs {
       <div class="wf">
         <div class="wf-num"><span class="dot"></span>Workflow 06 · Answer Coaching</div>
         <h4>Answer Evaluation and Coaching</h4>
-        <p>Feedback comes in two stages. <strong>Editorial markup</strong> breaks the answer into spans and labels each section:</p>
-        <ul>
-          <li>keep · cut · compress · reorder · upgrade · pivot</li>
-        </ul>
-        <p style="margin-top:10px;"><strong>Rubric scoring</strong> evaluates across relevance, structure, specificity, product judgment, technical fluency, business framing, metrics and outcomes, conciseness, and credibility. The system identifies recurring weaknesses — rambling, missing metrics, weak structure, generic language, no clear result, missing decision logic — and offers rewrite variants (core, full, detailed, more executive, more metrics-driven, more technically accessible).</p>
+        <p>A customized interview engine records the candidate's answers to expected questions and evaluates them against the specific job's criteria, adjusted by user-configured settings that shape how strict or lenient the evaluation runs. Feedback comes in two stages. <strong>Editorial markup</strong> breaks the answer into spans and labels each section, keep, cut, compress, reorder, upgrade, or pivot.</p>
+        <p style="margin-top:10px;"><strong>Rubric scoring</strong> evaluates across relevance, structure, specificity, product judgment, technical fluency, business framing, metrics and outcomes, conciseness, and credibility. The system identifies recurring weaknesses, such as rambling, missing metrics, weak structure, generic language, no clear result, or missing decision logic, and offers rewrite variants (core, full, detailed, more executive, more metrics-driven, more technically accessible).</p>
         <div class="wf-output">
           <span class="lbl">Loop</span>
           Answer → review → score → rewrite → retry → compare improvement.
@@ -952,14 +1008,14 @@ body.cs {
       <div class="wf" style="grid-column: span 2;">
         <div class="wf-num"><span class="dot"></span>Workflow 07 · History &amp; Memory</div>
         <h4>History and Workflow Memory</h4>
-        <p>Tracks analyzed jobs, generated artifacts, interview sessions, answer evaluations, recurring weaknesses, and session summaries. The user can return to a role and see what was already analyzed, generated, practiced, and improved. The longer-term direction includes progress tracking across jobs analyzed, roles pursued, applications generated, interviews prepared, recurring answer weaknesses, strongest stories, overused stories, readiness by role type, and improvement over time.</p>
+        <p>Tracks analyzed jobs, generated artifacts, interview sessions, answer evaluations, recurring weaknesses, and session summaries. The user can return to a role and see what was already analyzed, generated, practiced, and improved, with progress tracking across jobs analyzed, roles pursued, applications generated, interviews prepared, recurring answer weaknesses, strongest stories, overused stories, readiness by role type, and improvement over time.</p>
       </div>
     </div>
   </section>
 
   <!-- PULL QUOTE -->
   <div class="pull">
-    The core product insight was that better AI outputs require a durable candidate knowledge layer. Instead of prompting from scratch for each job, message, resume, or interview answer, the system reuses structured profile facts, stories, proof points, positioning variants, and scoring criteria.
+    Better AI outputs don't come from a better prompt. They come from a system that already knows who you are.
   </div>
 
   <!-- KEY DECISIONS -->
@@ -993,12 +1049,12 @@ body.cs {
       <div class="dec">
         <div class="n">Decision 05</div>
         <h4>Deterministic Rules + Model Reasoning</h4>
-        <p>Hard checks stay deterministic: they must be transparent and testable. Model reasoning handles nuance, drafting, evaluation, story matching, and summarization where judgment is required.</p>
+        <p>Hard checks stay deterministic, so they stay transparent and testable. Model reasoning, meaning outputs generated by the underlying language model rather than fixed logic, handles nuance, drafting, evaluation, story matching, and summarization where judgment is required. The system runs on the Anthropic Claude API, so every model call is a live API request rather than a locally hosted model.</p>
       </div>
       <div class="dec">
         <div class="n">Decision 06</div>
         <h4>Artifact Memory</h4>
-        <p>Generated outputs are saved, versioned, and tied to the job or session that produced them. This makes the workflow auditable and enables progress tracking across the full job search.</p>
+        <p>Generated outputs are saved, versioned, and tied to the job or session that produced them, in a structured database rather than kept in a model's context window. This keeps the system auditable and enables progress tracking across the full job search, without paying ongoing token or cache cost just to remember past work.</p>
       </div>
     </div>
   </section>
@@ -1010,7 +1066,7 @@ body.cs {
       <h2>Tools and technology.</h2>
     </div>
     <div class="lf-body" style="max-width: none; margin-left: 168px;">
-      <p>Built and prototyped with a front-end layer, back-end orchestration, knowledge storage, and model routing for cost and quality control. The scoped direction moves toward a cleaner full-stack architecture with a durable backend, shared database, model orchestration layer, structured knowledge base, artifact storage, and improved ingestion.</p>
+      <p>Built as a full-stack system, with a front-end layer, back-end orchestration, a durable shared database, a structured knowledge base, artifact storage, model routing for cost and quality control, and a structured ingestion pipeline for candidate and job data.</p>
       <div class="stack-wrap" style="margin-top: 22px;">
         <div class="stack-col">
           <h5>Frontend &amp; client</h5>
@@ -1045,8 +1101,8 @@ body.cs {
   <!-- FINAL SUMMARY -->
   <section class="lf-final" id="final">
     <div class="kicker">◆ &nbsp; Final Summary</div>
-    <h3>An AI-assisted career workflow system that turns background into reusable structured knowledge, and applies it across the <em>entire</em> job search.</h3>
-    <p>The system evaluates opportunities, recommends pursuit decisions, generates tailored materials, prepares role-specific interview questions, scores answers, identifies recurring weaknesses, and improves responses through rewrite coaching.</p>
+    <h3>An AI-assisted career workflow system that helps job seekers represent themselves the <em>best way they can</em>, in a challenging job market.</h3>
+    <p>Starting from a structured candidate knowledge base, the system evaluates opportunities, recommends pursuit decisions, generates tailored materials, prepares role-specific interview questions, scores answers, identifies recurring weaknesses, and improves responses through rewrite coaching.</p>
     <p>This project demonstrates <strong>product strategy, workflow design, knowledge architecture, AI system design, prompt orchestration, structured evaluation, and practical AI-enabled product execution</strong>.</p>
   </section>
 
