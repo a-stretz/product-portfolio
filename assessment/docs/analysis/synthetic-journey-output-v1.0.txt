@@ -1,0 +1,25 @@
+Northline Field Services: synthetic journey through the real engine
+
+Step	Month	Leadership	Workflows	Data	People & T	Technical 	Oversight	Measuremen	Storing → 	Index	Band	Raw	Final	Gates
+1	0	1	1	1	1	2	1	1	1	5	Low	1	1	leadership,workflow_data,governance,execution
+2	3	3	1	1	1	2	1	1	1	15	Low	2	2	workflow_data,governance,execution
+3	6	3	3	2	1	2	1	3	1	37	Low	2	2	governance,execution
+4	9	4	3	3	1	2	1	3	1	47	Developing	3	3	governance,execution
+5	12	4	3	4	3	3	3	4	2	77	Strong	4	4	-
+6	15	2	3	4	4	3	3	4	2	70	Strong	4	1*	leadership
+7	18	4	3	4	4	4	3	4	3	88	Advanced	4	4	-
+8	21	4	3	4	4	4	4	4	4	95	Advanced	5	5	-
+9	24	4	4	4	4	4	4	4	4	100	Advanced	5	5	-
+
+Normalized section values (distance to thresholds matters):
+  step 1: lead 0.00  work 0.02  data 0.13  user 0.03  exec 0.39  gove 0.00  meas 0.04  sora 0.11
+  step 2: lead 0.70  work 0.02  data 0.13  user 0.03  exec 0.39  gove 0.03  meas 0.18  sora 0.11
+  step 3: lead 0.70  work 0.67  data 0.50  user 0.10  exec 0.41  gove 0.03  meas 0.64  sora 0.11
+  step 4: lead 0.85  work 0.67  data 0.75  user 0.16  exec 0.48  gove 0.03  meas 0.64  sora 0.11
+  step 5: lead 0.85  work 0.67  data 0.87  user 0.72  exec 0.75  gove 0.74  meas 0.84  sora 0.32
+  step 6: lead 0.45  work 0.71  data 0.87  user 0.84  exec 0.75  gove 0.74  meas 0.84  sora 0.32
+  step 7: lead 0.90  work 0.71  data 0.89  user 0.90  exec 0.79  gove 0.74  meas 0.84  sora 0.58
+  step 8: lead 0.90  work 0.71  data 0.89  user 0.90  exec 0.88  gove 0.97  meas 0.84  sora 0.86
+  step 9: lead 0.90  work 0.92  data 0.89  user 0.90  exec 0.90  gove 0.97  meas 0.88  sora 0.89
+
+Coherence checks: ALL PASS
